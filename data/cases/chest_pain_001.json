@@ -1,0 +1,1599 @@
+{
+  "id": "chest_pain_001",
+  "title": "Crushing Chest Pain with Diaphoresis",
+  "subtitle": "Emergency Department · Acute Presentation",
+  "difficulty": "Resident",
+  "category": "Medicine",
+  "system": "Cardiovascular",
+  "tags": ["Chest Pain", "ECG", "Troponin", "Thrombolysis vs PCI", "ACS"],
+  "estimatedTime": "15–20 min",
+
+  "clinicalPresentation": {
+    "patientParticulars": {
+      "age": 58,
+      "sex": "Male",
+      "occupation": "Bus Driver",
+      "address": "Bharatpur, Chitwan, Nepal"
+    },
+    "chiefComplaint": "Severe crushing central chest pain for 90 minutes radiating to the left arm and jaw, with profuse sweating",
+    "HOPI": {
+      "onset": "Sudden onset severe crushing substernal chest pain 90 minutes ago while driving. Described as a vice-like pressure (8/10 severity). No clear precipitating exertion.",
+      "progression": "Pain has been constant and unrelenting since onset. Initial mild discomfort worsened rapidly to severe chest pressure within 15 minutes. Associated diaphoresis developed soon after onset. Two episodes of vomiting. Patient self-administered two antacid tablets with no relief.",
+      "associatedSymptoms": [
+        "Radiation to left arm and jaw",
+        "Profuse diaphoresis",
+        "Nausea and vomiting (2 episodes)",
+        "Breathlessness at rest (mild)",
+        "Palpitations (transient)",
+        "Sense of impending doom"
+      ],
+      "relievingFactors": ["No relief with antacids", "No relief with change in position"],
+      "aggravatingFactors": ["No clear positional change", "No pleuritic component"]
+    },
+    "pastHistory": [
+      "Hypertension — on Amlodipine 5 mg OD for 4 years (compliance poor)",
+      "Type 2 Diabetes Mellitus — on Metformin 500 mg BD (HbA1c last checked 2 years ago)",
+      "Dyslipidaemia — diagnosed incidentally 2 years ago, never started on statin",
+      "No prior ischaemic heart disease",
+      "No prior hospitalisation for cardiac events"
+    ],
+    "familyHistory": [
+      "Father died of acute MI at age 52",
+      "Elder brother had coronary artery bypass graft at age 60"
+    ],
+    "personalHistory": [
+      "Smoker — 20 pack-years (currently 1 pack/day)",
+      "Occasional alcohol",
+      "Sedentary lifestyle — long-distance bus driving",
+      "High-fat diet, irregular meal timings"
+    ],
+    "vitals": {
+      "temp": 37.1,
+      "pulse": 96,
+      "bp": "148/92",
+      "rr": 20,
+      "spo2": 95,
+      "weight": "82 kg"
+    },
+    "exam": {
+      "general": [
+        "Acutely distressed, diaphoretic",
+        "Pallor ++",
+        "Cold and clammy peripheries",
+        "No cyanosis",
+        "No jaundice"
+      ],
+      "cardiovascular": [
+        "Pulse: 96/min, regular, volume slightly reduced",
+        "JVP: Not raised",
+        "Apex beat: Normal position, not displaced",
+        "Heart sounds: S1, S2 heard. Soft S4 gallop present",
+        "No murmurs",
+        "Bilateral basal crepitations (fine, early)"
+      ],
+      "others": [
+        "Abdomen: Soft, non-tender, no organomegaly",
+        "No leg oedema",
+        "Peripheral pulses intact bilaterally",
+        "GCS 15, oriented"
+      ]
+    }
+  },
+
+  "clinicalClue": "KEY FINDING: The combination of new ST elevation in contiguous leads + typical ischaemic chest pain lasting >20 minutes in a patient with multiple cardiovascular risk factors (diabetes, hypertension, smoking, dyslipidaemia, strong family history) is diagnostic of STEMI until proven otherwise. The S4 gallop indicates decreased LV compliance — an early and sensitive sign of acute myocardial ischaemia. Thrombolysis vs primary PCI decision hinges on symptom onset-to-door time, contraindications, and availability — this patient is within the 12-hour window; the critical clinical skill is recognising and acting on this within 10 minutes of ECG.",
+
+  "initialState": {
+    "time": 0,
+    "stage": "acute_stemi",
+    "budget": 5000,
+    "cost": 0,
+    "penalty": 0,
+    "cured": false,
+    "outcome": null,
+    "vitals": {
+      "hr": 96,
+      "bp": "148/92",
+      "temp": 37.1,
+      "rr": 20,
+      "spo2": 95
+    },
+    "activeSymptoms": [
+      "Severe crushing central chest pain 90 min",
+      "Radiation to left arm and jaw",
+      "Profuse diaphoresis",
+      "Nausea and vomiting",
+      "Breathlessness at rest",
+      "S4 gallop on auscultation",
+      "Bilateral basal crepitations"
+    ],
+    "completedTests": [],
+    "givenManagement": [],
+    "pendingResults": [],
+    "selectedDiagnosis": null,
+    "diagnosisCorrect": false,
+    "diagnosisHistory": []
+  },
+
+  "stages": {
+    "acute_stemi": {
+      "label": "Acute Ischaemic Phase",
+      "color": "yellow",
+      "next": "evolving_injury",
+      "afterTime": 3
+    },
+    "evolving_injury": {
+      "label": "Evolving Myocardial Injury",
+      "color": "orange",
+      "next": "haemodynamic_failure",
+      "afterTime": 5
+    },
+    "haemodynamic_failure": {
+      "label": "Haemodynamic Compromise",
+      "color": "red",
+      "next": "death",
+      "afterTime": 6
+    },
+    "death": {
+      "label": "Fatal Cardiac Event",
+      "color": "black",
+      "next": null,
+      "afterTime": null
+    }
+  },
+
+  "progressionRules": [
+    {
+      "from": "acute_stemi",
+      "to": "evolving_injury",
+      "condition": "no_treatment",
+      "effects": {
+        "symptoms": [
+          "Worsening chest pain",
+          "Increasing dyspnoea",
+          "Worsening bilateral crepitations",
+          "Sinus tachycardia worsening",
+          "New VPCs noted on monitor"
+        ],
+        "vitals": { "hr": 112, "bp": "130/84", "rr": 24, "spo2": 92 },
+        "penalty": 15,
+        "penaltyMsg": "Myocardial injury is evolving. Lack of early reperfusion is expanding the infarct zone. Every minute of delay = 2 million cardiomyocytes lost. Time is muscle."
+      }
+    },
+    {
+      "from": "evolving_injury",
+      "to": "haemodynamic_failure",
+      "condition": "no_treatment",
+      "effects": {
+        "symptoms": [
+          "Acute pulmonary oedema — frothy sputum",
+          "Severe dyspnoea",
+          "Confusion and agitation",
+          "Cold clammy extremities worsening",
+          "Urine output dropping"
+        ],
+        "vitals": { "hr": 130, "bp": "88/60", "rr": 30, "spo2": 84 },
+        "penalty": 30,
+        "penaltyMsg": "Cardiogenic shock is developing. Extensive anterior wall ischaemia has critically impaired LV function. Killip Class IV. Intra-aortic balloon pump and emergency PCI are now the only options."
+      }
+    },
+    {
+      "from": "haemodynamic_failure",
+      "to": "death",
+      "condition": "no_treatment",
+      "effects": {
+        "symptoms": [
+          "Pulseless VT degenerating to VF",
+          "Unresponsive",
+          "Absent pulse"
+        ],
+        "vitals": { "hr": 0, "bp": "0/0", "temp": 36.0, "rr": 0, "spo2": 0 },
+        "penalty": 50,
+        "penaltyMsg": "Patient died from massive anterior STEMI with cardiogenic shock and ventricular fibrillation. Timely reperfusion therapy (thrombolysis within 30 min or primary PCI within 90 min) would have been life-saving. 'Time is muscle.'",
+        "endGame": true,
+        "outcome": "death"
+      }
+    }
+  ],
+
+  "tests": [
+    {
+      "id": "ecg_12lead",
+      "name": "12-Lead ECG",
+      "fullName": "12-Lead Electrocardiogram",
+      "time": 0.1,
+      "cost": 200,
+      "type": "confirmatory",
+      "category": "Special",
+      "stageAvailability": ["acute_stemi", "evolving_injury", "haemodynamic_failure"],
+      "results": {
+        "acute_stemi": "Sinus rhythm 96 bpm. ST elevation ≥2 mm in leads V1–V5 (convex/tombstone pattern). Reciprocal ST depression in leads II, III, aVF. Early Q waves in V1–V2. No bundle branch block. QTc 430 ms.",
+        "evolving_injury": "Sinus tachycardia 112 bpm. Evolving ST elevation V1–V6 (hyperacute T waves changing to tombstone). New Q waves V1–V3. Frequent VPCs. Reciprocal changes in inferior leads persist.",
+        "haemodynamic_failure": "Sinus tachycardia 130 bpm with frequent VPCs and runs of non-sustained VT. Deep Q waves V1–V4 (completed infarction). ST elevation persisting. Left bundle branch block developing. QTc prolonged to 490 ms."
+      },
+      "interpretation": {
+        "acute_stemi": "CRITICAL: ST elevation in V1–V5 with reciprocal changes — anterior STEMI, LAD territory. Activate catheterisation lab / prepare thrombolytic immediately. This is the most time-critical diagnosis in emergency medicine.",
+        "evolving_injury": "Evolving anterior STEMI — hyperacute T waves progressing. Q wave formation indicates irreversible myocardial necrosis beginning. Reperfusion urgently required. VPCs are reperfusion arrhythmia risk.",
+        "haemodynamic_failure": "Completed anterior MI with haemodynamic compromise. Non-sustained VT — high VF risk. LBBB in context of STEMI = Sgarbossa criteria applicable. Emergency PCI if still feasible — cardiogenic shock."
+      }
+    },
+    {
+      "id": "trop_i_rapid",
+      "name": "Troponin I (Rapid)",
+      "fullName": "High-Sensitivity Cardiac Troponin I — Rapid Point-of-Care",
+      "time": 0.5,
+      "cost": 800,
+      "type": "confirmatory",
+      "category": "Blood",
+      "stageAvailability": ["acute_stemi", "evolving_injury", "haemodynamic_failure"],
+      "results": {
+        "acute_stemi": "hs-TnI: 0.08 ng/mL (mildly elevated — just above 99th percentile URL of 0.04 ng/mL). EARLY RISE — symptoms onset 90 minutes ago. Serial troponin in 3 hours essential for delta-troponin analysis.",
+        "evolving_injury": "hs-TnI: 2.4 ng/mL (markedly elevated — 60× URL). RISING PATTERN confirms acute myocardial injury. Delta-troponin >20% confirms acute MI kinetics.",
+        "haemodynamic_failure": "hs-TnI: 18.6 ng/mL (massive elevation — 465× URL). Peak troponin in context of cardiogenic shock. Extensive myocardial necrosis confirmed."
+      },
+      "interpretation": {
+        "acute_stemi": "Early mild troponin rise — 1st sample at 90 min from symptom onset. IMPORTANT: A single mildly elevated or normal troponin does NOT exclude STEMI in the first 2 hours. ECG with ST elevation is the diagnostic standard for STEMI — do NOT wait for troponin to treat STEMI.",
+        "evolving_injury": "Rapidly rising troponin confirms acute NSTEMI/STEMI kinetics. The delta-troponin (serial rise) is the key pattern. Distinguish from demand ischaemia (type 2 MI) where rise is gradual.",
+        "haemodynamic_failure": "Massively elevated troponin consistent with large anterior infarct. Correlates with infarct size and inversely with LV ejection fraction. Poor prognostic marker at this level."
+      }
+    },
+    {
+      "id": "trop_serial",
+      "name": "Serial Troponin (3h)",
+      "fullName": "Serial High-Sensitivity Troponin I at 0 and 3 Hours (ESC 0h/3h Rule-In Protocol)",
+      "time": 3,
+      "cost": 1200,
+      "type": "confirmatory",
+      "category": "Blood",
+      "stageAvailability": ["acute_stemi", "evolving_injury", "haemodynamic_failure"],
+      "results": {
+        "acute_stemi": "0h: 0.08 ng/mL → 3h: 3.6 ng/mL. Delta-TnI = +4400% (absolute rise 3.52 ng/mL). ESC 3h protocol: RULE IN — delta >6 ng/L AND absolute value >52 ng/L. Confirms acute MI pattern.",
+        "evolving_injury": "0h: 2.4 ng/mL → 3h: 11.2 ng/mL. Steeply rising — large MI kinetics. Delta >100%. STEMI in evolving phase.",
+        "haemodynamic_failure": "Serial troponins: markedly elevated and plateauing. Infarct evolution essentially complete."
+      },
+      "interpretation": {
+        "acute_stemi": "The serial 0h/3h troponin protocol is the ESC-recommended approach. A >20% relative rise or >6 ng/L absolute rise (depending on assay) at 3 hours rules in AMI. However: in STEMI with ST elevation, serial troponins confirm but do NOT replace immediate ECG-guided reperfusion. Never delay treatment awaiting serial troponin in STEMI.",
+        "evolving_injury": "Serial troponin confirms large AMI kinetics. Rising pattern distinguishes AMI from myocarditis (slower rise) and demand ischaemia.",
+        "haemodynamic_failure": "Plateau phase of troponin release indicates infarct nearly complete. Ongoing rise suggests continued necrosis or reperfusion injury."
+      }
+    },
+    {
+      "id": "ckmb",
+      "name": "CK-MB",
+      "fullName": "Creatine Kinase-MB Isoenzyme",
+      "time": 1,
+      "cost": 400,
+      "type": "useful",
+      "category": "Blood",
+      "stageAvailability": ["acute_stemi", "evolving_injury", "haemodynamic_failure"],
+      "results": {
+        "acute_stemi": "CK-MB: 28 U/L (upper limit normal 25 U/L — mildly elevated). CK-MB mass: 6.2 ng/mL. CK-MB/CK ratio: 8.2% (>5% ratio supports myocardial origin). Total CK: 340 U/L.",
+        "evolving_injury": "CK-MB: 186 U/L (markedly elevated). CK-MB mass: 42 ng/mL. Total CK: 1840 U/L. Pattern consistent with large anterior infarct.",
+        "haemodynamic_failure": "CK-MB: 620 U/L. Total CK: 4200 U/L. Massive myocardial necrosis. CK-MB beginning to plateau — late stage."
+      },
+      "interpretation": {
+        "acute_stemi": "CK-MB rises 4–6 hours after myocardial injury (later than hs-TnI). Mildly elevated at 90 minutes — consistent with early STEMI. CK-MB is less sensitive than hs-TnI in the early phase. Its main modern utility: estimating infarct size and detecting reinfarction (CK-MB re-rises after reperfusion in reinfarction when troponin may already be elevated).",
+        "evolving_injury": "CK-MB markedly elevated — large infarct. Peaks at 10–24 hours after AMI.",
+        "haemodynamic_failure": "Massive CK-MB elevation reflects extensive myonecrosis consistent with large anterior STEMI."
+      }
+    },
+    {
+      "id": "cbc",
+      "name": "CBC",
+      "fullName": "Complete Blood Count",
+      "time": 0.5,
+      "cost": 150,
+      "type": "useful",
+      "category": "Blood",
+      "stageAvailability": ["acute_stemi", "evolving_injury", "haemodynamic_failure"],
+      "results": {
+        "acute_stemi": "WBC: 11,200/μL (mild reactive leukocytosis — stress response). Hb: 13.8 g/dL (normal). Platelets: 224,000/μL (normal). Haematocrit: 41%.",
+        "evolving_injury": "WBC: 14,600/μL (infarct-related leukocytosis). Hb: 13.6 g/dL. Platelets: 218,000/μL.",
+        "haemodynamic_failure": "WBC: 16,800/μL. Hb: 13.2 g/dL. Platelets: 196,000/μL. Mild haemodilution from IV fluids."
+      },
+      "interpretation": {
+        "acute_stemi": "Mild leukocytosis is normal in acute MI (catecholamine surge and infarct inflammation). Haemoglobin important — severe anaemia (Hb <8) is a cause of demand ischaemia (type 2 MI) which must be excluded. Normal Hb here supports type 1 MI (plaque rupture). Platelet count needed for thrombolytic safety assessment.",
+        "evolving_injury": "Progressive leukocytosis is normal in evolving infarct — peaks at 2–4 days.",
+        "haemodynamic_failure": "Leukocytosis in cardiogenic shock — distinguish from septic shock. No fever here, supporting cardiac cause."
+      }
+    },
+    {
+      "id": "rft_electrolytes",
+      "name": "RFT + Electrolytes",
+      "fullName": "Renal Function Tests and Serum Electrolytes (Na, K, Urea, Creatinine)",
+      "time": 1,
+      "cost": 300,
+      "cost": 300,
+      "type": "useful",
+      "category": "Blood",
+      "stageAvailability": ["acute_stemi", "evolving_injury", "haemodynamic_failure"],
+      "results": {
+        "acute_stemi": "Na: 138 mEq/L. K: 4.1 mEq/L. Urea: 34 mg/dL. Creatinine: 1.1 mg/dL (eGFR ~68 mL/min). Normal range — no CKD.",
+        "evolving_injury": "Na: 136 mEq/L. K: 4.4 mEq/L. Creatinine: 1.3 mg/dL (mildly rising — early cardiorenal).",
+        "haemodynamic_failure": "Na: 132 mEq/L. K: 5.2 mEq/L (HYPERKALAEMIA — acute kidney injury from cardiogenic shock). Creatinine: 2.4 mg/dL. Urea: 68 mg/dL. Pre-renal AKI from cardiogenic shock."
+      },
+      "interpretation": {
+        "acute_stemi": "Baseline renal function needed before thrombolytic therapy and contrast for PCI. K >5.0 increases arrhythmia risk in STEMI — K is normal here. Mild CKD would increase contrast nephropathy risk. Normal baseline creatinine is reassuring.",
+        "evolving_injury": "Mildly rising creatinine — early cardiorenal syndrome type 1. Monitor closely.",
+        "haemodynamic_failure": "Hyperkalaemia in AKI is an arrhythmia risk in already compromised myocardium. STEMI + AKI = very high mortality."
+      }
+    },
+    {
+      "id": "coagulation",
+      "name": "PT/INR + aPTT",
+      "fullName": "Prothrombin Time / INR and Activated Partial Thromboplastin Time",
+      "time": 1,
+      "cost": 350,
+      "type": "useful",
+      "category": "Blood",
+      "stageAvailability": ["acute_stemi", "evolving_injury", "haemodynamic_failure"],
+      "results": {
+        "acute_stemi": "PT: 12.8 sec. INR: 1.0 (normal). aPTT: 28 sec (normal). No baseline coagulopathy.",
+        "evolving_injury": "PT: 13.2 sec. INR: 1.1. aPTT: 32 sec. Still within acceptable range.",
+        "haemodynamic_failure": "PT: 17.6 sec. INR: 1.5 (elevated — hepatic hypoperfusion in cardiogenic shock). aPTT: 48 sec. Early coagulopathy from shock liver."
+      },
+      "interpretation": {
+        "acute_stemi": "Coagulation screen essential before thrombolysis — INR >1.7 or aPTT >2x control is a relative contraindication to thrombolysis (risk of systemic haemorrhage). Normal here — thrombolysis safe from coagulation standpoint.",
+        "evolving_injury": "Coagulation still acceptable. Monitor.",
+        "haemodynamic_failure": "INR rising from shock-induced hepatic ischaemia. Coagulopathy makes thrombolysis dangerous — primary PCI is preferred even at this stage."
+      }
+    },
+    {
+      "id": "lipid_profile",
+      "name": "Fasting Lipid Profile",
+      "fullName": "Fasting Serum Lipid Profile (TC, LDL, HDL, TG)",
+      "time": 1,
+      "cost": 350,
+      "type": "dummy",
+      "category": "Blood",
+      "stageAvailability": ["acute_stemi", "evolving_injury", "haemodynamic_failure"],
+      "results": {
+        "acute_stemi": "Total Cholesterol: 214 mg/dL. LDL: 148 mg/dL (ELEVATED — above STEMI target of <70 mg/dL). HDL: 36 mg/dL (low). TG: 198 mg/dL (borderline). Note: LDL drops after acute MI — these values may underestimate true baseline.",
+        "evolving_injury": "Lipid profile: same — LDL 140 mg/dL (values decline further in acute phase).",
+        "haemodynamic_failure": "Lipid profile: values unreliable in cardiogenic shock."
+      },
+      "interpretation": {
+        "acute_stemi": "LDL 148 mg/dL is above ACS target (<70 mg/dL per ESC guidelines). Confirms dyslipidaemia as risk factor. IMPORTANT: Lipid profile is non-urgent in the acute setting — does NOT change immediate management. High-intensity statin therapy should be started regardless of lipid values in STEMI. This test wastes budget in an acute setting.",
+        "evolving_injury": "Not urgently useful. Statin should already be started.",
+        "haemodynamic_failure": "Not relevant in acute shock management."
+      }
+    },
+    {
+      "id": "echo_bedside",
+      "name": "Bedside Echo",
+      "fullName": "Point-of-Care Echocardiography (2D + M-mode, bedside)",
+      "time": 1,
+      "cost": 600,
+      "type": "useful",
+      "category": "Imaging",
+      "stageAvailability": ["acute_stemi", "evolving_injury", "haemodynamic_failure"],
+      "results": {
+        "acute_stemi": "LV size: mildly enlarged. EF: 42% (mildly reduced). Regional wall motion abnormality: ANTERIOR and anteroseptal HYPOKINESIA (LAD territory). No pericardial effusion. No valvular lesion. Inferior wall normal.",
+        "evolving_injury": "LV EF: 35% (moderately reduced). Anterior and lateral wall AKINESIA. Septal akinesia. Moderate LV dysfunction. No mechanical complication yet. E/A ratio suggesting impaired relaxation.",
+        "haemodynamic_failure": "LV EF: 22% (severely reduced). Extensive anterior akinesia. Dilating LV. Moderate mitral regurgitation (papillary muscle ischaemia). Pulmonary artery pressure estimated elevated. Features of cardiogenic shock."
+      },
+      "interpretation": {
+        "acute_stemi": "Regional wall motion abnormality (RWMA) in the LAD territory confirms ischaemic aetiology. EF 42% with anterior RWMA = significant anterior STEMI. IMPORTANT CLINICAL POINT: In STEMI, bedside echo confirms RWMA but does NOT delay reperfusion. Use echo to rule out mechanical complications (VSD, free wall rupture, acute MR) and confirm diagnosis when ECG is ambiguous.",
+        "evolving_injury": "Progressive LV dysfunction — EF dropping rapidly. Infarct expansion without reperfusion. Urgent intervention still possible.",
+        "haemodynamic_failure": "Severely impaired EF 22% — cardiogenic shock confirmed echocardiographically. Mechanical complications developing (functional MR). Intra-aortic balloon pump consideration."
+      }
+    },
+    {
+      "id": "cxr",
+      "name": "Chest X-Ray",
+      "fullName": "CXR AP/PA View",
+      "time": 0.5,
+      "cost": 150,
+      "type": "useful",
+      "category": "Imaging",
+      "stageAvailability": ["acute_stemi", "evolving_injury", "haemodynamic_failure"],
+      "results": {
+        "acute_stemi": "Heart size: borderline cardiomegaly (CTR 0.52). Lung fields: early pulmonary vascular congestion — upper lobe diversion. No frank pulmonary oedema. Mediastinum normal — no widening (aortic dissection excluded). No pneumothorax.",
+        "evolving_injury": "CXR: Increasing pulmonary vascular congestion. Bilateral perihilar haziness (butterfly pattern developing). Small bilateral pleural effusions (early). Cardiomegaly CTR 0.54.",
+        "haemodynamic_failure": "CXR: Alveolar pulmonary oedema — bilateral fluffy opacities, bat-wing pattern. Cardiomegaly. Bilateral pleural effusions. Features of cardiogenic pulmonary oedema."
+      },
+      "interpretation": {
+        "acute_stemi": "CXR is valuable to exclude aortic dissection (widened mediastinum would be a contraindication to thrombolysis). No mediastinal widening — dissection unlikely. Early pulmonary venous congestion confirms elevated LVEDP. CXR does NOT delay PCI but should be obtained rapidly.",
+        "evolving_injury": "Developing pulmonary oedema — LV failure progressing. Urgent reperfusion required.",
+        "haemodynamic_failure": "Frank pulmonary oedema — Killip Class III/IV. High-dose diuresis + reperfusion/mechanical support needed."
+      }
+    },
+    {
+      "id": "d_dimer",
+      "name": "D-Dimer",
+      "fullName": "D-Dimer (Fibrin Degradation Product)",
+      "time": 1,
+      "cost": 600,
+      "type": "dummy",
+      "category": "Blood",
+      "stageAvailability": ["acute_stemi", "evolving_injury", "haemodynamic_failure"],
+      "results": {
+        "acute_stemi": "D-Dimer: 0.9 μg/mL FEU (mildly elevated — non-specific in acute inflammatory states and acute MI itself).",
+        "evolving_injury": "D-Dimer: 1.6 μg/mL (elevated — non-specific in evolving MI and haemodynamic stress).",
+        "haemodynamic_failure": "D-Dimer: 4.2 μg/mL (elevated — shock, multi-organ dysfunction)."
+      },
+      "interpretation": {
+        "acute_stemi": "D-Dimer has NO role in STEMI diagnosis or management. D-dimer is used in low-to-intermediate probability PE or aortic dissection work-up — not in ACS. A positive D-dimer in STEMI context is non-specific and misleading. This test wastes budget and adds no clinical value here.",
+        "evolving_injury": "Non-specific elevation — not diagnostically useful.",
+        "haemodynamic_failure": "Elevated from shock state — not indicating PE or dissection in this context."
+      }
+    },
+    {
+      "id": "glucose_hba1c",
+      "name": "Blood Glucose + HbA1c",
+      "fullName": "Random Blood Glucose and HbA1c",
+      "time": 0.5,
+      "cost": 300,
+      "type": "useful",
+      "category": "Blood",
+      "stageAvailability": ["acute_stemi", "evolving_injury", "haemodynamic_failure"],
+      "results": {
+        "acute_stemi": "Random glucose: 11.4 mmol/L (204 mg/dL — ELEVATED, stress hyperglycaemia + known DM). HbA1c: 9.2% (poorly controlled diabetes — confirms suboptimal glycaemic control).",
+        "evolving_injury": "Glucose: 13.8 mmol/L (rising from catecholamine surge). HbA1c unchanged.",
+        "haemodynamic_failure": "Glucose: 16.2 mmol/L (severe stress hyperglycaemia in cardiogenic shock). Insulin infusion required."
+      },
+      "interpretation": {
+        "acute_stemi": "Admission hyperglycaemia in STEMI is an independent poor prognostic factor regardless of diabetes status. HbA1c 9.2% confirms poorly controlled DM as a cardiovascular risk factor. Target glucose <10 mmol/L during STEMI (avoid hypoglycaemia). Hyperglycaemia impairs NO synthesis and worsens myocardial ischaemia.",
+        "evolving_injury": "Worsening stress hyperglycaemia — initiate insulin sliding scale.",
+        "haemodynamic_failure": "Severe hyperglycaemia in cardiogenic shock adversely affects outcome. Insulin infusion targeting 6–10 mmol/L."
+      }
+    },
+    {
+      "id": "urine_re",
+      "name": "Urine R/E",
+      "fullName": "Urine Routine Examination",
+      "time": 0.3,
+      "cost": 80,
+      "type": "dummy",
+      "category": "Urine",
+      "stageAvailability": ["acute_stemi", "evolving_injury", "haemodynamic_failure"],
+      "results": {
+        "acute_stemi": "Glucose ++. Trace protein. No RBCs. No WBCs. No casts. Urine output: 0.7 mL/kg/hr (adequate).",
+        "evolving_injury": "Glucose +++. Protein +. Trace haematuria. Urine output: 0.5 mL/kg/hr (declining).",
+        "haemodynamic_failure": "Protein ++. No glucose (hypoperfusion). Granular casts. Urine output <0.3 mL/kg/hr (oliguria — AKI)."
+      },
+      "interpretation": {
+        "acute_stemi": "Glucosuria confirms poorly controlled diabetes. Routine urine exam has no diagnostic value for ACS. Baseline urine output monitoring is important but this test is not time-critical in initial resuscitation.",
+        "evolving_injury": "Declining urine output — early cardiorenal compromise.",
+        "haemodynamic_failure": "Oliguria with casts — AKI in cardiogenic shock."
+      }
+    }
+  ],
+
+  "diagnosisOptions": [
+    { "id": "stemi_anterior", "label": "Anterior STEMI (Acute Anterior Myocardial Infarction — LAD Occlusion)", "correct": true },
+    { "id": "nstemi", "label": "NSTEMI / Unstable Angina (Non-ST Elevation ACS)", "correct": false },
+    { "id": "aortic_dissection", "label": "Acute Aortic Dissection (Type A)", "correct": false },
+    { "id": "pe_massive", "label": "Massive Pulmonary Embolism", "correct": false },
+    { "id": "myocarditis_acute", "label": "Acute Myocarditis", "correct": false },
+    { "id": "gerd_oesophageal", "label": "Oesophageal Spasm / GERD", "correct": false },
+    { "id": "takotsubo", "label": "Takotsubo (Stress) Cardiomyopathy", "correct": false },
+    { "id": "pericarditis_acute", "label": "Acute Pericarditis with Myopericarditis", "correct": false }
+  ],
+
+  "correctDiagnosis": "stemi_anterior",
+
+  "managementOptions": {
+    "general": [
+      {
+        "id": "oxygen_therapy",
+        "name": "Oxygen Therapy",
+        "fullName": "Supplemental Oxygen via facemask at 4–6 L/min (target SpO2 94–98%)",
+        "cost": 100,
+        "type": "supportive",
+        "repeatable": false,
+        "stageEffect": {
+          "acute_stemi": {
+            "note": "Oxygen indicated as SpO2 95% — borderline. Target SpO2 94–98%. High-flow O2 NOT recommended in STEMI with SpO2 >90% — causes coronary vasoconstriction and paradoxically worsens ischaemia (ESC 2023 guideline change).",
+            "vitalEffect": { "spo2": 2 },
+            "delayProgression": 0.5
+          },
+          "evolving_injury": {
+            "note": "Oxygen essential as SpO2 falling. Increase to 8–10 L/min via non-rebreather mask.",
+            "vitalEffect": { "spo2": 4 },
+            "delayProgression": 1
+          },
+          "haemodynamic_failure": {
+            "note": "High-flow O2 / CPAP / intubation required. SpO2 critically low from pulmonary oedema.",
+            "vitalEffect": { "spo2": 5 },
+            "delayProgression": 1
+          }
+        }
+      },
+      {
+        "id": "iv_access_monitoring",
+        "name": "IV Access + Monitoring",
+        "fullName": "Large-bore IV access (2 cannulae) + Continuous ECG monitoring + Pulse oximetry + BP monitoring",
+        "cost": 150,
+        "type": "supportive",
+        "repeatable": false,
+        "stageEffect": {
+          "acute_stemi": {
+            "note": "Essential immediate step in all ACS. IV access enables drug delivery. Continuous ECG monitoring detects arrhythmias — critical in STEMI where VF risk is highest in first hour.",
+            "delayProgression": 1
+          },
+          "evolving_injury": {
+            "note": "Monitoring intensified. VPCs detected early on continuous ECG — defibrillator at bedside.",
+            "delayProgression": 0.5
+          },
+          "haemodynamic_failure": {
+            "note": "Arterial line inserted for continuous BP monitoring. CVP line for fluid management in cardiogenic shock.",
+            "delayProgression": 0.5
+          }
+        }
+      },
+      {
+        "id": "aspirin_loading",
+        "name": "Aspirin 300 mg Loading",
+        "fullName": "Tab. Aspirin 300 mg orally (chewed) STAT — then 75 mg OD (antiplatelet loading — ACS protocol)",
+        "cost": 30,
+        "type": "supportive",
+        "repeatable": false,
+        "stageEffect": {
+          "acute_stemi": {
+            "note": "ESSENTIAL IMMEDIATE TREATMENT in all ACS. Aspirin 300 mg loading reduces infarct size and mortality by 23% (ISIS-2 trial). Chewed for faster buccal absorption. No contraindications in this patient.",
+            "delayProgression": 1.5
+          },
+          "evolving_injury": {
+            "note": "Aspirin given — antiplatelet effect active. Inhibits TXA2-mediated platelet aggregation at infarct site.",
+            "delayProgression": 0.5
+          },
+          "haemodynamic_failure": {
+            "note": "Aspirin already on board. Continue unless active GI bleeding develops.",
+            "delayProgression": 0.5
+          }
+        }
+      },
+      {
+        "id": "nitrate_slnt",
+        "name": "Sublingual Nitrate",
+        "fullName": "Tab. Glyceryl Trinitrate (GTN) 0.5 mg sublingually STAT, repeat every 5 min x 3 if needed",
+        "cost": 50,
+        "type": "supportive",
+        "repeatable": false,
+        "stageEffect": {
+          "acute_stemi": {
+            "note": "GTN for pain relief — causes coronary vasodilation and reduces preload. CAUTION: Contraindicated if SBP <90 mmHg, RV infarct suspected, or patient on PDE5 inhibitor. BP 148/92 — safe to give. Monitor BP closely after each dose.",
+            "vitalEffect": { "hr": -3 },
+            "delayProgression": 0.5
+          },
+          "evolving_injury": {
+            "note": "IV nitrate infusion may be started if pain persists. Monitor BP — do not allow SBP to fall below 100 mmHg.",
+            "delayProgression": 0.5
+          },
+          "haemodynamic_failure": {
+            "note": "CONTRAINDICATED in cardiogenic shock (SBP <90). GTN would fatally worsen hypotension.",
+            "penalty": 15
+          }
+        }
+      },
+      {
+        "id": "morphine_iv",
+        "name": "IV Morphine",
+        "fullName": "Inj. Morphine 2–4 mg IV slowly, titrated to pain (Opioid analgesia in ACS)",
+        "cost": 100,
+        "type": "supportive",
+        "repeatable": false,
+        "stageEffect": {
+          "acute_stemi": {
+            "note": "Morphine for severe pain relief in STEMI. CAUTION per recent evidence (ATLANTIC trial): Morphine may delay P2Y12 inhibitor absorption and slow platelet inhibition onset. Use only for refractory pain not responding to GTN. Not first-line.",
+            "vitalEffect": { "hr": -5, "temp": -0.1 },
+            "delayProgression": 0.5
+          },
+          "evolving_injury": {
+            "note": "Pain control important — sympathetic activation from pain worsens myocardial O2 demand.",
+            "delayProgression": 0.5
+          },
+          "haemodynamic_failure": {
+            "note": "CAUTION — morphine causes hypotension and respiratory depression. Use with extreme care in cardiogenic shock.",
+            "penalty": 8
+          }
+        }
+      }
+    ],
+    "diseaseSpecific": {
+      "stemi_anterior": [
+        {
+          "id": "thrombolysis_streptokinase",
+          "name": "Thrombolysis — Streptokinase",
+          "fullName": "Inj. Streptokinase 1.5 million units IV over 60 minutes (Fibrinolytic therapy for STEMI — when PCI unavailable within 120 min)",
+          "cost": 1500,
+          "type": "curative",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "cure": true,
+              "note": "EXCELLENT DECISION. Thrombolysis with streptokinase initiated within 90 min of presentation (symptom onset <12 hours, no contraindications, PCI not available within 120 min). Fibrinolysis restores TIMI 2–3 flow in 50–60% of cases. Patient enters reperfusion. Monitor for reperfusion arrhythmias (accelerated idioventricular rhythm — benign). Check reperfusion criteria: >50% ST resolution at 90 min, onset of chest pain relief, reperfusion arrhythmias."
+            },
+            "evolving_injury": {
+              "note": "Thrombolysis still indicated if within 12 hours of symptom onset and no contraindications. Less effective than PCI but better than no reperfusion. Initiate immediately.",
+              "partial": true,
+              "delayProgression": 4
+            },
+            "haemodynamic_failure": {
+              "note": "CAUTION — thrombolysis in cardiogenic shock has limited efficacy (poor coronary perfusion pressure reduces drug delivery). Also increased haemorrhagic risk. Primary PCI strongly preferred. Thrombolysis only if PCI absolutely unavailable.",
+              "delayProgression": 2,
+              "penalty": 5
+            }
+          }
+        },
+        {
+          "id": "pci_primary",
+          "name": "Primary PCI",
+          "fullName": "Primary Percutaneous Coronary Intervention — Coronary angiography + balloon angioplasty ± stenting (Door-to-balloon target <90 minutes)",
+          "cost": 3500,
+          "type": "curative",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "cure": true,
+              "note": "OPTIMAL TREATMENT for STEMI. Primary PCI achieves TIMI 3 flow in >90% of cases vs 50–60% for thrombolysis. Mortality reduction superior to thrombolytics. Preferred if: door-to-balloon time <90 min achievable, experienced cath lab available, cardiogenic shock, thrombolysis contraindicated, symptom onset >3 hours (thrombolytics less effective). Patient transferred to cath lab immediately."
+            },
+            "evolving_injury": {
+              "cure": true,
+              "note": "Primary PCI still the preferred strategy. Even at this stage, mechanical reperfusion improves outcomes. Door-to-balloon should still be achieved within 90 min. Timely transfer to cath lab."
+            },
+            "haemodynamic_failure": {
+              "note": "Emergency primary PCI is the ONLY strategy proven to reduce mortality in cardiogenic shock (SHOCK trial). IABP + PCI. Patient in extremis — high procedural risk but benefit outweighs risk.",
+              "partial": true,
+              "delayProgression": 4
+            }
+          }
+        },
+        {
+          "id": "p2y12_ticagrelor",
+          "name": "Ticagrelor 180 mg Loading",
+          "fullName": "Tab. Ticagrelor 180 mg orally STAT loading dose (P2Y12 inhibitor — dual antiplatelet therapy in STEMI)",
+          "cost": 400,
+          "type": "supportive",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "ESSENTIAL dual antiplatelet therapy in STEMI. Ticagrelor (or Prasugrel) is preferred P2Y12 inhibitor per ESC guidelines. Ticagrelor: faster onset than clopidogrel, superior mortality reduction (PLATO trial). Give with aspirin before PCI or thrombolysis.",
+              "delayProgression": 1
+            },
+            "evolving_injury": {
+              "note": "Dual antiplatelet (DAPT) initiated. Essential for both PCI (prevents stent thrombosis) and post-thrombolysis.",
+              "delayProgression": 0.5
+            },
+            "haemodynamic_failure": {
+              "note": "Continue DAPT. If patient intubated, give loading via nasogastric tube.",
+              "delayProgression": 0.5
+            }
+          }
+        },
+        {
+          "id": "heparin_iv",
+          "name": "Unfractionated Heparin IV",
+          "fullName": "Inj. Unfractionated Heparin 60 units/kg IV bolus (max 4000 U) then 12 units/kg/hr infusion (Anticoagulation in STEMI for PCI)",
+          "cost": 200,
+          "type": "supportive",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "IV UFH is the standard anticoagulant for primary PCI (prevents catheter and coronary thrombosis during procedure). Also used with thrombolysis (LMWH preferred post-thrombolysis). Weight-based dosing. Monitor aPTT target 50–70 sec.",
+              "delayProgression": 1
+            },
+            "evolving_injury": {
+              "note": "Continue anticoagulation — reduces ongoing coronary thrombosis.",
+              "delayProgression": 0.5
+            },
+            "haemodynamic_failure": {
+              "note": "Anticoagulation continues. Monitor closely for bleeding in haemodynamically compromised patient.",
+              "delayProgression": 0.5
+            }
+          }
+        },
+        {
+          "id": "statin_atorvastatin",
+          "name": "High-Intensity Statin",
+          "fullName": "Tab. Atorvastatin 80 mg OD STAT (High-intensity statin — ESC STEMI guideline: start within 24h regardless of LDL)",
+          "cost": 100,
+          "type": "supportive",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "High-intensity statin (Atorvastatin 80 mg) reduces 30-day and 1-year mortality in STEMI by pleiotropic effects (anti-inflammatory, plaque stabilising) beyond LDL lowering. ESC guidelines mandate starting within 24 hours of presentation regardless of baseline LDL.",
+              "delayProgression": 0.5
+            },
+            "evolving_injury": {
+              "note": "Statin started. Pleiotropic anti-inflammatory effects beneficial in evolving infarct.",
+              "delayProgression": 0.5
+            },
+            "haemodynamic_failure": {
+              "note": "Continue statin — long-term mortality benefit confirmed even in cardiogenic shock survivors.",
+              "delayProgression": 0.5
+            }
+          }
+        },
+        {
+          "id": "betablocker_iv",
+          "name": "IV Beta-Blocker (Metoprolol)",
+          "fullName": "Inj. Metoprolol 5 mg IV slowly over 2 min, repeat x 3 if tolerated (Rate control, anti-arrhythmic in STEMI — Harrison's)",
+          "cost": 150,
+          "type": "partial",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "IV beta-blocker in STEMI: reduces infarct size, prevents VF, reduces heart rate-related O2 demand. INDICATED in tachycardia without heart failure signs. CAUTION: Contraindicated in heart failure, Killip >1, PR >240 ms, SBP <100. This patient: mild crepitations (Killip II) — use with CAUTION. Prefer oral metoprolol if tolerated.",
+              "vitalEffect": { "hr": -12 },
+              "delayProgression": 1
+            },
+            "evolving_injury": {
+              "note": "CAUTION — heart failure developing. IV beta-blocker may worsen LV function. Use only for arrhythmia control, not routinely.",
+              "vitalEffect": { "hr": -10 },
+              "delayProgression": 0.5,
+              "penalty": 5
+            },
+            "haemodynamic_failure": {
+              "note": "CONTRAINDICATED in cardiogenic shock. Beta-blocker will precipitate fatal worsening of cardiac output.",
+              "penalty": 25
+            }
+          }
+        },
+        {
+          "id": "watchful_wait_stemi",
+          "name": "Observe and Wait",
+          "fullName": "Watchful Waiting Without Reperfusion or Antiplatelet Therapy",
+          "cost": 0,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "CATASTROPHIC BLUNDER — waiting in STEMI without reperfusion. Every 30 minutes of delay in STEMI costs 1 year of life expectancy. Infarct expands by 2 million cardiomyocytes per minute. Absolute contraindication to watchful waiting.",
+              "penalty": 40
+            },
+            "evolving_injury": {
+              "note": "UNFORGIVABLE — complete LAD occlusion evolving without treatment. Patient heading to cardiogenic shock.",
+              "penalty": 50
+            },
+            "haemodynamic_failure": {
+              "note": "FATAL BLUNDER — no reperfusion in cardiogenic shock.",
+              "penalty": 50,
+              "endGame": true,
+              "outcome": "death"
+            }
+          }
+        }
+      ],
+      "nstemi": [
+        {
+          "id": "conservative_nstemi",
+          "name": "Conservative NSTEMI Strategy",
+          "fullName": "Conservative antiplatelet + anticoagulation + risk stratification (NSTEMI pathway — GRACE score based)",
+          "cost": 300,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "WRONG STRATEGY — conservative management is appropriate for NSTEMI, not STEMI. ST elevation mandates immediate reperfusion, not a 24–72h ischaemia-guided strategy. Treating an anterior STEMI as NSTEMI causes myocardial necrosis expansion.",
+              "penalty": 20
+            },
+            "evolving_injury": {
+              "note": "Wrong pathway. STEMI requires immediate reperfusion. Delay causing infarct expansion.",
+              "penalty": 30
+            },
+            "haemodynamic_failure": {
+              "note": "Patient in cardiogenic shock from untreated STEMI.",
+              "penalty": 40
+            }
+          }
+        },
+        {
+          "id": "fondaparinux_nstemi",
+          "name": "Fondaparinux 2.5 mg SC",
+          "fullName": "Inj. Fondaparinux 2.5 mg SC OD (anticoagulation preferred in NSTEMI — ESC guideline)",
+          "cost": 250,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "Fondaparinux is preferred in NSTEMI (lower bleeding risk). In STEMI undergoing PCI, UFH or bivalirudin is preferred. This is STEMI — fondaparinux alone is insufficient anticoagulation for primary PCI.",
+              "penalty": 10
+            },
+            "evolving_injury": {
+              "note": "Insufficient anticoagulation for STEMI with PCI.",
+              "penalty": 12
+            },
+            "haemodynamic_failure": {
+              "note": "Wrong anticoagulant regimen.",
+              "penalty": 15
+            }
+          }
+        },
+        {
+          "id": "clopidogrel_nstemi",
+          "name": "Clopidogrel 600 mg Loading",
+          "fullName": "Tab. Clopidogrel 600 mg orally STAT (P2Y12 inhibitor — older, slower onset than ticagrelor)",
+          "cost": 200,
+          "type": "partial",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "Clopidogrel is an acceptable P2Y12 inhibitor but inferior to ticagrelor in STEMI (slower onset, variable CYP2C19 metabolism). Acceptable if ticagrelor/prasugrel unavailable or contraindicated. ESC STEMI guidelines prefer ticagrelor or prasugrel over clopidogrel.",
+              "delayProgression": 0.5
+            },
+            "evolving_injury": {
+              "note": "Suboptimal but acceptable. Slower antiplatelet effect than ticagrelor.",
+              "delayProgression": 0.5
+            },
+            "haemodynamic_failure": {
+              "note": "Clopidogrel on board. Insufficient as primary treatment — reperfusion still mandatory.",
+              "delayProgression": 0.5
+            }
+          }
+        },
+        {
+          "id": "obs_nstemi",
+          "name": "Observe in ED — Tele-monitoring",
+          "fullName": "Continuous ECG tele-monitoring in ED with serial troponin monitoring only",
+          "cost": 100,
+          "type": "delaying",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "DANGEROUS DELAY — monitoring without reperfusion in STEMI. Serial troponins are appropriate in NSTEMI rule-in/rule-out, not in clear STEMI with ST elevation. Every minute of monitoring instead of reperfusion is myocardium lost.",
+              "penalty": 20
+            },
+            "evolving_injury": {
+              "note": "Critical delay. Infarct expanding during monitoring.",
+              "penalty": 30
+            },
+            "haemodynamic_failure": {
+              "note": "Patient in shock from observational delay.",
+              "penalty": 50,
+              "endGame": true,
+              "outcome": "death"
+            }
+          }
+        },
+        {
+          "id": "enoxaparin_nstemi",
+          "name": "Enoxaparin 1 mg/kg SC",
+          "fullName": "Inj. Enoxaparin 1 mg/kg SC BD (LMWH — standard anticoagulant in NSTEMI)",
+          "cost": 300,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "Enoxaparin is appropriate anticoagulation for NSTEMI (ESSENCE, TIMI 11B trials). In STEMI with primary PCI, UFH is preferred over LMWH for procedural anticoagulation. However, Enoxaparin may be used in thrombolysis protocol (EXTRACT-TIMI 25: superior to UFH with streptokinase). Partial correctness depends on chosen reperfusion strategy.",
+              "penalty": 5
+            },
+            "evolving_injury": {
+              "note": "Suboptimal for primary PCI. Acceptable for thrombolysis-based strategy.",
+              "penalty": 5
+            },
+            "haemodynamic_failure": {
+              "note": "Anticoagulation on board but primary issue is lack of reperfusion.",
+              "penalty": 8
+            }
+          }
+        }
+      ],
+      "aortic_dissection": [
+        {
+          "id": "bp_control_dissection",
+          "name": "IV Labetalol",
+          "fullName": "Inj. Labetalol 20 mg IV bolus, then 2 mg/min infusion (BP target SBP <120 in aortic dissection)",
+          "cost": 300,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "Wrong diagnosis. CXR showed no mediastinal widening — aortic dissection excluded. Labetalol at these doses will cause significant hypotension and bradycardia, worsening myocardial ischaemia and potentially precipitating cardiogenic shock in this STEMI patient.",
+              "penalty": 20
+            },
+            "evolving_injury": {
+              "note": "Dangerous — severe hypotension worsens myocardial ischaemia.",
+              "penalty": 28
+            },
+            "haemodynamic_failure": {
+              "note": "FATAL — beta-blocker in cardiogenic shock. Catastrophic reduction in cardiac output.",
+              "penalty": 40
+            }
+          }
+        },
+        {
+          "id": "ct_aortogram",
+          "name": "CT Aortogram",
+          "fullName": "CT Angiography Aorta (Aortogram — gold standard for aortic dissection)",
+          "cost": 2500,
+          "type": "unnecessary",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "WRONG PRIORITY — CT aortogram takes 30–60 minutes to set up and perform. No mediastinal widening on CXR. Pain pattern, ECG findings, and clinical context point strongly to STEMI, not dissection. This expensive test wastes precious door-to-balloon time. Ordering CT aortogram when ECG shows STEMI is a dangerous cognitive error.",
+              "penalty": 25
+            },
+            "evolving_injury": {
+              "note": "Critical time lost sending STEMI patient for CT. Infarct expanding.",
+              "penalty": 35
+            },
+            "haemodynamic_failure": {
+              "note": "Patient in shock — CT not feasible safely. Massive mistake.",
+              "penalty": 40
+            }
+          }
+        },
+        {
+          "id": "morphine_dissection",
+          "name": "IV Morphine High-Dose",
+          "fullName": "Inj. Morphine 10 mg IV (Pain management in aortic dissection)",
+          "cost": 150,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "High-dose morphine in the context of wrong diagnosis. Masking pain from STEMI does not treat it. Excess morphine causes hypotension and respiratory depression.",
+              "penalty": 12
+            },
+            "evolving_injury": {
+              "note": "Pain masked — infarct continues to expand.",
+              "penalty": 15
+            },
+            "haemodynamic_failure": {
+              "note": "Dangerous respiratory depression and hypotension.",
+              "penalty": 20
+            }
+          }
+        },
+        {
+          "id": "thrombolysis_dissection",
+          "name": "Thrombolysis for Presumed STEMI",
+          "fullName": "Thrombolysis given when aortic dissection is suspected (CONTRAINDICATED)",
+          "cost": 1500,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "IMPORTANT: In this case diagnosis IS STEMI (not dissection) — thrombolysis would be correct here. However IF aortic dissection were the diagnosis, thrombolysis would be an immediately fatal blunder (causes haemopericardium, tamponade, massive haemothorax). This is why aortic dissection must ALWAYS be excluded before thrombolysis.",
+              "penalty": 5
+            },
+            "evolving_injury": {
+              "note": "Same — thrombolysis correct for STEMI, contraindicated for dissection.",
+              "penalty": 5
+            },
+            "haemodynamic_failure": {
+              "note": "Same consideration.",
+              "penalty": 5
+            }
+          }
+        },
+        {
+          "id": "obs_dissection",
+          "name": "Observe Without Intervention",
+          "fullName": "Watchful Waiting Pending Imaging for Suspected Dissection",
+          "cost": 0,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "BLUNDER — treating STEMI like dissection by waiting for imaging without reperfusion. Every minute delays door-to-balloon/needle time.",
+              "penalty": 30
+            },
+            "evolving_injury": {
+              "note": "BLUNDER — infarct expanding.",
+              "penalty": 40
+            },
+            "haemodynamic_failure": {
+              "note": "FATAL.",
+              "penalty": 50,
+              "endGame": true,
+              "outcome": "death"
+            }
+          }
+        }
+      ],
+      "pe_massive": [
+        {
+          "id": "heparin_pe",
+          "name": "UFH Infusion (PE Protocol)",
+          "fullName": "Unfractionated Heparin 80 units/kg bolus then 18 units/kg/hr infusion (Massive PE protocol)",
+          "cost": 200,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "UFH dose is correct for STEMI anticoagulation too (different protocol) — but the diagnostic framing is wrong. Treating STEMI as PE will result in no reperfusion therapy. ECG shows anterior ST elevation, not PE pattern (S1Q3T3, RBBB).",
+              "penalty": 15
+            },
+            "evolving_injury": {
+              "note": "Anticoagulation alone without reperfusion — infarct expanding.",
+              "penalty": 20
+            },
+            "haemodynamic_failure": {
+              "note": "Cardiogenic shock from STEMI, not PE.",
+              "penalty": 25
+            }
+          }
+        },
+        {
+          "id": "ctpa",
+          "name": "CT Pulmonary Angiography",
+          "fullName": "CT Pulmonary Angiography (Gold standard for PE diagnosis)",
+          "cost": 2000,
+          "type": "unnecessary",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "WRONG — CTPA is the investigation for suspected PE. ECG here shows anterior STEMI (V1–V5 ST elevation), not PE pattern. SpO2 95 (mild), no pleuritic chest pain, no haemoptysis, no DVT symptoms. Pre-test probability for PE is low. Sending STEMI patient for CTPA wastes 45–60 minutes of reperfusion time.",
+              "penalty": 25
+            },
+            "evolving_injury": {
+              "note": "Critical delay in reperfusion from unnecessary imaging.",
+              "penalty": 35
+            },
+            "haemodynamic_failure": {
+              "note": "Not safe to send shocked patient for CTPA. Wrong diagnosis.",
+              "penalty": 40
+            }
+          }
+        },
+        {
+          "id": "thrombolysis_pe",
+          "name": "PE Thrombolysis (Alteplase)",
+          "fullName": "Inj. Alteplase 100 mg IV over 2 hours (Systemic thrombolysis for massive PE)",
+          "cost": 2200,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "INTERESTING CASE: Alteplase IS a thrombolytic and would also lyse the coronary thrombus — so technically some reperfusion benefit. However, dosing is different: PE dose (100 mg over 2h) vs STEMI dose (Alteplase 15 mg bolus + 0.75 mg/kg over 30 min). Misdiagnosis delays optimised reperfusion strategy, wastes NPR 2200 vs NPR 1500 for correct streptokinase, and the diagnosis error itself is a major cognitive failure.",
+              "penalty": 15
+            },
+            "evolving_injury": {
+              "note": "Wrong dose strategy, wrong diagnosis, massive budget waste.",
+              "penalty": 20
+            },
+            "haemodynamic_failure": {
+              "note": "Wrong drug protocol. Suboptimal thrombolysis.",
+              "penalty": 20
+            }
+          }
+        },
+        {
+          "id": "diuretic_pe",
+          "name": "IV Furosemide",
+          "fullName": "Inj. Furosemide 40 mg IV STAT (for presumed right heart failure in massive PE)",
+          "cost": 80,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "BLUNDER — diuretics in STEMI without confirmed pulmonary oedema risk precipitating hypovolaemia, worsening coronary perfusion and causing reflex tachycardia that increases O2 demand. This patient has early crepitations (mild LV failure) — diuresis is only appropriate with established pulmonary oedema at higher Killip class.",
+              "penalty": 15
+            },
+            "evolving_injury": {
+              "note": "Diuresis worsening haemodynamics in evolving STEMI.",
+              "penalty": 18
+            },
+            "haemodynamic_failure": {
+              "note": "FATAL BLUNDER — diuresis in cardiogenic shock causes catastrophic volume depletion.",
+              "penalty": 30
+            }
+          }
+        },
+        {
+          "id": "obs_pe",
+          "name": "Observe Without Treatment",
+          "fullName": "Watchful Waiting Pending Further Work-Up",
+          "cost": 0,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "BLUNDER — watching a STEMI without treatment.",
+              "penalty": 40
+            },
+            "evolving_injury": {
+              "note": "BLUNDER.",
+              "penalty": 50
+            },
+            "haemodynamic_failure": {
+              "note": "FATAL.",
+              "penalty": 50,
+              "endGame": true,
+              "outcome": "death"
+            }
+          }
+        }
+      ],
+      "myocarditis_acute": [
+        {
+          "id": "steroid_myocarditis",
+          "name": "IV Methylprednisolone",
+          "fullName": "Inj. Methylprednisolone 1 g IV OD x 3 days (immunosuppression for biopsy-proven lymphocytic myocarditis)",
+          "cost": 800,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "BLUNDER — steroids in acute STEMI are dangerous. In real myocarditis, steroids are used only for biopsy-proven specific subtypes (giant cell myocarditis, eosinophilic). Wrong diagnosis and wrong drug.",
+              "penalty": 20
+            },
+            "evolving_injury": {
+              "note": "Steroids suppress inflammation needed for healing in MI, impair scar formation, increase ventricular rupture risk.",
+              "penalty": 25
+            },
+            "haemodynamic_failure": {
+              "note": "Steroids in cardiogenic shock — immunosuppression worsens outcome.",
+              "penalty": 30
+            }
+          }
+        },
+        {
+          "id": "antiviral_myocarditis",
+          "name": "IV Ganciclovir",
+          "fullName": "Inj. Ganciclovir 5 mg/kg IV BD (for CMV myocarditis in immunocompromised)",
+          "cost": 1200,
+          "type": "unnecessary",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "Wrong diagnosis and wrong treatment. No evidence of CMV or viral myocarditis. Ganciclovir is nephrotoxic and myelosuppressive. Wastes budget. Wrong diagnosis entirely.",
+              "penalty": 15
+            },
+            "evolving_injury": {
+              "note": "Nephrotoxic drug in evolving cardiorenal syndrome.",
+              "penalty": 18
+            },
+            "haemodynamic_failure": {
+              "note": "Nephrotoxic and ineffective in cardiogenic shock.",
+              "penalty": 20
+            }
+          }
+        },
+        {
+          "id": "supportive_myocarditis",
+          "name": "Supportive Care Only",
+          "fullName": "Supportive care — bed rest, IV diuretics, ACE inhibitor (Myocarditis supportive management)",
+          "cost": 200,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "Supportive care for myocarditis provides no coronary reperfusion. STEMI treated as myocarditis = no thrombolysis or PCI = massive myocardial necrosis. The ECG pattern (ST elevation in contiguous leads) is not the pericarditis pattern (saddle-shaped, diffuse). Wrong diagnosis, inadequate management.",
+              "penalty": 20
+            },
+            "evolving_injury": {
+              "note": "Infarct expanding. No reperfusion.",
+              "penalty": 30
+            },
+            "haemodynamic_failure": {
+              "note": "Cardiogenic shock from untreated STEMI.",
+              "penalty": 40
+            }
+          }
+        },
+        {
+          "id": "ivig_myocarditis",
+          "name": "IV Immunoglobulin",
+          "fullName": "IV Immunoglobulin 2 g/kg over 48 hours (IVIG — used in paediatric myocarditis and Kawasaki disease)",
+          "cost": 1800,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "BLUNDER — IVIG has no role in adult STEMI. Extremely expensive, no evidence of benefit in adult myocarditis (IMAC trial negative). Complete budget destruction for zero benefit.",
+              "penalty": 15
+            },
+            "evolving_injury": {
+              "note": "Massive budget consumed, no benefit.",
+              "penalty": 18
+            },
+            "haemodynamic_failure": {
+              "note": "Wrong treatment. Budget destroyed.",
+              "penalty": 20
+            }
+          }
+        },
+        {
+          "id": "obs_myocarditis",
+          "name": "Observe Only",
+          "fullName": "Watchful Waiting with Monitoring",
+          "cost": 0,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "BLUNDER — STEMI requires immediate reperfusion, not observation.",
+              "penalty": 40
+            },
+            "evolving_injury": {
+              "note": "BLUNDER.",
+              "penalty": 50
+            },
+            "haemodynamic_failure": {
+              "note": "FATAL.",
+              "penalty": 50,
+              "endGame": true,
+              "outcome": "death"
+            }
+          }
+        }
+      ],
+      "gerd_oesophageal": [
+        {
+          "id": "ppi_gerd",
+          "name": "IV Pantoprazole",
+          "fullName": "Inj. Pantoprazole 40 mg IV BD (Proton pump inhibitor for GERD/oesophagitis)",
+          "cost": 200,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "PPI treatment for GERD has zero effect on myocardial ischaemia. The pain did not respond to antacids, which is a key differentiating feature. Treating STEMI as GERD = no reperfusion = guaranteed infarct expansion and death.",
+              "penalty": 25
+            },
+            "evolving_injury": {
+              "note": "STEMI continues untreated.",
+              "penalty": 35
+            },
+            "haemodynamic_failure": {
+              "note": "Patient in shock from untreated STEMI. PPI is irrelevant.",
+              "penalty": 45
+            }
+          }
+        },
+        {
+          "id": "antacid_gerd",
+          "name": "Antacid + Prokinetic",
+          "fullName": "Tab. Antacid (Aluminium hydroxide) + Domperidone 10 mg TDS (GERD management)",
+          "cost": 50,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "DANGEROUS COGNITIVE ERROR — patient already self-administered antacids with NO relief. Failure to respond to antacids is a classic clinical clue against GERD and for cardiac chest pain. Prescribing more antacids demonstrates failure to synthesise this key history. Massive penalty for missing STEMI.",
+              "penalty": 35
+            },
+            "evolving_injury": {
+              "note": "Fatal management delay.",
+              "penalty": 45
+            },
+            "haemodynamic_failure": {
+              "note": "FATAL.",
+              "penalty": 50,
+              "endGame": true,
+              "outcome": "death"
+            }
+          }
+        },
+        {
+          "id": "buscopan_oesoph",
+          "name": "IV Hyoscine (Buscopan)",
+          "fullName": "Inj. Hyoscine butylbromide 20 mg IV (for oesophageal spasm)",
+          "cost": 100,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "BLUNDER — no relief from antacids, pain severity 8/10 with diaphoresis, radiation to arm and jaw, and ST elevation on ECG. Treating as oesophageal spasm is an inexcusable cognitive error.",
+              "penalty": 30
+            },
+            "evolving_injury": {
+              "note": "STEMI untreated.",
+              "penalty": 40
+            },
+            "haemodynamic_failure": {
+              "note": "FATAL BLUNDER.",
+              "penalty": 50,
+              "endGame": true,
+              "outcome": "death"
+            }
+          }
+        },
+        {
+          "id": "gastroscopy_gerd",
+          "name": "Upper GI Endoscopy",
+          "fullName": "Oesophagogastroduodenoscopy (OGD) for suspected oesophagitis/ulcer",
+          "cost": 1500,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "CATASTROPHIC BLUNDER — sending a STEMI patient for OGD. Endoscopy takes 1–2 hours to arrange and perform. Sedation during endoscopy in a STEMI patient can precipitate VF. Massive mistake.",
+              "penalty": 40
+            },
+            "evolving_injury": {
+              "note": "Patient may arrest during endoscopy.",
+              "penalty": 50
+            },
+            "haemodynamic_failure": {
+              "note": "FATAL.",
+              "penalty": 50,
+              "endGame": true,
+              "outcome": "death"
+            }
+          }
+        },
+        {
+          "id": "obs_gerd",
+          "name": "Observe for 24h",
+          "fullName": "Observation 24 hours as GERD/musculoskeletal",
+          "cost": 0,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "FATAL BLUNDER — STEMI misdiagnosed as GERD and observed.",
+              "penalty": 50,
+              "endGame": true,
+              "outcome": "death"
+            },
+            "evolving_injury": {
+              "note": "FATAL.",
+              "penalty": 50,
+              "endGame": true,
+              "outcome": "death"
+            },
+            "haemodynamic_failure": {
+              "note": "FATAL.",
+              "penalty": 50,
+              "endGame": true,
+              "outcome": "death"
+            }
+          }
+        }
+      ],
+      "takotsubo": [
+        {
+          "id": "supportive_takotsubo",
+          "name": "Supportive Care (Takotsubo Protocol)",
+          "fullName": "Supportive care — IV fluids, avoid catecholamines, ACE inhibitor + beta-blocker (Takotsubo management)",
+          "cost": 300,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "Takotsubo management is supportive — no reperfusion required. However, this is STEMI (anterior ST elevation, multiple CV risk factors, no acute psychological precipitant, male sex). Treating STEMI as Takotsubo = no thrombolysis or PCI = evolving infarct.",
+              "penalty": 20
+            },
+            "evolving_injury": {
+              "note": "No reperfusion. Infarct expanding.",
+              "penalty": 30
+            },
+            "haemodynamic_failure": {
+              "note": "Cardiogenic shock from untreated STEMI.",
+              "penalty": 40
+            }
+          }
+        },
+        {
+          "id": "mri_cardiac_takotsubo",
+          "name": "Cardiac MRI",
+          "fullName": "Cardiac MRI with Gadolinium (Definitive for Takotsubo vs STEMI — differentiates RWMA pattern)",
+          "cost": 3500,
+          "type": "unnecessary",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "WRONG PRIORITY — CMR is the gold standard to distinguish Takotsubo from STEMI (apical ballooning vs LAD RWMA) but takes 60–90 minutes and is not available emergently in most Nepal hospitals. ECG + clinical picture + bedside echo is sufficient to diagnose STEMI. CMR destroys the entire budget and wastes door-to-balloon time.",
+              "penalty": 20
+            },
+            "evolving_injury": {
+              "note": "Critical time lost.",
+              "penalty": 30
+            },
+            "haemodynamic_failure": {
+              "note": "Patient too unstable for MRI.",
+              "penalty": 35
+            }
+          }
+        },
+        {
+          "id": "dobutamine_takotsubo",
+          "name": "IV Dobutamine",
+          "fullName": "Inj. Dobutamine 5–10 mcg/kg/min IV infusion (inotrope — contraindicated in Takotsubo, used in cardiogenic shock)",
+          "cost": 400,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "BLUNDER — dobutamine in Takotsubo is CONTRAINDICATED (worsens LV outflow tract obstruction in apical ballooning). In STEMI, dobutamine may worsen ischaemia by increasing O2 demand. Only indicated in true cardiogenic shock.",
+              "penalty": 15
+            },
+            "evolving_injury": {
+              "note": "Increased O2 demand worsens ischaemia.",
+              "penalty": 20
+            },
+            "haemodynamic_failure": {
+              "note": "Dobutamine in cardiogenic shock only if BP critically low and PCI not immediately available. Risk of arrhythmia.",
+              "penalty": 10
+            }
+          }
+        },
+        {
+          "id": "benzodiazepine_takotsubo",
+          "name": "IV Lorazepam (Anxiolytic)",
+          "fullName": "Inj. Lorazepam 2 mg IV (anxiolytic — for emotional trigger in Takotsubo)",
+          "cost": 100,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "Wrong diagnosis treatment. Benzodiazepine does not treat STEMI. Respiratory depression risk in an already compromised patient.",
+              "penalty": 10
+            },
+            "evolving_injury": {
+              "note": "Sedation worsens assessment of neurological status.",
+              "penalty": 12
+            },
+            "haemodynamic_failure": {
+              "note": "Respiratory depression in cardiogenic shock — dangerous.",
+              "penalty": 15
+            }
+          }
+        },
+        {
+          "id": "obs_takotsubo",
+          "name": "Observe Without Reperfusion",
+          "fullName": "Observation Pending Coronary Angiography to Distinguish Takotsubo from STEMI",
+          "cost": 0,
+          "type": "delaying",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "Observing while debating STEMI vs Takotsubo is appropriate ONLY if immediate angiography is being arranged (which itself is the treatment for STEMI). Waiting without any reperfusion plan is dangerous.",
+              "penalty": 20
+            },
+            "evolving_injury": {
+              "note": "Infarct expanding during debate.",
+              "penalty": 30
+            },
+            "haemodynamic_failure": {
+              "note": "FATAL BLUNDER.",
+              "penalty": 50,
+              "endGame": true,
+              "outcome": "death"
+            }
+          }
+        }
+      ],
+      "pericarditis_acute": [
+        {
+          "id": "nsaid_pericarditis",
+          "name": "Ibuprofen + Colchicine",
+          "fullName": "Tab. Ibuprofen 600 mg TDS + Colchicine 0.5 mg BD x 3 months (First-line pericarditis — ESC guideline)",
+          "cost": 200,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "DANGEROUS BLUNDER — NSAIDs in STEMI are contraindicated (increase mortality, promote infarct expansion, impair myocardial scar formation). ECG here shows focal ST elevation in V1–V5 with reciprocal changes (STEMI pattern), NOT the diffuse saddle-shaped ST elevation with PR depression of pericarditis. Colchicine has no benefit in STEMI. NSAIDs cause severe harm.",
+              "penalty": 30
+            },
+            "evolving_injury": {
+              "note": "NSAIDs worsen ischaemic injury. Infarct expansion.",
+              "penalty": 40
+            },
+            "haemodynamic_failure": {
+              "note": "NSAIDs and renal impairment in cardiogenic shock — fatal triple whammy.",
+              "penalty": 45
+            }
+          }
+        },
+        {
+          "id": "aspirin_pericarditis",
+          "name": "High-Dose Aspirin",
+          "fullName": "Tab. Aspirin 500–750 mg TDS (High-dose anti-inflammatory for pericarditis)",
+          "cost": 50,
+          "type": "partial",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "High-dose aspirin IS the treatment for pericarditis. In STEMI, antiplatelet aspirin 300 mg loading is also correct but for a different reason. Partial overlap — aspirin will be given anyway in STEMI. However, treating this as pericarditis means no thrombolysis or PCI will be arranged.",
+              "penalty": 10
+            },
+            "evolving_injury": {
+              "note": "Aspirin on board but no reperfusion therapy planned.",
+              "penalty": 20
+            },
+            "haemodynamic_failure": {
+              "note": "Aspirin alone insufficient. Reperfusion urgently needed.",
+              "penalty": 30
+            }
+          }
+        },
+        {
+          "id": "pericardiocentesis_peri",
+          "name": "Pericardiocentesis",
+          "fullName": "Emergency Pericardiocentesis (for cardiac tamponade in pericarditis/effusion)",
+          "cost": 800,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "BLUNDER — echo showed no pericardial effusion. Pericardiocentesis without effusion risks myocardial puncture, coronary artery injury, VF, and pneumothorax. Wrong diagnosis and wrong procedure.",
+              "penalty": 35
+            },
+            "evolving_injury": {
+              "note": "Dangerous unnecessary procedure in evolving STEMI.",
+              "penalty": 40
+            },
+            "haemodynamic_failure": {
+              "note": "FATAL — myocardial puncture in a shocked, anticoagulated STEMI patient.",
+              "penalty": 50,
+              "endGame": true,
+              "outcome": "death"
+            }
+          }
+        },
+        {
+          "id": "rest_pericarditis",
+          "name": "Bed Rest Only",
+          "fullName": "Strict Bed Rest (Pericarditis — avoid strenuous activity, monitor for tamponade)",
+          "cost": 0,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "BLUNDER — bed rest treats pericarditis. STEMI requires immediate reperfusion.",
+              "penalty": 35
+            },
+            "evolving_injury": {
+              "note": "BLUNDER.",
+              "penalty": 45
+            },
+            "haemodynamic_failure": {
+              "note": "FATAL.",
+              "penalty": 50,
+              "endGame": true,
+              "outcome": "death"
+            }
+          }
+        },
+        {
+          "id": "obs_pericarditis",
+          "name": "Admit and Observe",
+          "fullName": "Admit under cardiology for observation and serial ECG (pericarditis monitoring)",
+          "cost": 0,
+          "type": "delaying",
+          "repeatable": false,
+          "stageEffect": {
+            "acute_stemi": {
+              "note": "DANGEROUS DELAY — observation without immediate reperfusion in STEMI.",
+              "penalty": 30
+            },
+            "evolving_injury": {
+              "note": "Infarct expanding during observation.",
+              "penalty": 40
+            },
+            "haemodynamic_failure": {
+              "note": "FATAL.",
+              "penalty": 50,
+              "endGame": true,
+              "outcome": "death"
+            }
+          }
+        }
+      ]
+    }
+  },
+
+  "correctManagement": [
+    "oxygen_therapy",
+    "iv_access_monitoring",
+    "aspirin_loading",
+    "nitrate_slnt",
+    "p2y12_ticagrelor",
+    "heparin_iv",
+    "statin_atorvastatin",
+    "thrombolysis_streptokinase"
+  ],
+
+  "scoringRubric": {
+    "correctDiagnosis": 25,
+    "timelyCure": 30,
+    "costEfficiency": 15,
+    "correctTests": 15,
+    "correctManagement": 15,
+    "penaltyPerPoint": -1
+  },
+
+  "endMessages": {
+    "perfect": "Outstanding! You recognised anterior STEMI on ECG within minutes, initiated the MONA-B protocol (Monitoring, Oxygen, Nitrates, Aspirin, Beta-blocker with caution), loaded dual antiplatelet therapy, started anticoagulation, and initiated thrombolysis within 30 minutes of presentation — achieving door-to-needle time within ESC targets. High-intensity statin initiated. Textbook STEMI management. Time is muscle — you saved it.",
+    "good": "Good clinical performance. Patient survived. Minor inefficiencies — perhaps slightly delayed reperfusion decision, suboptimal antiplatelet choice, or unnecessary investigations. Review ESC STEMI 2023 guidelines for door-to-needle and door-to-balloon targets.",
+    "average": "Patient survived but with significant myocardial damage. You either delayed reperfusion, chose an inferior reperfusion strategy, or ordered tests before acting on the ECG. Review the cardinal rule: in STEMI, treat the ECG — do not wait for troponin results to initiate reperfusion.",
+    "poor": "Patient suffered large anterior STEMI with cardiogenic shock. Anterior STEMI carries 20–30% in-hospital mortality without timely reperfusion. You either misidentified the diagnosis or delayed treatment critically. The 12-lead ECG is the single most important investigation — act on ST elevation immediately. Review Harrison's Chapter on ACS Management."
+  }
+}

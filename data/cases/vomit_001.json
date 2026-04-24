@@ -1,0 +1,1707 @@
+{
+  "id": "vomit_001",
+  "title": "Acute Vomiting with Abdominal Pain",
+  "subtitle": "Emergency OPD → General Surgery Ward · Acute Admission",
+  "difficulty": "Resident",
+  "category": "Surgery",
+  "system": "GI",
+  "tags": ["Vomiting", "Abdominal Pain", "Bowel Obstruction", "Surgical Emergency"],
+  "estimatedTime": "30–45 min",
+
+  "clinicalPresentation": {
+    "patientParticulars": {
+      "age": 52,
+      "sex": "Male",
+      "occupation": "Shop Owner",
+      "address": "Birgunj, Madhesh, Nepal"
+    },
+    "chiefComplaint": "Profuse vomiting for 2 days with colicky central abdominal pain and absolute constipation",
+    "HOPI": {
+      "onset": "Sudden onset of colicky central abdominal pain 2 days ago, followed within hours by profuse vomiting",
+      "progression": "Vomiting initially bilious, now becoming faeculent. Pain worsening — previously colicky but now more constant. Abdomen increasingly distended over 48 hours. No passage of flatus or stool since onset.",
+      "associatedSymptoms": [
+        "Profuse bilious vomiting progressing to faeculent vomiting",
+        "Colicky central abdominal pain becoming constant",
+        "Abdominal distension worsening over 48 hours",
+        "Absolute constipation — no flatus or stool passed",
+        "Nausea severe",
+        "Dry mouth and decreased urine output"
+      ],
+      "relievingFactors": ["No reliable relief", "Brief partial relief of pain after vomiting"],
+      "aggravatingFactors": ["Oral intake worsens vomiting", "Movement exacerbates pain"]
+    },
+    "pastHistory": [
+      "Appendicectomy at age 31 — open surgery, midline incision",
+      "No other abdominal surgeries",
+      "Hypertension on Amlodipine 5 mg OD — 5 years",
+      "No known drug allergies",
+      "No history of tuberculosis or malignancy"
+    ],
+    "familyHistory": [
+      "Father died of unknown abdominal illness",
+      "No family history of bowel cancer"
+    ],
+    "personalHistory": [
+      "Non-smoker",
+      "Occasional alcohol — 2–3 units/week",
+      "No regular NSAID use",
+      "Works long hours, sedentary lifestyle"
+    ],
+    "vitals": {
+      "temp": 37.8,
+      "pulse": 104,
+      "bp": "106/72",
+      "rr": 20,
+      "spo2": 97,
+      "weight": "72 kg"
+    },
+    "exam": {
+      "general": [
+        "Acutely ill and distressed",
+        "Dehydrated — dry tongue, reduced skin turgor",
+        "Mild pallor",
+        "No icterus",
+        "No peripheral oedema"
+      ],
+      "abdominal": [
+        "Visible abdominal distension — generalised",
+        "Old midline scar from previous appendicectomy",
+        "Visible peristalsis in upper abdomen",
+        "High-pitched (tinkling) bowel sounds on auscultation",
+        "Diffuse mild tenderness — no guarding, no rigidity at presentation",
+        "No palpable mass",
+        "No shifting dullness",
+        "Rectal exam: empty rectum, no mass"
+      ],
+      "others": [
+        "Mucous membranes dry — clinical dehydration",
+        "JVP not visible — suggestive of volume depletion",
+        "No hernial orifices examined — inguinal and femoral orifices: no obvious hernia on inspection",
+        "Chest: Clear. No signs of aspiration pneumonia at this stage"
+      ]
+    }
+  },
+
+  "clinicalClue": "KEY FINDING: Previous abdominal surgery (appendicectomy) combined with absolute constipation, faeculent vomiting, abdominal distension, and high-pitched (tinkling) bowel sounds is the classical presentation of adhesive small bowel obstruction. Faeculent vomiting indicates prolonged obstruction with bacterial overgrowth — a sign of advanced or complicated obstruction. The transition from colicky to constant pain raises concern for ischaemia/strangulation and must be urgently distinguished from simple obstruction.",
+
+  "initialState": {
+    "time": 0,
+    "stage": "early_obstruction",
+    "budget": 6000,
+    "cost": 0,
+    "penalty": 0,
+    "cured": false,
+    "outcome": null,
+    "vitals": {
+      "hr": 104,
+      "bp": "106/72",
+      "temp": 37.8,
+      "rr": 20,
+      "spo2": 97
+    },
+    "activeSymptoms": [
+      "Profuse bilious-to-faeculent vomiting",
+      "Colicky central abdominal pain",
+      "Absolute constipation",
+      "Abdominal distension",
+      "Dehydration",
+      "Tinkling bowel sounds",
+      "Previous appendicectomy scar"
+    ],
+    "completedTests": [],
+    "givenManagement": [],
+    "pendingResults": [],
+    "selectedDiagnosis": null,
+    "diagnosisCorrect": false,
+    "diagnosisHistory": []
+  },
+
+  "stages": {
+    "early_obstruction": {
+      "label": "Active Obstruction",
+      "color": "yellow",
+      "next": "evolving_ischaemia",
+      "afterTime": 8
+    },
+    "evolving_ischaemia": {
+      "label": "Bowel Compromise",
+      "color": "orange",
+      "next": "peritonitis_sepsis",
+      "afterTime": 10
+    },
+    "peritonitis_sepsis": {
+      "label": "Peritonitis Onset",
+      "color": "red",
+      "next": "death",
+      "afterTime": 12
+    },
+    "death": {
+      "label": "Fatal Outcome",
+      "color": "black",
+      "next": null,
+      "afterTime": null
+    }
+  },
+
+  "progressionRules": [
+    {
+      "from": "early_obstruction",
+      "to": "evolving_ischaemia",
+      "condition": "no_surgery",
+      "effects": {
+        "symptoms": [
+          "Pain now constant — no longer purely colicky",
+          "Abdominal tenderness more localised and severe",
+          "Vomiting now unequivocally faeculent",
+          "Tachycardia worsening",
+          "Reduced bowel sounds — transition from tinkling to absent"
+        ],
+        "vitals": { "temp": 38.4, "hr": 118, "bp": "98/64", "rr": 22, "spo2": 96 },
+        "penalty": 10,
+        "penaltyMsg": "Bowel ischaemia developing. Shift from colicky to constant pain is the critical warning sign of strangulation. Surgical intervention is now urgent."
+      }
+    },
+    {
+      "from": "evolving_ischaemia",
+      "to": "peritonitis_sepsis",
+      "condition": "no_surgery",
+      "effects": {
+        "symptoms": [
+          "Guarding and rigidity developing",
+          "Rebound tenderness positive",
+          "High fever",
+          "Bowel sounds absent",
+          "Patient appearing toxic"
+        ],
+        "vitals": { "temp": 39.2, "hr": 132, "bp": "88/56", "rr": 26, "spo2": 93 },
+        "penalty": 25,
+        "penaltyMsg": "Bowel perforation and faecal peritonitis. Strangulated bowel has perforated. Septic shock imminent. Emergency laparotomy is the only option."
+      }
+    },
+    {
+      "from": "peritonitis_sepsis",
+      "to": "death",
+      "condition": "no_surgery",
+      "effects": {
+        "symptoms": [
+          "Unresponsive to fluid resuscitation",
+          "Multi-organ failure",
+          "Gross peritonitis",
+          "Septic shock unresponsive"
+        ],
+        "vitals": { "bp": "60/30", "hr": 148, "temp": 39.8, "rr": 36, "spo2": 82 },
+        "penalty": 50,
+        "penaltyMsg": "Patient died from faecal peritonitis and septic shock secondary to strangulated small bowel obstruction. Timely surgical intervention could have prevented this outcome.",
+        "endGame": true,
+        "outcome": "death"
+      }
+    }
+  ],
+
+  "tests": [
+    {
+      "id": "cbc",
+      "name": "CBC",
+      "fullName": "Complete Blood Count",
+      "time": 0.5,
+      "cost": 150,
+      "type": "useful",
+      "category": "Blood",
+      "stageAvailability": ["early_obstruction", "evolving_ischaemia", "peritonitis_sepsis"],
+      "results": {
+        "early_obstruction": "WBC: 14,200/μL (leucocytosis). Neutrophils 82% (neutrophilia). Hb 15.8 g/dL (haemoconcentration from dehydration). Platelets: 280,000/μL. HCT: 48%.",
+        "evolving_ischaemia": "WBC: 19,800/μL (marked leucocytosis). Neutrophils 88%, band forms 6% (left shift). Hb 16.2 g/dL. Platelets: 310,000/μL. HCT: 51% (worsening dehydration).",
+        "peritonitis_sepsis": "WBC: 24,500/μL (severe leucocytosis). Neutrophils 90%, bands 12%. Hb 15.4 g/dL. Platelets: 142,000/μL (falling — sepsis-related). HCT: 46%."
+      },
+      "interpretation": {
+        "early_obstruction": "Leucocytosis with neutrophilia suggests inflammation/early ischaemia even without peritonitis. Haemoconcentration confirms significant dehydration. Rules out viral gastroenteritis (no leucocytosis expected).",
+        "evolving_ischaemia": "Worsening leucocytosis with left shift — band neutrophils indicate severe systemic response to bowel ischaemia. Urgent surgical review required.",
+        "peritonitis_sepsis": "Falling platelets with severe leucocytosis — sepsis criteria met. Emergency laparotomy is the only life-saving intervention."
+      }
+    },
+    {
+      "id": "serum_electrolytes",
+      "name": "Serum Electrolytes",
+      "fullName": "Serum Sodium, Potassium, Chloride, Bicarbonate",
+      "time": 1,
+      "cost": 250,
+      "type": "useful",
+      "category": "Blood",
+      "stageAvailability": ["early_obstruction", "evolving_ischaemia", "peritonitis_sepsis"],
+      "results": {
+        "early_obstruction": "Na: 132 mEq/L (hyponatraemia). K: 3.1 mEq/L (hypokalaemia). Cl: 88 mEq/L (hypochloraemia). HCO3: 30 mEq/L. Metabolic alkalosis pattern.",
+        "evolving_ischaemia": "Na: 128 mEq/L (worsening). K: 2.8 mEq/L (severe hypokalaemia). Cl: 82 mEq/L. HCO3: 28 mEq/L. Lactate: 3.2 mmol/L (elevated — early ischaemia).",
+        "peritonitis_sepsis": "Na: 125 mEq/L. K: 2.6 mEq/L. HCO3: 16 mEq/L (metabolic acidosis now — acidosis replacing alkalosis). Lactate: 7.4 mmol/L (CRITICAL — bowel necrosis)."
+      },
+      "interpretation": {
+        "early_obstruction": "Hypochloraemic hypokalaemic metabolic alkalosis is the hallmark of prolonged vomiting. Critical for IV fluid replacement guidance. Rules out lower GI causes (which would not cause alkalosis).",
+        "evolving_ischaemia": "Elevated lactate (>2 mmol/L) indicates early bowel ischaemia. This is a surgical emergency trigger. Hypokalaemia must be corrected before anaesthesia.",
+        "peritonitis_sepsis": "Metabolic acidosis replacing alkalosis = bowel necrosis and septic shock. Lactate >7 = critical ischaemia. Immediate surgery and ICU."
+      }
+    },
+    {
+      "id": "serum_creatinine_urea",
+      "name": "Renal Function",
+      "fullName": "Serum Creatinine, Urea, eGFR",
+      "time": 1,
+      "cost": 200,
+      "type": "useful",
+      "category": "Blood",
+      "stageAvailability": ["early_obstruction", "evolving_ischaemia", "peritonitis_sepsis"],
+      "results": {
+        "early_obstruction": "Creatinine: 1.6 mg/dL (mildly elevated, pre-renal). Urea: 48 mg/dL (elevated). Urea:Creatinine ratio: 30:1 (high — dehydration/pre-renal). eGFR: 52 mL/min.",
+        "evolving_ischaemia": "Creatinine: 2.4 mg/dL (worsening AKI). Urea: 72 mg/dL. eGFR: 32 mL/min. Oliguria noted on chart.",
+        "peritonitis_sepsis": "Creatinine: 4.8 mg/dL (severe AKI). Urea: 130 mg/dL. eGFR: 14 mL/min. Anuria developing — septic AKI."
+      },
+      "interpretation": {
+        "early_obstruction": "Pre-renal AKI from dehydration. High urea:creatinine ratio confirms vomiting losses. IV fluid resuscitation will likely normalise renal function. Important pre-operative baseline.",
+        "evolving_ischaemia": "AKI worsening. Volume replacement and surgery urgently needed. Nephrology review post-op.",
+        "peritonitis_sepsis": "Septic AKI on pre-renal basis. Multi-organ failure. Renal replacement may be required post-operatively."
+      }
+    },
+    {
+      "id": "serum_amylase",
+      "name": "Serum Amylase",
+      "fullName": "Serum Amylase (and Lipase if available)",
+      "time": 1,
+      "cost": 300,
+      "type": "useful",
+      "category": "Blood",
+      "stageAvailability": ["early_obstruction", "evolving_ischaemia", "peritonitis_sepsis"],
+      "results": {
+        "early_obstruction": "Serum Amylase: 180 U/L (mildly elevated — upper limit normal 160 U/L). Lipase: 120 U/L (normal). Note: mild amylase elevation can occur in bowel obstruction from mucosal leakage.",
+        "evolving_ischaemia": "Serum Amylase: 220 U/L (mildly elevated). Lipase: 140 U/L (normal). Not diagnostic of pancreatitis.",
+        "peritonitis_sepsis": "Serum Amylase: 310 U/L (moderately elevated — non-specific in peritonitis). Lipase: 180 U/L (normal). Pancreatitis still unlikely — lipase not significantly elevated."
+      },
+      "interpretation": {
+        "early_obstruction": "Mildly elevated amylase is common in bowel obstruction — does NOT confirm acute pancreatitis. Lipase is more specific. Normal lipase makes acute pancreatitis unlikely. Amylase alone should not redirect diagnosis.",
+        "evolving_ischaemia": "Amylase mildly elevated — non-specific. Lipase remains normal. Pancreatitis effectively excluded as the primary diagnosis.",
+        "peritonitis_sepsis": "Amylase elevation in peritonitis is a non-specific finding. Normal lipase maintains pancreatitis exclusion."
+      }
+    },
+    {
+      "id": "xray_abdomen_erect",
+      "name": "AXR Erect",
+      "fullName": "Erect Abdominal X-Ray (AXR) PA View",
+      "time": 0.5,
+      "cost": 150,
+      "type": "confirmatory",
+      "category": "Imaging",
+      "stageAvailability": ["early_obstruction", "evolving_ischaemia", "peritonitis_sepsis"],
+      "results": {
+        "early_obstruction": "MULTIPLE AIR-FLUID LEVELS in central abdomen — step-ladder pattern. Dilated small bowel loops (>3 cm diameter). No free gas under diaphragm. Paucity of gas in colon. Valvulae conniventes (circular folds) visible — consistent with small bowel. No obvious large bowel dilation.",
+        "evolving_ischaemia": "Worsening distension — dilated small bowel loops now >4 cm. Air-fluid levels more numerous. Possible thickening of bowel wall ('thumb-printing' appearance in one loop). Still no free subdiaphragmatic gas.",
+        "peritonitis_sepsis": "Free gas visible under right hemidiaphragm — PNEUMOPERITONEUM. Grossly dilated small bowel. Generalised haziness consistent with peritoneal exudate."
+      },
+      "interpretation": {
+        "early_obstruction": "Classic erect AXR of small bowel obstruction: central dilated loops with step-ladder air-fluid levels, valvulae conniventes, paucity of colonic gas. This is the most important initial imaging. Confirms mechanical obstruction. No perforation yet.",
+        "evolving_ischaemia": "Worsening obstruction on AXR. Bowel wall thickening suggests ischaemia. Prepare for emergency surgery.",
+        "peritonitis_sepsis": "FREE GAS — bowel perforation confirmed. Emergency laparotomy mandatory. No further imaging required."
+      }
+    },
+    {
+      "id": "xray_chest_erect",
+      "name": "CXR Erect",
+      "fullName": "Erect Chest X-Ray PA View",
+      "time": 0.5,
+      "cost": 150,
+      "type": "useful",
+      "category": "Imaging",
+      "stageAvailability": ["early_obstruction", "evolving_ischaemia", "peritonitis_sepsis"],
+      "results": {
+        "early_obstruction": "No free gas under either hemidiaphragm. Clear lung fields — no aspiration pneumonia. Normal heart size. No pleural effusion.",
+        "evolving_ischaemia": "No free gas. Basal atelectasis bilaterally — likely from diaphragmatic splinting by distended abdomen. No pneumonia.",
+        "peritonitis_sepsis": "FREE GAS under right hemidiaphragm — PNEUMOPERITONEUM confirmed. Bilateral basal consolidation — aspiration risk. This is a surgical emergency."
+      },
+      "interpretation": {
+        "early_obstruction": "No pneumoperitoneum — perforation excluded at this stage. Aspiration pneumonia not present. Baseline chest assessment useful pre-operatively.",
+        "evolving_ischaemia": "Still no perforation. Diaphragmatic splinting from distension — watch for respiratory compromise.",
+        "peritonitis_sepsis": "Pneumoperitoneum on CXR confirms perforation. Most sensitive plain film sign. Emergency laparotomy confirmed."
+      }
+    },
+    {
+      "id": "ct_abdomen",
+      "name": "CT Abdomen",
+      "fullName": "Contrast-Enhanced CT Abdomen and Pelvis",
+      "time": 2,
+      "cost": 3500,
+      "type": "confirmatory",
+      "category": "Imaging",
+      "stageAvailability": ["early_obstruction", "evolving_ischaemia", "peritonitis_sepsis"],
+      "results": {
+        "early_obstruction": "TRANSITION POINT identified in mid-ileum — collapsed bowel distally, dilated proximally. Adhesive band visible at transition point. Small bowel diameter 4.2 cm proximally. No mesenteric fat stranding. No free fluid. No ischaemic changes. Confirms simple adhesive SBO.",
+        "evolving_ischaemia": "Transition point in mid-ileum with adhesive band. Mesenteric fat stranding ++ at transition. Bowel wall thickening and poor mucosal enhancement — ISCHAEMIA likely. Mild free fluid in pelvis. No perforation yet.",
+        "peritonitis_sepsis": "Free intraperitoneal gas confirmed. Mesenteric ischaemia with pneumatosis intestinalis in a loop of ileum. Diffuse free fluid. Perforation at ischaemic segment confirmed. Peritonitis."
+      },
+      "interpretation": {
+        "early_obstruction": "CT is the gold standard for SBO — identifies transition point, cause (adhesion), and excludes strangulation. No ischaemic features — surgery can proceed semi-urgently. Identifies adhesion as cause (most likely from previous appendicectomy).",
+        "evolving_ischaemia": "CT shows ischaemia — poor bowel wall enhancement, mesenteric stranding. Emergency surgery required. No delay for further workup.",
+        "peritonitis_sepsis": "CT confirms perforation and peritonitis. Emergency laparotomy — no role for further imaging."
+      }
+    },
+    {
+      "id": "usg_abdomen",
+      "name": "USG Abdomen",
+      "fullName": "Ultrasound Abdomen and Pelvis",
+      "time": 1,
+      "cost": 500,
+      "type": "useful",
+      "category": "Imaging",
+      "stageAvailability": ["early_obstruction", "evolving_ischaemia", "peritonitis_sepsis"],
+      "results": {
+        "early_obstruction": "Dilated fluid-filled small bowel loops with to-and-fro peristalsis (pendulum sign). No gallstones. Gallbladder: normal. No free fluid. Pancreas: partially visualised — normal. Limited by overlying bowel gas. No appendix mass seen.",
+        "evolving_ischaemia": "Dilated small bowel with sluggish to-absent peristalsis in one loop — concerning for ischaemia. Trace free fluid in pelvis. Limited assessment due to gas.",
+        "peritonitis_sepsis": "Free fluid throughout abdomen. Absent peristalsis. Dilated loops. Significantly limited by gas — CT required for full assessment."
+      },
+      "interpretation": {
+        "early_obstruction": "USG is less sensitive than AXR/CT for SBO but can show dilated loops and to-and-fro movement. Useful if CT unavailable. Rules out cholecystitis and gallstone ileus. Limited value for transition point identification.",
+        "evolving_ischaemia": "Absent peristalsis is an ischaemia alarm signal. Request CT urgently if not already done.",
+        "peritonitis_sepsis": "USG confirms peritoneal fluid but is limited. CT or surgical exploration takes priority."
+      }
+    },
+    {
+      "id": "urine_re",
+      "name": "Urine R/E",
+      "fullName": "Urine Routine Examination and Microscopy",
+      "time": 0.3,
+      "cost": 80,
+      "type": "useful",
+      "category": "Urine",
+      "stageAvailability": ["early_obstruction", "evolving_ischaemia", "peritonitis_sepsis"],
+      "results": {
+        "early_obstruction": "Colour: dark amber. Specific gravity: 1.030 (concentrated — dehydration). Protein: trace. No RBCs, no WBCs, no casts, no bacteria. No glucose. Ketones: +",
+        "evolving_ischaemia": "Concentrated urine, SG 1.032. Oliguria — urine output <20 mL/hour noted. Protein +. Trace RBCs (non-specific).",
+        "peritonitis_sepsis": "Oliguria/anuria. SG 1.035. Protein ++. Granular casts present — AKI."
+      },
+      "interpretation": {
+        "early_obstruction": "Highly concentrated urine confirms significant dehydration from vomiting losses. No haematuria — renal colic and ureteric stone unlikely. Important for IV fluid management.",
+        "evolving_ischaemia": "Oliguria developing — pre-renal AKI from volume depletion. Urgent fluid resuscitation and surgical correction required.",
+        "peritonitis_sepsis": "AKI in context of peritonitis and sepsis. Renal support may be required post-operatively."
+      }
+    },
+    {
+      "id": "blood_culture",
+      "name": "Blood Culture",
+      "fullName": "Aerobic and Anaerobic Blood Culture x2 sets",
+      "time": 48,
+      "cost": 600,
+      "type": "useful",
+      "category": "Microbiology",
+      "stageAvailability": ["early_obstruction", "evolving_ischaemia", "peritonitis_sepsis"],
+      "results": {
+        "early_obstruction": "Pending (48 hours required). Result: No growth at 48 hours (early stage — bacteraemia not yet established).",
+        "evolving_ischaemia": "Pending (48 hours). Preliminary: Gram-negative bacilli growing. Suspected: E. coli / Klebsiella. Antibiogram pending.",
+        "peritonitis_sepsis": "Positive at 24 hours. E. coli bacteraemia confirmed. Sensitive to Piperacillin-Tazobactam and Meropenem. Resistant to Ampicillin."
+      },
+      "interpretation": {
+        "early_obstruction": "Blood culture should be collected before antibiotics in all cases where surgery/sepsis is anticipated. Results take 48 hours — cannot guide immediate management but critical for post-op antibiotic stewardship.",
+        "evolving_ischaemia": "Gram-negative bacteraemia from translocation across ischaemic bowel wall. Guides antibiotic choice. Piperacillin-Tazobactam initiated empirically.",
+        "peritonitis_sepsis": "E. coli septicaemia from perforated bowel. IV Meropenem + Metronidazole empirically. Antibiogram-guided narrowing once available."
+      }
+    },
+    {
+      "id": "lft",
+      "name": "LFT",
+      "fullName": "Liver Function Tests",
+      "time": 1,
+      "cost": 250,
+      "type": "dummy",
+      "category": "Blood",
+      "stageAvailability": ["early_obstruction", "evolving_ischaemia", "peritonitis_sepsis"],
+      "results": {
+        "early_obstruction": "Bilirubin: 1.1 mg/dL (normal). AST: 32 U/L (normal). ALT: 28 U/L (normal). ALP: 88 U/L (normal). Total protein: 5.8 g/dL (mildly low — dehydration/malnutrition). Albumin: 3.4 g/dL.",
+        "evolving_ischaemia": "Bilirubin: 1.4 mg/dL (trace elevation). AST: 58 U/L (mild elevation — systemic stress). ALT: 42 U/L. ALP: 95 U/L (normal).",
+        "peritonitis_sepsis": "Bilirubin: 2.8 mg/dL. AST: 142 U/L. ALT: 98 U/L. ALP: 130 U/L. Sepsis-related hepatic dysfunction developing."
+      },
+      "interpretation": {
+        "early_obstruction": "Normal LFTs exclude biliary obstruction, hepatitis, and cholangitis as primary diagnoses. Low albumin reflects nutritional status — relevant for surgical risk. LFT not specifically diagnostic for SBO.",
+        "evolving_ischaemia": "Mild transaminitis from systemic stress. Not diagnostic — does not change management.",
+        "peritonitis_sepsis": "Septic hepatopathy in multi-organ failure context."
+      }
+    },
+    {
+      "id": "coagulation",
+      "name": "Coagulation Profile",
+      "fullName": "PT, INR, APTT, Fibrinogen",
+      "time": 1,
+      "cost": 350,
+      "type": "useful",
+      "category": "Blood",
+      "stageAvailability": ["early_obstruction", "evolving_ischaemia", "peritonitis_sepsis"],
+      "results": {
+        "early_obstruction": "PT: 13.2 seconds (normal 11–15). INR: 1.1 (normal). APTT: 32 seconds (normal). Fibrinogen: 3.8 g/L (mildly elevated — acute phase reactant). Coagulation adequate for surgery.",
+        "evolving_ischaemia": "PT: 15.8 seconds. INR: 1.4 (borderline — may require correction pre-op). APTT: 38 seconds. Fibrinogen: 4.6 g/L.",
+        "peritonitis_sepsis": "PT: 22 seconds. INR: 2.1. APTT: 54 seconds. Fibrinogen: 1.8 g/L (falling — DIC developing). Thrombocytopenia noted. DIC criteria met."
+      },
+      "interpretation": {
+        "early_obstruction": "Normal coagulation — patient suitable for emergency surgery without correction. Essential pre-operative baseline.",
+        "evolving_ischaemia": "Borderline INR — consider FFP if INR >1.5 before emergency surgery. Vitamin K administration unlikely to correct in time — FFP preferred.",
+        "peritonitis_sepsis": "DIC developing in sepsis — emergency surgery required despite coagulopathy. Intraoperative blood products (FFP, platelets, cryoprecipitate). Haematology support."
+      }
+    },
+    {
+      "id": "serum_lactate",
+      "name": "Serum Lactate",
+      "fullName": "Arterial Serum Lactate Level",
+      "time": 0.5,
+      "cost": 300,
+      "type": "confirmatory",
+      "category": "Blood",
+      "stageAvailability": ["early_obstruction", "evolving_ischaemia", "peritonitis_sepsis"],
+      "results": {
+        "early_obstruction": "Lactate: 1.8 mmol/L (borderline normal — upper limit 2.0). Mild tissue hypoperfusion from dehydration likely.",
+        "evolving_ischaemia": "Lactate: 4.6 mmol/L (ELEVATED — significant ischaemia). Confirms bowel ischaemia or strangulation. Surgical emergency.",
+        "peritonitis_sepsis": "Lactate: 9.8 mmol/L (CRITICAL — bowel necrosis and septic shock). Indicates extensive ischaemia and multi-organ failure."
+      },
+      "interpretation": {
+        "early_obstruction": "Borderline lactate — monitor trend. If rising, escalate urgently. Does not confirm strangulation at this level but warrants close observation.",
+        "evolving_ischaemia": "Lactate >4 = strangulation or ischaemia until proven otherwise. This is the KEY discriminating test between simple and strangulated SBO. Emergency surgery cannot wait.",
+        "peritonitis_sepsis": "Critical lactate confirms bowel necrosis, septic shock, multi-organ failure. Emergency laparotomy with resuscitation."
+      }
+    },
+    {
+      "id": "stool_occult",
+      "name": "Stool Occult Blood",
+      "fullName": "Stool Occult Blood Test (FOBT)",
+      "time": 0.5,
+      "cost": 100,
+      "type": "dummy",
+      "category": "Stool",
+      "stageAvailability": ["early_obstruction", "evolving_ischaemia", "peritonitis_sepsis"],
+      "results": {
+        "early_obstruction": "Stool not passable — absolute constipation. Test cannot be performed. Rectal tube yielded no stool. Result: Not obtainable at this time.",
+        "evolving_ischaemia": "Minimal rectal mucus only. FOBT: Weakly positive — trace blood (non-specific, could be mucosal ischaemia or haemorrhoids).",
+        "peritonitis_sepsis": "Not performed — patient in peritonitis/shock. Clinically irrelevant at this stage."
+      },
+      "interpretation": {
+        "early_obstruction": "Absolute constipation prevents stool collection. Unhelpful in this presentation. Does not aid diagnosis or differential elimination.",
+        "evolving_ischaemia": "Trace blood from ischaemic mucosa. Non-specific. Does not change management.",
+        "peritonitis_sepsis": "Not relevant."
+      }
+    },
+    {
+      "id": "abg",
+      "name": "Arterial Blood Gas",
+      "fullName": "Arterial Blood Gas Analysis",
+      "time": 0.3,
+      "cost": 350,
+      "type": "useful",
+      "category": "Special",
+      "stageAvailability": ["early_obstruction", "evolving_ischaemia", "peritonitis_sepsis"],
+      "results": {
+        "early_obstruction": "pH: 7.48 (alkalotic). PaO2: 94 mmHg. PaCO2: 44 mmHg. HCO3: 32 mEq/L. Base excess: +6. SpO2: 97%. Metabolic alkalosis — consistent with prolonged vomiting (loss of HCl).",
+        "evolving_ischaemia": "pH: 7.38. PaO2: 88 mmHg. PaCO2: 38 mmHg. HCO3: 24 mEq/L. Lactate: 4.6 mmol/L. Mixed picture — metabolic alkalosis being replaced by lactic acidosis. OMINOUS transition.",
+        "peritonitis_sepsis": "pH: 7.18 (severe acidosis). PaO2: 72 mmHg. PaCO2: 30 mmHg (compensatory hyperventilation). HCO3: 14 mEq/L. Lactate: 9.8 mmol/L. Severe metabolic acidosis + hypoxia."
+      },
+      "interpretation": {
+        "early_obstruction": "Metabolic alkalosis confirms prolonged vomiting and HCl loss — classic SBO/high GI obstruction ABG. Guides resuscitation (IV Normal Saline + KCl to correct hypochloraemic alkalosis). SpO2 adequate.",
+        "evolving_ischaemia": "Transition from alkalosis to acidosis is the most alarming ABG change in SBO — it signals bowel ischaemia and translocation of acids. pH normalising is NOT reassuring here.",
+        "peritonitis_sepsis": "Severe lactic acidosis with hypoxia. Multi-organ failure. ICU and emergency surgery."
+      }
+    },
+    {
+      "id": "h_pylori_test",
+      "name": "H. pylori Test",
+      "fullName": "H. pylori Stool Antigen Test",
+      "time": 1,
+      "cost": 400,
+      "type": "dummy",
+      "category": "Stool",
+      "stageAvailability": ["early_obstruction", "evolving_ischaemia", "peritonitis_sepsis"],
+      "results": {
+        "early_obstruction": "H. pylori stool antigen: POSITIVE. Note: positive H. pylori is highly prevalent in Nepal (~70–80% of adults) and is an incidental finding in this surgical context.",
+        "evolving_ischaemia": "H. pylori antigen: Positive (same result — irrelevant to current acute surgical problem).",
+        "peritonitis_sepsis": "Not relevant to acute management."
+      },
+      "interpretation": {
+        "early_obstruction": "H. pylori positivity is a common incidental finding in Nepal — does NOT confirm peptic ulcer as the cause of obstruction. No epigastric history of chronic dyspepsia, no haematemesis, no coffee-ground vomiting. Treat after resolution of acute episode. Red herring in this case.",
+        "evolving_ischaemia": "Incidental finding. Does not change management.",
+        "peritonitis_sepsis": "Not relevant."
+      }
+    }
+  ],
+
+  "diagnosisOptions": [
+    { "id": "adhesive_sbo", "label": "Adhesive Small Bowel Obstruction (Post-surgical Adhesions)", "correct": true },
+    { "id": "acute_pancreatitis", "label": "Acute Pancreatitis (Severe)", "correct": false },
+    { "id": "peptic_ulcer_perf", "label": "Perforated Peptic Ulcer", "correct": false },
+    { "id": "acute_gastroenteritis", "label": "Acute Gastroenteritis / Infectious Diarrhoea", "correct": false },
+    { "id": "volvulus", "label": "Sigmoid or Small Bowel Volvulus", "correct": false },
+    { "id": "large_bowel_obstruction", "label": "Large Bowel Obstruction (Colonic Carcinoma)", "correct": false },
+    { "id": "incarcerated_hernia", "label": "Incarcerated / Strangulated Inguinal Hernia", "correct": false },
+    { "id": "mesenteric_ischaemia", "label": "Acute Mesenteric Ischaemia", "correct": false },
+    { "id": "intussusception", "label": "Intussusception", "correct": false }
+  ],
+
+  "correctDiagnosis": "adhesive_sbo",
+
+  "managementOptions": {
+    "general": [
+      {
+        "id": "iv_fluid_ns_kcl",
+        "name": "IV Saline + KCl",
+        "fullName": "IV Normal Saline 0.9% 1L with KCl 20 mEq 8-hourly (for hypochloraemic hypokalaemic alkalosis correction)",
+        "cost": 180,
+        "type": "supportive",
+        "repeatable": false,
+        "stageEffect": {
+          "early_obstruction": {
+            "note": "Correct IV fluid for SBO with vomiting — Normal Saline corrects hypochloraemia and alkalosis. KCl corrects hypokalaemia. Critical pre-operative requirement.",
+            "vitalEffect": { "hr": -6 },
+            "delayProgression": 1.5
+          },
+          "evolving_ischaemia": {
+            "note": "Continue aggressive IV NS + KCl. Haemodynamic resuscitation essential before and during emergency surgery.",
+            "vitalEffect": { "hr": -8, "bp": "6/4" },
+            "delayProgression": 1
+          },
+          "peritonitis_sepsis": {
+            "note": "IV fluid resuscitation in septic shock. 30 mL/kg crystalloid bolus per Surviving Sepsis Campaign. Monitor for overload.",
+            "vitalEffect": { "hr": -6 },
+            "delayProgression": 1
+          }
+        }
+      },
+      {
+        "id": "ngt_decompression",
+        "name": "NGT Insertion",
+        "fullName": "Nasogastric Tube Insertion — Ryle's Tube, free drainage and 4-hourly aspiration",
+        "cost": 100,
+        "type": "supportive",
+        "repeatable": false,
+        "stageEffect": {
+          "early_obstruction": {
+            "note": "NGT decompression ('drip and suck') is the cornerstone of non-operative SBO management. Reduces vomiting, decompresses stomach, reduces aspiration risk.",
+            "vitalEffect": { "hr": -4 },
+            "delayProgression": 2
+          },
+          "evolving_ischaemia": {
+            "note": "NGT reduces ongoing vomiting. Reduces risk of aspiration before emergency surgery. Pre-operative requirement.",
+            "delayProgression": 0.5
+          },
+          "peritonitis_sepsis": {
+            "note": "NGT in place pre-laparotomy. Continues gastric decompression throughout operative period."
+          }
+        }
+      },
+      {
+        "id": "npo",
+        "name": "Nil by Mouth",
+        "fullName": "Strict Nil by Mouth (NPO) + IV Fluid replacement",
+        "cost": 0,
+        "type": "preop",
+        "repeatable": false,
+        "stageEffect": {
+          "early_obstruction": {
+            "note": "Mandatory in surgical abdomen. Oral intake worsens vomiting and distension. Reduces aspiration risk.",
+            "delayProgression": 0.5
+          },
+          "evolving_ischaemia": {
+            "note": "Strictly maintained NPO. IV nutrition will be required post-operatively.",
+            "delayProgression": 0
+          },
+          "peritonitis_sepsis": {
+            "note": "NPO maintained. Patient requires emergency surgery."
+          }
+        }
+      },
+      {
+        "id": "urinary_catheter",
+        "name": "IDC + Fluid Balance",
+        "fullName": "Indwelling Urinary Catheter (IDC) + Strict Fluid Balance Chart",
+        "cost": 80,
+        "type": "preop",
+        "repeatable": false,
+        "stageEffect": {
+          "early_obstruction": {
+            "note": "Essential for urine output monitoring (target >0.5 mL/kg/hr) and pre-operative preparation. Identifies oliguria early.",
+            "delayProgression": 0.5
+          },
+          "evolving_ischaemia": {
+            "note": "Oliguria monitoring critical. Guides fluid resuscitation intensity.",
+            "delayProgression": 0.5
+          },
+          "peritonitis_sepsis": {
+            "note": "Mandatory in septic shock — hourly urine output monitoring."
+          }
+        }
+      },
+      {
+        "id": "analgesia_morphine",
+        "name": "IV Morphine",
+        "fullName": "Inj. Morphine 5–10 mg IV PRN with antiemetic (Metoclopramide 10 mg IV)",
+        "cost": 150,
+        "type": "supportive",
+        "repeatable": false,
+        "stageEffect": {
+          "early_obstruction": {
+            "note": "Adequate analgesia is humane and does NOT mask peritonitis signs in experienced hands — a common myth. Morphine does not delay surgical diagnosis. Antiemetic for symptom control.",
+            "vitalEffect": { "hr": -5, "temp": -0.1 },
+            "delayProgression": 0.5
+          },
+          "evolving_ischaemia": {
+            "note": "Morphine analgesia. Monitor respiratory rate with opioids. Antiemetic co-administration.",
+            "vitalEffect": { "hr": -4 }
+          },
+          "peritonitis_sepsis": {
+            "note": "IV opioid analgesia continued. Caution in hypotension — small doses titrated."
+          }
+        }
+      },
+      {
+        "id": "empirical_antibiotics_preop",
+        "name": "IV Antibiotics",
+        "fullName": "Inj. Cefuroxime 1.5 g IV stat + Inj. Metronidazole 500 mg IV TDS (pre-operative prophylaxis/treatment)",
+        "cost": 400,
+        "type": "supportive",
+        "repeatable": false,
+        "stageEffect": {
+          "early_obstruction": {
+            "note": "Broad-spectrum antibiotics given if surgery planned or ischaemia suspected. Also covers bacterial translocation. Metronidazole covers anaerobes from bowel flora.",
+            "delayProgression": 1
+          },
+          "evolving_ischaemia": {
+            "note": "Antibiotics covering enteric gram-negatives and anaerobes. Escalate to Piperacillin-Tazobactam if gram-negatives on culture.",
+            "vitalEffect": { "temp": -0.3 },
+            "delayProgression": 1
+          },
+          "peritonitis_sepsis": {
+            "note": "Escalate to IV Meropenem 1g TDS + Metronidazole 500 mg TDS for septic peritonitis. Blood culture should guide de-escalation.",
+            "vitalEffect": { "temp": -0.5 },
+            "delayProgression": 1.5
+          }
+        }
+      }
+    ],
+    "diseaseSpecific": {
+      "adhesive_sbo": [
+        {
+          "id": "emergency_laparotomy_adhesiolysis",
+          "name": "Emergency Laparotomy",
+          "fullName": "Emergency Exploratory Laparotomy + Adhesiolysis ± Bowel Resection (Bailey & Love — treatment of strangulated/complicated SBO)",
+          "cost": 1500,
+          "type": "curative",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "cure": true,
+              "note": "Excellent surgical decision. Laparotomy with adhesiolysis and release of obstructing band. Bowel viable — no resection needed. Patient recovers fully. Early surgery prevents strangulation."
+            },
+            "evolving_ischaemia": {
+              "cure": true,
+              "note": "Emergency laparotomy performed. Ischaemic segment found at transition point. Bowel resection and primary anastomosis performed. Patient recovers with extended post-op stay. Timely intervention."
+            },
+            "peritonitis_sepsis": {
+              "note": "Emergency laparotomy with bowel resection, peritoneal lavage, and end ileostomy (Hartmann's procedure — anastomosis unsafe in peritonitis). Prolonged ICU stay. Recovery possible but significantly impaired.",
+              "delayProgression": 6
+            }
+          }
+        },
+        {
+          "id": "conservative_drip_suck",
+          "name": "Conservative Management",
+          "fullName": "Conservative 'Drip and Suck' — IV Fluids + NGT + NPO + 24-hour observation (appropriate ONLY for early simple SBO without ischaemia features)",
+          "cost": 200,
+          "type": "partial",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "partial": true,
+              "note": "Appropriate initial trial of conservative management for early simple adhesive SBO — as per Bailey & Love guidelines. Maximum 24–48 hours conservative trial. If no resolution, proceed to surgery. Partial benefit — may resolve in 30% of cases.",
+              "delayProgression": 3
+            },
+            "evolving_ischaemia": {
+              "note": "BLUNDER — conservative management at this stage ignores ischaemia signs (constant pain, raised lactate, tachycardia). Must proceed immediately to surgery.",
+              "penalty": 20,
+              "delayProgression": 0
+            },
+            "peritonitis_sepsis": {
+              "note": "DANGEROUS BLUNDER — conservative management in peritonitis is fatal. Immediate surgery mandatory.",
+              "penalty": 40,
+              "endGame": true,
+              "outcome": "death"
+            }
+          }
+        },
+        {
+          "id": "laparoscopic_adhesiolysis",
+          "name": "Laparoscopic Adhesiolysis",
+          "fullName": "Laparoscopic Adhesiolysis (minimally invasive — for selected early SBO without gross distension)",
+          "cost": 2500,
+          "type": "supportive",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "Laparoscopic adhesiolysis is appropriate in selected cases of early SBO — less distension, single band adhesion. Successful if bowel not overly dilated. More expensive than open. Acceptable option.",
+              "delayProgression": 2,
+              "partial": true
+            },
+            "evolving_ischaemia": {
+              "note": "Laparoscopy CONTRAINDICATED in suspected bowel ischaemia — poor visualisation with dilated bowel, risk of perforation during port insertion. Must convert to open laparotomy.",
+              "penalty": 15
+            },
+            "peritonitis_sepsis": {
+              "note": "Laparoscopy absolutely contraindicated in peritonitis. Open laparotomy mandatory.",
+              "penalty": 25
+            }
+          }
+        },
+        {
+          "id": "water_soluble_gastrografin",
+          "name": "Gastrografin Challenge",
+          "fullName": "Oral Gastrografin (Water-Soluble Contrast) Challenge — 100 mL oral, AXR at 24 hours (therapeutic and diagnostic in partial SBO)",
+          "cost": 600,
+          "type": "delaying",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "Gastrografin challenge has both diagnostic and therapeutic roles in partial SBO — may reduce need for surgery. Only appropriate for partial obstruction, NOT complete obstruction. This is a complete obstruction (no flatus). Risk of aspiration. Marginal benefit only.",
+              "delayProgression": 1
+            },
+            "evolving_ischaemia": {
+              "note": "Gastrografin challenge CONTRAINDICATED with suspected ischaemia or complete obstruction. Causes dangerous delay. Surgical emergency.",
+              "penalty": 20
+            },
+            "peritonitis_sepsis": {
+              "note": "Absolutely contraindicated. Fatal delay.",
+              "penalty": 35
+            }
+          }
+        },
+        {
+          "id": "watchful_wait_sbo",
+          "name": "Observe Without Treatment",
+          "fullName": "Watchful Waiting — No active decompression or surgical intervention",
+          "cost": 0,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "BLUNDER — complete SBO with vomiting and absolute constipation requires active NGT decompression, IV fluids, and surgical planning. Pure observation without intervention is negligent.",
+              "penalty": 20
+            },
+            "evolving_ischaemia": {
+              "note": "DANGEROUS BLUNDER — ischaemia developing. Delay in surgery leads to necrosis and perforation.",
+              "penalty": 35
+            },
+            "peritonitis_sepsis": {
+              "note": "FATAL — no intervention in peritonitis.",
+              "penalty": 50,
+              "endGame": true,
+              "outcome": "death"
+            }
+          }
+        },
+        {
+          "id": "total_parenteral_nutrition",
+          "name": "TPN",
+          "fullName": "Total Parenteral Nutrition via Central Line (pre-operative nutritional support)",
+          "cost": 2000,
+          "type": "unnecessary",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "TPN is NOT indicated in acute SBO requiring emergency surgery within 24–48 hours. TPN is for prolonged pre-operative malnutrition (>7 days). Extremely expensive, delays surgery, central line infection risk."
+            },
+            "evolving_ischaemia": {
+              "note": "TPN completely inappropriate — emergency surgery, not nutrition, is required."
+            },
+            "peritonitis_sepsis": {
+              "note": "TPN not relevant to acute septic peritonitis. Wastes budget and time."
+            }
+          }
+        },
+        {
+          "id": "neostigmine_sbo",
+          "name": "Neostigmine",
+          "fullName": "Inj. Neostigmine 2 mg IV (used for Ogilvie's syndrome — pseudo-obstruction, NOT mechanical obstruction)",
+          "cost": 200,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "Neostigmine is used for Ogilvie's syndrome (acute colonic pseudo-obstruction) — NOT for mechanical small bowel obstruction. Wrong drug, wrong indication. No benefit. Can cause bradycardia.",
+              "penalty": 8
+            },
+            "evolving_ischaemia": {
+              "note": "Neostigmine not indicated. Dangerous delay from wrong treatment.",
+              "penalty": 12
+            },
+            "peritonitis_sepsis": {
+              "note": "Wrong drug. Dangerous in peritonitis.",
+              "penalty": 15
+            }
+          }
+        }
+      ],
+      "acute_pancreatitis": [
+        {
+          "id": "aggressive_ivf_pancreatitis",
+          "name": "Aggressive IV Fluids",
+          "fullName": "Aggressive IV Ringer's Lactate 250–500 mL/hour (acute pancreatitis resuscitation per ACG guidelines)",
+          "cost": 200,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "Pancreatitis fluid protocol is appropriate for that diagnosis, but amylase is only mildly elevated (non-diagnostic) and lipase is normal. Bowel obstruction is the correct diagnosis. Aggressive RL in SBO may worsen bowel distension and electrolyte imbalance (RL has lower Na/Cl for alkalosis).",
+              "penalty": 8
+            },
+            "evolving_ischaemia": {
+              "note": "Wrong diagnosis treatment. SBO worsening.",
+              "penalty": 12
+            },
+            "peritonitis_sepsis": {
+              "note": "Wrong treatment — no effect on surgical peritonitis.",
+              "penalty": 15
+            }
+          }
+        },
+        {
+          "id": "ercp_pancreatitis",
+          "name": "Urgent ERCP",
+          "fullName": "Urgent ERCP (for biliary pancreatitis with CBD stone)",
+          "cost": 3500,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "BLUNDER — ERCP is for biliary pancreatitis with obstructive jaundice or cholangitis. LFTs are normal, bilirubin is normal, no gallstones on USG. Pancreatitis is not the diagnosis. Unnecessary high-cost procedure with significant complication risk.",
+              "penalty": 25
+            },
+            "evolving_ischaemia": {
+              "note": "DANGEROUS BLUNDER — delay caused by ERCP allows bowel ischaemia to progress. Misdiagnosis cost.",
+              "penalty": 35
+            },
+            "peritonitis_sepsis": {
+              "note": "ERCP in peritonitis — catastrophic mismanagement.",
+              "penalty": 40
+            }
+          }
+        },
+        {
+          "id": "omeprazole_pancreatitis",
+          "name": "IV Omeprazole",
+          "fullName": "Inj. Omeprazole 40 mg IV BD (acid suppression — sometimes given in pancreatitis)",
+          "cost": 180,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "Not indicated — no peptic ulcer, no haematemesis, pancreatitis not confirmed. Provides no benefit for bowel obstruction.",
+              "penalty": 3
+            },
+            "evolving_ischaemia": {
+              "note": "Wrong diagnosis treatment. No benefit.",
+              "penalty": 5
+            },
+            "peritonitis_sepsis": {
+              "note": "Irrelevant.",
+              "penalty": 5
+            }
+          }
+        },
+        {
+          "id": "antibiotics_pancreatitis",
+          "name": "Prophylactic Antibiotics",
+          "fullName": "Inj. Imipenem 500 mg IV QID (prophylactic in severe pancreatitis — not current guideline)",
+          "cost": 800,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "Prophylactic antibiotics in acute pancreatitis are NOT recommended per current guidelines unless infected necrosis is confirmed. Wrong diagnosis entirely. Expensive and exposes to drug resistance.",
+              "penalty": 10
+            },
+            "evolving_ischaemia": {
+              "note": "Wrong diagnosis. Empirical antibiotics for pancreatitis do not treat bowel strangulation.",
+              "penalty": 12
+            },
+            "peritonitis_sepsis": {
+              "note": "Wrong antibiotic selection for enteric organisms in peritonitis.",
+              "penalty": 10
+            }
+          }
+        },
+        {
+          "id": "obs_pancreatitis",
+          "name": "Observe Only",
+          "fullName": "Watchful Waiting — Conservative without specific surgical management",
+          "cost": 0,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "BLUNDER — bowel obstruction requires active decompression and surgical planning.",
+              "penalty": 20
+            },
+            "evolving_ischaemia": {
+              "note": "BLUNDER — ischaemia developing.",
+              "penalty": 35
+            },
+            "peritonitis_sepsis": {
+              "note": "FATAL.",
+              "penalty": 50,
+              "endGame": true,
+              "outcome": "death"
+            }
+          }
+        }
+      ],
+      "peptic_ulcer_perf": [
+        {
+          "id": "ppi_iv",
+          "name": "High-Dose IV PPI",
+          "fullName": "Inj. Pantoprazole 80 mg IV bolus then 8 mg/hour infusion (for perforated/bleeding peptic ulcer)",
+          "cost": 600,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "No history of peptic ulcer disease, haematemesis, or melaena. AXR shows obstruction pattern — not pneumoperitoneum. PPI treatment for wrong diagnosis. No benefit for SBO.",
+              "penalty": 6
+            },
+            "evolving_ischaemia": {
+              "note": "Wrong diagnosis. Bowel ischaemia progressing.",
+              "penalty": 10
+            },
+            "peritonitis_sepsis": {
+              "note": "Wrong primary diagnosis. Peritonitis is from bowel, not ulcer.",
+              "penalty": 10
+            }
+          }
+        },
+        {
+          "id": "emergency_patch_repair",
+          "name": "Emergency Omental Patch",
+          "fullName": "Emergency Laparotomy + Graham Omental Patch Repair (for perforated peptic ulcer)",
+          "cost": 1200,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "Graham patch repair is for perforated ulcer — but AXR shows obstruction not pneumoperitoneum, no ulcer history, no peritonism at this stage. Wrong operative approach. Will not correct bowel obstruction. Patient remains obstructed post-operatively.",
+              "penalty": 20
+            },
+            "evolving_ischaemia": {
+              "note": "Wrong operation — patient has bowel obstruction/strangulation, not peptic perforation. Misdiagnosis has led to wrong surgery. Obstruction continues.",
+              "penalty": 30
+            },
+            "peritonitis_sepsis": {
+              "note": "At this stage even if laparotomy performed, wrong procedure done — adhesiolysis/bowel resection not addressed. Ongoing sepsis.",
+              "penalty": 35
+            }
+          }
+        },
+        {
+          "id": "h_pylori_eradication",
+          "name": "H. pylori Eradication",
+          "fullName": "Triple Therapy — Amoxicillin 1g BD + Clarithromycin 500 mg BD + Omeprazole 20 mg BD x 14 days",
+          "cost": 400,
+          "type": "unnecessary",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "H. pylori eradication is appropriate eventually (H. pylori positive) but not the current priority. SBO is the life-threatening diagnosis. H. pylori treatment can wait. Budget waste in acute setting."
+            },
+            "evolving_ischaemia": {
+              "note": "Not the relevant management. Surgical emergency.",
+              "penalty": 5
+            },
+            "peritonitis_sepsis": {
+              "note": "Not relevant.",
+              "penalty": 5
+            }
+          }
+        },
+        {
+          "id": "obs_ulcer",
+          "name": "Observe Only",
+          "fullName": "Observation Without Surgical Intervention",
+          "cost": 0,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "BLUNDER — surgical abdomen requires active management.",
+              "penalty": 20
+            },
+            "evolving_ischaemia": {
+              "note": "BLUNDER.",
+              "penalty": 35
+            },
+            "peritonitis_sepsis": {
+              "note": "FATAL.",
+              "penalty": 50,
+              "endGame": true,
+              "outcome": "death"
+            }
+          }
+        },
+        {
+          "id": "transfusion_ulcer",
+          "name": "Blood Transfusion",
+          "fullName": "Packed Red Cell Transfusion 2 units (for haemorrhagic peptic ulcer)",
+          "cost": 900,
+          "type": "unnecessary",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "No anaemia — Hb is high (haemoconcentration from dehydration). Blood transfusion not indicated. Expensive waste of budget. Incorrect diagnosis assumed."
+            },
+            "evolving_ischaemia": {
+              "note": "Hb still elevated from haemoconcentration. Transfusion not indicated. Wrong treatment for wrong diagnosis.",
+              "penalty": 5
+            },
+            "peritonitis_sepsis": {
+              "note": "Not indicated for this condition.",
+              "penalty": 5
+            }
+          }
+        }
+      ],
+      "acute_gastroenteritis": [
+        {
+          "id": "oral_ors",
+          "name": "Oral ORS",
+          "fullName": "Oral Rehydration Salts + Oral Zinc supplementation (gastroenteritis management)",
+          "cost": 50,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "BLUNDER — oral intake is absolutely contraindicated in complete bowel obstruction. Oral ORS will worsen vomiting and distension. This is not gastroenteritis. Absolute constipation and AXR findings exclude this diagnosis.",
+              "penalty": 15
+            },
+            "evolving_ischaemia": {
+              "note": "DANGEROUS — oral intake in evolving ischaemia risks aspiration and worsens obstruction.",
+              "penalty": 22
+            },
+            "peritonitis_sepsis": {
+              "note": "FATAL — oral intake in peritonitis.",
+              "penalty": 30
+            }
+          }
+        },
+        {
+          "id": "metronidazole_ge",
+          "name": "Oral Metronidazole",
+          "fullName": "Tab. Metronidazole 400 mg TDS x 7 days (for amoebic or Giardia gastroenteritis)",
+          "cost": 80,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "No diarrhoea — absolute constipation. No travel history. No stool available. Metronidazole for gastroenteritis has no role in mechanical bowel obstruction. Wrong diagnosis.",
+              "penalty": 6
+            },
+            "evolving_ischaemia": {
+              "note": "Wrong diagnosis. Ischaemia progressing.",
+              "penalty": 8
+            },
+            "peritonitis_sepsis": {
+              "note": "IV Metronidazole has utility in peritonitis but oral route contraindicated. Wrong dose/route.",
+              "penalty": 5
+            }
+          }
+        },
+        {
+          "id": "ciprofloxacin_ge",
+          "name": "Oral Ciprofloxacin",
+          "fullName": "Tab. Ciprofloxacin 500 mg BD x 5 days (bacterial gastroenteritis)",
+          "cost": 150,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "Wrong diagnosis — no diarrhoea, no fever suggestive of infectious gastroenteritis. AXR shows obstruction. Oral antibiotics not indicated.",
+              "penalty": 6
+            },
+            "evolving_ischaemia": {
+              "note": "Wrong treatment. Oral route may not be safe.",
+              "penalty": 8
+            },
+            "peritonitis_sepsis": {
+              "note": "IV agents needed for peritonitis — oral ciprofloxacin subtherapeutic.",
+              "penalty": 8
+            }
+          }
+        },
+        {
+          "id": "obs_ge",
+          "name": "Observe Only",
+          "fullName": "Discharge with Oral Fluids Advice (outpatient gastroenteritis management)",
+          "cost": 0,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "CATASTROPHIC BLUNDER — discharging a patient with complete small bowel obstruction as 'gastroenteritis'. This is a life-threatening surgical emergency. Dehydration, tachycardia, absolute constipation, tinkling bowel sounds, and previous abdominal surgery demand admission and surgical review.",
+              "penalty": 40
+            },
+            "evolving_ischaemia": {
+              "note": "FATAL BLUNDER — bowel ischaemia with no hospital care.",
+              "penalty": 50,
+              "endGame": true,
+              "outcome": "death"
+            },
+            "peritonitis_sepsis": {
+              "note": "FATAL — patient dies outside hospital from peritonitis.",
+              "penalty": 50,
+              "endGame": true,
+              "outcome": "death"
+            }
+          }
+        },
+        {
+          "id": "antiemetic_ge",
+          "name": "IV Ondansetron",
+          "fullName": "Inj. Ondansetron 8 mg IV BD (antiemetic — symptomatic control)",
+          "cost": 200,
+          "type": "delaying",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "Antiemetic treats the symptom not the cause. Vomiting in SBO is from mechanical obstruction — reducing vomiting sensation without NGT decompression and surgical correction gives false reassurance and delays definitive management.",
+              "penalty": 5
+            },
+            "evolving_ischaemia": {
+              "note": "Antiemetic alone in ischaemia — dangerous delay.",
+              "penalty": 10
+            },
+            "peritonitis_sepsis": {
+              "note": "Symptomatic treatment only. Surgery urgent.",
+              "penalty": 10
+            }
+          }
+        }
+      ],
+      "volvulus": [
+        {
+          "id": "sigmoidoscopy_volvulus",
+          "name": "Flexible Sigmoidoscopy",
+          "fullName": "Flexible Sigmoidoscopy + Flatus Tube Decompression (for sigmoid volvulus)",
+          "cost": 800,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "Sigmoidoscopy decompression is appropriate for sigmoid volvulus — but AXR shows small bowel dilation with valvulae conniventes, not large bowel haustrations. Central pain and history of small bowel surgery make SBO more likely. Wrong procedure for wrong diagnosis. Cannot resolve SBO.",
+              "penalty": 15
+            },
+            "evolving_ischaemia": {
+              "note": "Wrong diagnosis. Small bowel strangulation cannot be treated by sigmoidoscopy.",
+              "penalty": 20
+            },
+            "peritonitis_sepsis": {
+              "note": "Sigmoidoscopy contraindicated in peritonitis.",
+              "penalty": 25
+            }
+          }
+        },
+        {
+          "id": "barium_enema_volvulus",
+          "name": "Barium Enema",
+          "fullName": "Barium Enema (for large bowel obstruction/volvulus diagnosis)",
+          "cost": 600,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "Barium enema is diagnostic for large bowel obstruction/volvulus (shows 'bird-beak' sign in volvulus). AXR pattern here is small bowel. Barium enema will be non-diagnostic for SBO and wastes time and budget.",
+              "penalty": 12
+            },
+            "evolving_ischaemia": {
+              "note": "Wrong test for wrong diagnosis. Delay is dangerous.",
+              "penalty": 15
+            },
+            "peritonitis_sepsis": {
+              "note": "Absolutely contraindicated in peritonitis — risk of intraperitoneal barium spillage.",
+              "penalty": 30
+            }
+          }
+        },
+        {
+          "id": "colostomy_volvulus",
+          "name": "Emergency Colostomy",
+          "fullName": "Emergency Defunctioning Colostomy (for large bowel obstruction/volvulus)",
+          "cost": 1200,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "Colostomy is for large bowel obstruction — wrong surgery for small bowel obstruction. Does not address adhesive SBO. Patient remains obstructed post-operatively.",
+              "penalty": 25
+            },
+            "evolving_ischaemia": {
+              "note": "Wrong operation — SBO and ischaemia unaddressed. Fatal outcome likely.",
+              "penalty": 35
+            },
+            "peritonitis_sepsis": {
+              "note": "Wrong operation for wrong diagnosis. Patient remains in peritonitis.",
+              "penalty": 40
+            }
+          }
+        },
+        {
+          "id": "obs_volvulus",
+          "name": "Observe Only",
+          "fullName": "Watchful Waiting Without Active Management",
+          "cost": 0,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "BLUNDER — surgical emergency requires intervention.",
+              "penalty": 20
+            },
+            "evolving_ischaemia": {
+              "note": "BLUNDER.",
+              "penalty": 35
+            },
+            "peritonitis_sepsis": {
+              "note": "FATAL.",
+              "penalty": 50,
+              "endGame": true,
+              "outcome": "death"
+            }
+          }
+        },
+        {
+          "id": "mesosigmoidoplasty",
+          "name": "Mesosigmoidoplasty",
+          "fullName": "Mesosigmoidoplasty (prevention of recurrent sigmoid volvulus)",
+          "cost": 900,
+          "type": "unnecessary",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "Operation for sigmoid volvulus prevention — incorrect diagnosis. SBO from adhesions does not involve sigmoid. This operation is irrelevant and misguided."
+            },
+            "evolving_ischaemia": {
+              "note": "Wrong surgery for wrong diagnosis. Dangerous delay.",
+              "penalty": 20
+            },
+            "peritonitis_sepsis": {
+              "note": "Wrong operation.",
+              "penalty": 25
+            }
+          }
+        }
+      ],
+      "large_bowel_obstruction": [
+        {
+          "id": "colonoscopy_lbo",
+          "name": "Urgent Colonoscopy",
+          "fullName": "Urgent Colonoscopy for Large Bowel Obstruction (tumour assessment)",
+          "cost": 2000,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "Colonoscopy for large bowel obstruction is NOT indicated acutely — AXR shows small bowel dilation (valvulae conniventes, central position), not large bowel dilation. Colonoscopy in acute SBO risks perforation. Wrong diagnosis.",
+              "penalty": 18
+            },
+            "evolving_ischaemia": {
+              "note": "Dangerous delay — bowel ischaemia requires surgery not colonoscopy.",
+              "penalty": 25
+            },
+            "peritonitis_sepsis": {
+              "note": "Colonoscopy in peritonitis — catastrophic risk of perforation.",
+              "penalty": 40
+            }
+          }
+        },
+        {
+          "id": "stent_lbo",
+          "name": "Colonic Stent",
+          "fullName": "Self-Expanding Metal Stent (SEMS) for malignant colonic obstruction",
+          "cost": 3500,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "SEMS is for large bowel obstruction from colorectal cancer — wrong diagnosis. Small bowel obstruction from adhesions cannot be treated by colonic stenting. Extremely expensive and does not address the obstruction.",
+              "penalty": 20
+            },
+            "evolving_ischaemia": {
+              "note": "Wrong diagnosis and wrong treatment. Ischaemia worsening.",
+              "penalty": 30
+            },
+            "peritonitis_sepsis": {
+              "note": "Wrong diagnosis and dangerous delay.",
+              "penalty": 35
+            }
+          }
+        },
+        {
+          "id": "ca_125_lbo",
+          "name": "CA-125 Tumour Marker",
+          "fullName": "Serum CA-125 and CEA (for suspected colonic malignancy)",
+          "cost": 1200,
+          "type": "unnecessary",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "Tumour markers are inappropriate in the acute setting and do not guide immediate management. Even if positive, they would not change the urgency of surgical decompression. Budget waste in emergency context."
+            },
+            "evolving_ischaemia": {
+              "note": "Not indicated in acute emergency. Dangerous focus distraction.",
+              "penalty": 5
+            },
+            "peritonitis_sepsis": {
+              "note": "Not relevant to peritonitis management.",
+              "penalty": 5
+            }
+          }
+        },
+        {
+          "id": "obs_lbo",
+          "name": "Observe Only",
+          "fullName": "Watchful Waiting Without Active Intervention",
+          "cost": 0,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "BLUNDER — bowel obstruction requires active management.",
+              "penalty": 20
+            },
+            "evolving_ischaemia": {
+              "note": "BLUNDER.",
+              "penalty": 35
+            },
+            "peritonitis_sepsis": {
+              "note": "FATAL.",
+              "penalty": 50,
+              "endGame": true,
+              "outcome": "death"
+            }
+          }
+        }
+      ],
+      "incarcerated_hernia": [
+        {
+          "id": "taxis_hernia",
+          "name": "Manual Reduction (Taxis)",
+          "fullName": "Manual Reduction of Hernia Under Sedation (Taxis) — appropriate for early uncomplicated incarceration",
+          "cost": 200,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "Taxis is for incarcerated (not strangulated) inguinal hernia — but no hernia was found on examination. Inguinal and femoral orifices inspected — no hernial bulge. Wrong physical finding, wrong treatment. Cannot reduce what is not there.",
+              "penalty": 10
+            },
+            "evolving_ischaemia": {
+              "note": "No hernia present on examination. Dangerous delay while the actual cause (adhesions) worsens.",
+              "penalty": 15
+            },
+            "peritonitis_sepsis": {
+              "note": "Wrong diagnosis. Peritonitis from adhesive SBO, not hernia.",
+              "penalty": 15
+            }
+          }
+        },
+        {
+          "id": "hernia_repair",
+          "name": "Emergency Hernia Repair",
+          "fullName": "Emergency Open Herniorrhaphy + Bowel Resection (for strangulated hernia with necrosis)",
+          "cost": 1200,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "No hernia identified clinically. Emergency hernia repair without a hernia is incorrect surgery — will not address adhesive SBO. Patient remains obstructed.",
+              "penalty": 18
+            },
+            "evolving_ischaemia": {
+              "note": "Wrong operation. Adhesive SBO with ischaemia requires midline laparotomy and adhesiolysis — not hernial repair.",
+              "penalty": 25
+            },
+            "peritonitis_sepsis": {
+              "note": "Wrong surgery for wrong diagnosis. Ischaemic bowel not addressed.",
+              "penalty": 30
+            }
+          }
+        },
+        {
+          "id": "truss_hernia",
+          "name": "Hernia Truss",
+          "fullName": "Hernia Truss Application (temporary external support)",
+          "cost": 300,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "BLUNDER — hernia truss is contraindicated in strangulated hernia (risk of reducing gangrenous bowel intra-abdominally). No hernia present. Wrong diagnosis. Dangerous delay.",
+              "penalty": 15
+            },
+            "evolving_ischaemia": {
+              "note": "DANGEROUS — no hernia and ischaemia developing from adhesions.",
+              "penalty": 20
+            },
+            "peritonitis_sepsis": {
+              "note": "DANGEROUS BLUNDER.",
+              "penalty": 25
+            }
+          }
+        },
+        {
+          "id": "obs_hernia",
+          "name": "Observe Only",
+          "fullName": "Observation Without Active Intervention",
+          "cost": 0,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "BLUNDER.",
+              "penalty": 20
+            },
+            "evolving_ischaemia": {
+              "note": "BLUNDER.",
+              "penalty": 35
+            },
+            "peritonitis_sepsis": {
+              "note": "FATAL.",
+              "penalty": 50,
+              "endGame": true,
+              "outcome": "death"
+            }
+          }
+        },
+        {
+          "id": "inguinal_usg_hernia",
+          "name": "Inguinal USG",
+          "fullName": "Ultrasound Inguinal Region Both Sides (hernia assessment)",
+          "cost": 400,
+          "type": "unnecessary",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "Inguinal and femoral orifices are clinically clear on examination. USG adds no additional value here and delays management. AXR already points to SBO from adhesions. Not indicated."
+            },
+            "evolving_ischaemia": {
+              "note": "Dangerous investigative delay when ischaemia is developing.",
+              "penalty": 8
+            },
+            "peritonitis_sepsis": {
+              "note": "Not indicated.",
+              "penalty": 5
+            }
+          }
+        }
+      ],
+      "mesenteric_ischaemia": [
+        {
+          "id": "ct_angiography",
+          "name": "CT Mesenteric Angiography",
+          "fullName": "CT Mesenteric Angiography (gold standard for acute mesenteric ischaemia)",
+          "cost": 5000,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "CT angiography is indicated for primary mesenteric ischaemia (embolic/thrombotic — no mechanical obstruction). Here, AXR shows a transition point consistent with mechanical obstruction from adhesions. CT angiography would show normal mesenteric vessels because the ischaemia is secondary to mechanical obstruction, not primary vascular disease. Extremely expensive and exceeds budget. CT abdomen is a better choice.",
+              "penalty": 15
+            },
+            "evolving_ischaemia": {
+              "note": "CT angio not the right test — standard CT abdomen with contrast identifies ischaemic changes from adhesive SBO. Primary mesenteric ischaemia pattern not expected here. Extremely expensive.",
+              "penalty": 15
+            },
+            "peritonitis_sepsis": {
+              "note": "Patient in peritonitis — no time for CT angio. Emergency laparotomy needed.",
+              "penalty": 20
+            }
+          }
+        },
+        {
+          "id": "anticoagulation_ischaemia",
+          "name": "IV Heparin",
+          "fullName": "Inj. Heparin 5000 U IV bolus then infusion (for mesenteric vein thrombosis)",
+          "cost": 400,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "BLUNDER — heparin anticoagulation is for mesenteric vein thrombosis causing ischaemia, not for adhesive mechanical obstruction. In this patient, heparin increases intraoperative bleeding risk and may worsen any mucosal haemorrhage from ischaemia.",
+              "penalty": 18
+            },
+            "evolving_ischaemia": {
+              "note": "DANGEROUS — heparin in evolving bowel ischaemia from adhesions increases surgical bleeding risk significantly.",
+              "penalty": 25
+            },
+            "peritonitis_sepsis": {
+              "note": "FATAL BLUNDER — heparin in peritonitis with early DIC is catastrophic.",
+              "penalty": 40
+            }
+          }
+        },
+        {
+          "id": "obs_ischaemia",
+          "name": "Observe Only",
+          "fullName": "Observation Without Active Intervention",
+          "cost": 0,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "BLUNDER.",
+              "penalty": 20
+            },
+            "evolving_ischaemia": {
+              "note": "BLUNDER.",
+              "penalty": 35
+            },
+            "peritonitis_sepsis": {
+              "note": "FATAL.",
+              "penalty": 50,
+              "endGame": true,
+              "outcome": "death"
+            }
+          }
+        },
+        {
+          "id": "papaverine_ischaemia",
+          "name": "Intra-arterial Papaverine",
+          "fullName": "Intra-arterial Papaverine Infusion (vasodilator for non-occlusive mesenteric ischaemia)",
+          "cost": 800,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "Papaverine is for non-occlusive mesenteric ischaemia (NOMI) — a different entity from SBO. This patient has mechanical obstruction. Papaverine has no role and wastes budget. Requires interventional radiology setup.",
+              "penalty": 12
+            },
+            "evolving_ischaemia": {
+              "note": "Wrong treatment. Mechanical obstruction cannot be reversed by vasodilators.",
+              "penalty": 15
+            },
+            "peritonitis_sepsis": {
+              "note": "Wrong treatment entirely.",
+              "penalty": 15
+            }
+          }
+        }
+      ],
+      "intussusception": [
+        {
+          "id": "air_enema_intussusception",
+          "name": "Pneumatic Reduction",
+          "fullName": "Pneumatic (Air) Enema Reduction under fluoroscopy (paediatric intussusception treatment)",
+          "cost": 700,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "Pneumatic reduction is the treatment of choice for paediatric intussusception (common <2 years). This is a 52-year-old adult with previous abdominal surgery. Adult intussusception is usually secondary to a lead point tumour — requires surgical resection, not enema reduction. Wrong technique and wrong patient group.",
+              "penalty": 12
+            },
+            "evolving_ischaemia": {
+              "note": "Wrong treatment — adult intussusception if present requires surgery. Pneumatic reduction in ischaemia risks perforation.",
+              "penalty": 18
+            },
+            "peritonitis_sepsis": {
+              "note": "Absolutely contraindicated in peritonitis.",
+              "penalty": 25
+            }
+          }
+        },
+        {
+          "id": "obs_intus",
+          "name": "Observe Only",
+          "fullName": "Observation Without Active Intervention",
+          "cost": 0,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "BLUNDER.",
+              "penalty": 20
+            },
+            "evolving_ischaemia": {
+              "note": "BLUNDER.",
+              "penalty": 35
+            },
+            "peritonitis_sepsis": {
+              "note": "FATAL.",
+              "penalty": 50,
+              "endGame": true,
+              "outcome": "death"
+            }
+          }
+        },
+        {
+          "id": "steroid_intus",
+          "name": "IV Dexamethasone",
+          "fullName": "Inj. Dexamethasone 8 mg IV BD (anti-inflammatory for bowel oedema)",
+          "cost": 180,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "Steroids have no role in mechanical small bowel obstruction. They may mask peritonitis signs and impair wound healing. No therapeutic benefit.",
+              "penalty": 8
+            },
+            "evolving_ischaemia": {
+              "note": "Steroids mask peritonism signs — dangerous in evolving ischaemia.",
+              "penalty": 12
+            },
+            "peritonitis_sepsis": {
+              "note": "Steroids in peritonitis — increase infection risk.",
+              "penalty": 15
+            }
+          }
+        },
+        {
+          "id": "unnecessary_ct_intus",
+          "name": "CT Enteroclysis",
+          "fullName": "CT Enteroclysis (MR or CT with intraluminal contrast for small bowel lesions)",
+          "cost": 4500,
+          "type": "unnecessary",
+          "repeatable": false,
+          "stageEffect": {
+            "early_obstruction": {
+              "note": "CT enteroclysis is used for chronic/occult small bowel lesions, not acute obstruction. Regular CECT abdomen is adequate and much cheaper. CT enteroclysis is time-consuming and requires bowel prep — impossible in acute SBO. Budget catastrophically overrun."
+            },
+            "evolving_ischaemia": {
+              "note": "Dangerous delay. Budget destroyed.",
+              "penalty": 10
+            },
+            "peritonitis_sepsis": {
+              "note": "Not indicated.",
+              "penalty": 10
+            }
+          }
+        }
+      ]
+    }
+  },
+
+  "correctManagement": [
+    "npo",
+    "ngt_decompression",
+    "iv_fluid_ns_kcl",
+    "urinary_catheter",
+    "analgesia_morphine",
+    "empirical_antibiotics_preop",
+    "emergency_laparotomy_adhesiolysis"
+  ],
+
+  "scoringRubric": {
+    "correctDiagnosis": 25,
+    "timelyCure": 30,
+    "costEfficiency": 15,
+    "correctTests": 15,
+    "correctManagement": 15,
+    "penaltyPerPoint": -1
+  },
+
+  "endMessages": {
+    "perfect": "Excellent surgical reasoning! You identified adhesive small bowel obstruction from the classic triad of previous abdominal surgery, tinkling bowel sounds, and AXR step-ladder pattern. You initiated 'drip and suck' resuscitation and proceeded to timely emergency laparotomy before ischaemia developed. Outstanding management per Bailey & Love guidelines.",
+    "good": "Patient recovered. Good overall approach — you identified the obstruction and managed surgically. Minor inefficiencies: review when to convert from conservative to operative management and the importance of serum lactate as a strangulation indicator.",
+    "average": "Patient survived but experienced avoidable complications, likely due to delayed surgery or excessive investigation. Review the ischaemia warning signs in SBO: constant pain replacing colicky pain, lactate >2 mmol/L, and leucocytosis with left shift. Bailey & Love Chapter on SBO is essential reading.",
+    "poor": "Patient developed strangulated bowel with peritonitis. This is a preventable outcome. Adhesive SBO with previous abdominal surgery is the most common cause of SBO — always suspect it and plan early surgical intervention when conservative management fails or ischaemia is suspected."
+  }
+}

@@ -1,0 +1,2198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="theme-color" content="#080c11"/>
+  <title>Clinical Simulation OS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=DM+Sans:wght@300;400;500;600&display=swap');
+:root{--bg:#080c11;--bg1:#0c1219;--bg2:#111a24;--bg3:#182231;--bg4:#1e2c3e;--bdr:#1c2d40;--bdr2:#253d55;--t1:#ddeaf5;--t2:#7899b8;--t3:#3d566e;--t4:#233244;--green:#0dbd8b;--green2:#05d49e;--amber:#f5a623;--red:#e8405a;--blue:#3da8f5;--purple:#a78bfa;--orange:#fb923c;--mono:'IBM Plex Mono',monospace;--serif:'Newsreader',Georgia,serif;--sans:'DM Sans',system-ui,sans-serif;--r1:6px;--r2:10px;--r3:14px;--r4:20px;--sh:0 4px 20px rgba(0,0,0,.55);--sh2:0 8px 32px rgba(0,0,0,.65);--vbar:54px;--bnav:60px;--safe-b:env(safe-area-inset-bottom,0px)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:14px;-webkit-text-size-adjust:100%}
+body{font-family:var(--sans);background:var(--bg);color:var(--t1);min-height:100vh;min-height:100dvh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+button{cursor:pointer;font-family:inherit;border:none;background:none}
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-track{background:var(--bg1)}
+::-webkit-scrollbar-thumb{background:var(--bdr2);border-radius:99px}
+.hidden{display:none!important}
+
+/* HOME */
+.home-screen{min-height:100dvh;display:flex;flex-direction:column;animation:fadeUp .35s ease}
+.home-topbar{display:flex;align-items:center;gap:12px;padding:14px 20px;background:var(--bg1);border-bottom:1px solid var(--bdr);position:sticky;top:0;z-index:20}
+.topbar-logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--green),#089e72);border-radius:var(--r2);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.logo-text{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.04em}
+.logo-sub{font-family:var(--mono);font-size:8px;color:var(--t3);letter-spacing:.1em;text-transform:uppercase}
+.topbar-right{margin-left:auto}
+.topbar-badge{font-family:var(--mono);font-size:9px;color:var(--green);background:rgba(13,189,139,.09);border:1px solid rgba(13,189,139,.22);padding:3px 9px;border-radius:99px}
+.home-filters{display:flex;align-items:center;gap:7px;padding:10px 20px;background:var(--bg1);border-bottom:1px solid var(--bdr);overflow-x:auto;flex-shrink:0;scrollbar-width:none}
+.home-filters::-webkit-scrollbar{display:none}
+.filter-label{font-family:var(--mono);font-size:8px;letter-spacing:.12em;color:var(--t3);text-transform:uppercase;flex-shrink:0}
+.filter-sep{width:1px;height:16px;background:var(--bdr);flex-shrink:0}
+.filter-btn{font-family:var(--mono);font-size:9px;font-weight:500;padding:4px 11px;border-radius:99px;border:1px solid var(--bdr2);background:var(--bg2);color:var(--t2);transition:all .15s;white-space:nowrap}
+.filter-btn.active{background:rgba(13,189,139,.12);border-color:rgba(13,189,139,.35);color:var(--green)}
+.home-hero{padding:40px 20px 28px;text-align:center;position:relative;overflow:hidden}
+.home-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(13,189,139,.055) 0%,transparent 70%);pointer-events:none}
+.hero-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);margin-bottom:12px}
+.hero-title{font-family:var(--serif);font-size:clamp(1.8rem,5vw,3.2rem);font-weight:500;line-height:1.12;letter-spacing:-.02em}
+.hero-title em{font-style:italic;color:var(--green)}
+.hero-sub{margin:12px auto 0;font-size:.88rem;color:var(--t2);max-width:480px;line-height:1.6}
+.home-stats{display:flex;justify-content:center;gap:28px;padding:16px 20px;border-top:1px solid var(--bdr);border-bottom:1px solid var(--bdr);background:var(--bg1);flex-wrap:wrap}
+.home-stat{text-align:center}
+.home-stat-value{font-family:var(--mono);font-size:1.2rem;font-weight:600;color:var(--green)}
+.home-stat-label{font-size:.65rem;color:var(--t3);text-transform:uppercase;letter-spacing:.1em;margin-top:1px}
+.home-cases-section{flex:1;padding:24px 20px}
+.section-header{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.section-title{font-family:var(--serif);font-size:1.15rem;font-weight:500;white-space:nowrap}
+.section-line{flex:1;height:1px;background:var(--bdr)}
+.cases-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+.case-card{background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r3);padding:18px;cursor:pointer;transition:all .2s ease;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.case-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),var(--blue));opacity:0;transition:opacity .2s}
+.case-card:hover{background:var(--bg3);border-color:var(--bdr2);transform:translateY(-2px);box-shadow:var(--sh)}
+.case-card:hover::after{opacity:1}
+.case-card.locked{opacity:.28;cursor:not-allowed;pointer-events:none}
+.card-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.card-id{font-family:var(--mono);font-size:8px;color:var(--t4);letter-spacing:.08em}
+.card-difficulty{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:99px;border:1px solid}
+.diff-Intern,.diff-intern{color:var(--green);border-color:rgba(13,189,139,.3);background:rgba(13,189,139,.07)}
+.diff-MO,.diff-mo{color:var(--amber);border-color:rgba(245,166,35,.3);background:rgba(245,166,35,.07)}
+.diff-Resident,.diff-resident{color:var(--red);border-color:rgba(232,64,90,.3);background:rgba(232,64,90,.07)}
+.card-patient{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:9px;color:var(--t2);margin-bottom:8px}
+.patient-dot{width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0}
+.card-title{font-family:var(--serif);font-size:1.2rem;font-weight:500;line-height:1.2;margin-bottom:4px}
+.card-subtitle{font-family:var(--mono);font-size:9px;color:var(--t3);letter-spacing:.04em;margin-bottom:8px}
+.card-desc{font-size:.8rem;color:var(--t2);line-height:1.55;margin-bottom:12px;flex:1}
+.card-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:14px}
+.card-tag{font-size:9px;padding:2px 7px;background:var(--bg4);border:1px solid var(--bdr);border-radius:99px;color:var(--t2)}
+.card-footer{display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--bdr);margin-top:auto}
+.card-meta{display:flex;flex-direction:column;gap:2px}
+.card-time{font-family:var(--mono);font-size:9px;color:var(--t2)}
+.card-coins{font-family:var(--mono);font-size:9px;color:var(--amber)}
+.card-cta{font-size:10px;font-weight:600;color:var(--green);background:rgba(13,189,139,.1);border:1px solid rgba(13,189,139,.25);padding:5px 13px;border-radius:99px;transition:all .15s}
+.case-card:hover .card-cta{background:rgba(13,189,139,.2)}
+.pregame-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(8px);display:flex;align-items:flex-end;justify-content:center;z-index:200;padding:0;animation:fadeIn .2s ease}
+@media(min-width:600px){.pregame-overlay{align-items:center;padding:20px}}
+.pregame-modal{background:var(--bg2);border:1px solid var(--bdr2);border-radius:var(--r4) var(--r4) 0 0;max-width:560px;width:100%;max-height:92dvh;overflow-y:auto;box-shadow:var(--sh2)}
+@media(min-width:600px){.pregame-modal{border-radius:var(--r4);max-height:90dvh}}
+.pregame-head{padding:22px 22px 0}
+.pregame-handle{width:36px;height:4px;background:var(--bdr2);border-radius:99px;margin:0 auto 16px}
+@media(min-width:600px){.pregame-handle{display:none}}
+.pregame-case-label{font-family:var(--mono);font-size:8px;letter-spacing:.15em;text-transform:uppercase;color:var(--green);margin-bottom:4px}
+.pregame-title{font-family:var(--serif);font-size:1.4rem;font-weight:500;line-height:1.2;margin-bottom:12px}
+.pregame-patient{font-family:var(--mono);font-size:10px;color:var(--t2);background:var(--bg3);border:1px solid var(--bdr);padding:10px 13px;border-radius:var(--r2);display:flex;gap:14px;flex-wrap:wrap}
+.ppi{display:flex;flex-direction:column;gap:1px}
+.ppi strong{color:var(--t1);font-size:11px}
+.ppi small{font-size:8px;color:var(--t3);letter-spacing:.08em;text-transform:uppercase}
+.pregame-rules{padding:16px 22px;display:flex;flex-direction:column;gap:7px}
+.rules-title{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:3px}
+.rule-item{display:flex;gap:10px;align-items:flex-start;padding:9px 12px;background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r2)}
+.ri{font-size:14px;flex-shrink:0;margin-top:1px}
+.rt{font-size:.78rem;color:var(--t2);line-height:1.5}
+.rt strong{color:var(--t1)}
+.pregame-meta{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:0 22px 16px}
+.meta-item{background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r2);padding:9px 12px;display:flex;flex-direction:column;gap:2px}
+.meta-label{font-family:var(--mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--t3)}
+.meta-value{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--t1)}
+.meta-value.coins{color:var(--amber)}
+.pregame-actions{padding:0 22px calc(22px + var(--safe-b));display:flex;gap:9px}
+.btn-start{flex:1;padding:14px;border-radius:var(--r2);background:var(--green);color:var(--bg);font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.06em;transition:all .15s}
+.btn-start:hover{background:var(--green2)}
+.btn-cancel{padding:14px 16px;border-radius:var(--r2);background:none;color:var(--t3);border:1px solid var(--bdr);font-family:var(--mono);font-size:10px;transition:all .15s}
+.home-footer{text-align:center;padding:16px 20px calc(16px + var(--safe-b));font-family:var(--mono);font-size:8px;color:var(--t4);letter-spacing:.1em;border-top:1px solid var(--bdr)}
+
+/* GAME LAYOUT */
+.game-wrap{display:flex;flex-direction:column;height:100dvh;overflow:hidden;background:var(--bg);position:relative}
+.vitals-bar{flex-shrink:0;height:var(--vbar);background:var(--bg1);border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:8px;padding:0 10px;z-index:10}
+.vb-left{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.vb-back{font-size:22px;color:var(--t2);padding:2px 4px;line-height:1;border-radius:var(--r1);transition:color .15s}
+.vb-back:hover{color:var(--t1)}
+.vb-patient{display:flex;flex-direction:column}
+.vb-name{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--t1);line-height:1.2}
+.vb-cc{font-family:var(--mono);font-size:8px;color:var(--t3);line-height:1.2;max-width:80px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.vb-vitals{display:flex;gap:4px;flex:1;justify-content:center}
+.vbv{display:flex;flex-direction:column;align-items:center;padding:3px 7px;border-radius:var(--r1);background:var(--bg2);border:1px solid var(--bdr);min-width:44px;transition:all .3s}
+.vbv-icon{font-size:8px;color:var(--t3);line-height:1}
+.vbv-val{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--t1);line-height:1.2;white-space:nowrap}
+.vbv-time .vbv-val{font-size:10px;color:var(--blue)}
+.vbv.vbv-warn{background:rgba(232,64,90,.1);border-color:rgba(232,64,90,.38);animation:vPulse 1s ease infinite alternate}
+.vbv.vbv-warn .vbv-val{color:var(--red)}
+@keyframes vPulse{from{opacity:.65}to{opacity:1}}
+.vb-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.stage-pip{width:9px;height:9px;border-radius:50%;flex-shrink:0;transition:all .4s}
+.pip-yellow{background:var(--amber);box-shadow:0 0 10px rgba(245,166,35,.5)}
+.pip-orange{background:var(--orange);box-shadow:0 0 10px rgba(251,146,60,.5)}
+.pip-red{background:var(--red);box-shadow:0 0 12px rgba(232,64,90,.6);animation:vPulse .7s ease infinite alternate}
+.pip-black{background:var(--red);box-shadow:0 0 16px rgba(232,64,90,.8);animation:vPulse .4s ease infinite alternate}
+.pip-green{background:var(--green);box-shadow:0 0 10px rgba(13,189,139,.55)}
+.pip-pulse{animation:pipPop 1s ease infinite}
+@keyframes pipPop{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.6);opacity:.7}}
+.vb-log{font-size:17px;color:var(--t2);padding:4px;border-radius:var(--r1);transition:color .15s}
+.vb-log:hover{color:var(--t1)}
+.stage-ribbon{height:3px;flex-shrink:0;transition:background .4s}
+.ribbon-yellow{background:var(--amber)}.ribbon-orange{background:var(--orange)}.ribbon-red{background:var(--red)}.ribbon-black{background:var(--red)}.ribbon-green{background:var(--green)}
+.stage-bar{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;padding:6px 12px;background:var(--bg1);border-bottom:1px solid var(--bdr);gap:8px}
+.stage-label-wrap{display:flex;align-items:center;gap:6px}
+.stage-badge{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:99px;border:1px solid;transition:all .4s}
+.sb-yellow{color:var(--amber);background:rgba(245,166,35,.1);border-color:rgba(245,166,35,.3)}
+.sb-orange{color:var(--orange);background:rgba(251,146,60,.1);border-color:rgba(251,146,60,.3)}
+.sb-red{color:var(--red);background:rgba(232,64,90,.1);border-color:rgba(232,64,90,.35);animation:vPulse .7s ease infinite alternate}
+.sb-black{color:var(--red);background:rgba(232,64,90,.15);border-color:rgba(232,64,90,.5);animation:vPulse .4s ease infinite alternate}
+.sb-green{color:var(--green);background:rgba(13,189,139,.1);border-color:rgba(13,189,139,.3)}
+.sr-coins{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--t1)}
+.co-low{color:var(--amber)!important}.co-over{color:var(--red)!important}
+.stage-bar-actions{display:flex;gap:5px}
+.btn-skip{font-family:var(--mono);font-size:9px;font-weight:600;padding:4px 10px;border-radius:99px;border:1px solid var(--bdr2);background:var(--bg3);color:var(--blue);transition:all .15s}
+.btn-end{font-family:var(--mono);font-size:9px;font-weight:600;padding:4px 10px;border-radius:99px;border:1px solid var(--bdr);background:var(--bg2);color:var(--t3);transition:all .15s}
+.btn-end.btn-end-ready{color:var(--amber);border-color:rgba(245,166,35,.4);background:rgba(245,166,35,.07)}
+
+/* SWIPEABLE PAGES */
+.pages-viewport{flex:1;overflow:hidden;position:relative}
+.pages-track{display:flex;height:100%;transition:transform .3s cubic-bezier(.4,0,.2,1);will-change:transform}
+.page{flex:0 0 100%;width:100%;height:100%;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+
+/* BOTTOM NAV */
+.bottom-nav{flex-shrink:0;height:calc(var(--bnav) + var(--safe-b));padding-bottom:var(--safe-b);background:var(--bg1);border-top:1px solid var(--bdr);display:flex;align-items:stretch;z-index:10}
+.bnav{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px 4px;color:var(--t3);font-family:var(--mono);font-size:8px;letter-spacing:.04em;text-transform:uppercase;transition:color .15s;position:relative}
+.bnav.active{color:var(--green)}
+.bnav.active::before{content:'';position:absolute;top:0;left:20%;right:20%;height:2px;background:var(--green);border-radius:0 0 99px 99px}
+.bnav-icon{font-size:18px;line-height:1}
+.bnav-badge{position:absolute;top:6px;right:calc(50% - 14px);background:var(--green);color:var(--bg);font-size:7px;font-weight:700;min-width:14px;height:14px;border-radius:99px;display:flex;align-items:center;justify-content:center;padding:0 3px}
+.bnav-badge.locked{background:var(--t4);color:var(--t3)}
+
+/* PAGE CONTENT */
+.pg{display:flex;flex-direction:column;padding:10px}
+.card{background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r2);padding:12px 14px;margin-bottom:8px}
+.cl{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3);margin-bottom:7px}
+.cv{font-size:.85rem;color:var(--t1)}
+.csub{font-size:.75rem;color:var(--t3);margin-top:2px}
+.card.accent-a{border-color:rgba(245,166,35,.3);background:rgba(245,166,35,.04)}
+.clue{font-size:.8rem;color:var(--t2);line-height:1.5}
+.hopi{display:flex;flex-direction:column;gap:0}
+.hopi-r{display:flex;flex-direction:column;gap:1px;padding:6px 0;border-bottom:1px solid var(--bdr)}
+.hopi-r:last-child{border-bottom:none;padding-bottom:0}
+.hk{font-family:var(--mono);font-size:8px;color:var(--t3);text-transform:uppercase;letter-spacing:.08em}
+.hv{font-size:.82rem;color:var(--t1);line-height:1.4}
+.chip-wrap{display:flex;flex-wrap:wrap;gap:5px}
+.chip{font-size:.75rem;padding:3px 9px;background:var(--bg3);border:1px solid var(--bdr);border-radius:99px;color:var(--t2)}
+.chip-g{background:rgba(13,189,139,.07);border-color:rgba(13,189,139,.2);color:var(--green)}
+.blist{list-style:none;display:flex;flex-direction:column;gap:5px}
+.blist li{font-size:.78rem;color:var(--t2);padding-left:12px;position:relative;line-height:1.4}
+.blist li::before{content:'›';position:absolute;left:0;color:var(--green)}
+.skip-row{display:flex;align-items:center;gap:6px;padding:10px 14px;background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r2);margin-bottom:8px;overflow-x:auto;scrollbar-width:none}
+.skip-row::-webkit-scrollbar{display:none}
+.skip-row-label{font-family:var(--mono);font-size:8px;color:var(--t3);flex-shrink:0;white-space:nowrap}
+.skip-chip{font-family:var(--mono);font-size:9px;font-weight:600;padding:4px 10px;border-radius:99px;border:1px solid var(--bdr2);background:var(--bg2);color:var(--blue);white-space:nowrap;transition:all .15s;flex-shrink:0}
+.skip-chip:active{background:rgba(61,168,245,.14)}
+.cat-label{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--t3);padding:4px 2px 6px;border-bottom:1px solid var(--bdr);margin-bottom:7px;margin-top:4px}
+.cat-label:first-child{margin-top:0}
+.cat-disease{color:var(--amber)}
+
+/* TEST CARDS */
+.tcard{background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r2);padding:10px 12px;margin-bottom:7px;transition:all .15s}
+.tcard-done{border-color:rgba(13,189,139,.25);background:rgba(13,189,139,.04)}
+.tcard-pend{border-color:rgba(245,166,35,.28);background:rgba(245,166,35,.04)}
+.tcard-na{opacity:.35;pointer-events:none}
+.tc-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.tc-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.tc-n{font-size:.85rem;font-weight:600;color:var(--t1)}
+.tc-fn{font-size:.72rem;color:var(--t3);line-height:1.3}
+.tc-dummy{font-size:.7rem;color:var(--t4);font-style:italic}
+.tc-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0}
+.tc-costs{display:flex;gap:6px}
+.tc-c,.tc-t{font-family:var(--mono);font-size:9px;color:var(--t2)}
+.tc-badge{font-family:var(--mono);font-size:9px;font-weight:600;padding:2px 8px;border-radius:99px;flex-shrink:0}
+.tc-done-b{background:rgba(13,189,139,.12);color:var(--green);border:1px solid rgba(13,189,139,.25)}
+.tc-pend-b{background:rgba(245,166,35,.12);color:var(--amber);border:1px solid rgba(245,166,35,.25)}
+.tc-na-b{background:var(--bg3);color:var(--t4);border:1px solid var(--bdr)}
+.tc-btn{font-family:var(--mono);font-size:10px;font-weight:600;padding:5px 12px;border-radius:99px;border:1px solid rgba(13,189,139,.3);background:rgba(13,189,139,.08);color:var(--green);transition:all .15s}
+.tc-btn:active{background:rgba(13,189,139,.18)}
+.tc-result{margin-top:9px;padding-top:9px;border-top:1px solid var(--bdr);display:flex;flex-direction:column;gap:5px}
+.tc-res-text{font-family:var(--mono);font-size:.72rem;color:var(--t2);line-height:1.55;background:var(--bg3);padding:7px 10px;border-radius:var(--r1)}
+.tc-interp{font-size:.74rem;color:var(--blue);line-height:1.4;font-style:italic}
+.tc-pend-bar{margin-top:8px;height:3px;background:var(--bg3);border-radius:99px;overflow:hidden}
+.tc-pend-fill{height:100%;width:40%;background:var(--amber);border-radius:99px;animation:pbar 2s ease infinite}
+@keyframes pbar{0%{transform:translateX(-100%)}100%{transform:translateX(250%)}}
+
+/* MANAGEMENT CARDS */
+.mcard{background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r2);padding:10px 12px;margin-bottom:7px;transition:all .15s}
+.mc-g{opacity:.58}
+.mc-cure{border-color:rgba(245,166,35,.28);background:rgba(245,166,35,.03)}
+.mc-wrong{border-color:rgba(232,64,90,.18)}
+.mc-blunder{border-color:rgba(232,64,90,.35);background:rgba(232,64,90,.04)}
+.mc-row{display:flex;align-items:flex-start;gap:10px}
+.mc-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.mc-n{font-size:.85rem;font-weight:600;color:var(--t1)}
+.mc-fn{font-size:.72rem;color:var(--t3);line-height:1.3}
+.mc-tag{display:inline-block;font-family:var(--mono);font-size:8px;font-weight:700;padding:2px 6px;border-radius:3px;margin-top:2px}
+.mc-cure-t{background:rgba(245,166,35,.12);color:var(--amber);border:1px solid rgba(245,166,35,.28)}
+.mc-wrong-t{background:rgba(232,64,90,.1);color:var(--red);border:1px solid rgba(232,64,90,.28)}
+.mc-blunder-t{background:rgba(232,64,90,.14);color:var(--red);border:1px solid rgba(232,64,90,.4)}
+.mc-side{display:flex;flex-direction:column;align-items:flex-end;gap:5px;flex-shrink:0}
+.mc-cost{font-family:var(--mono);font-size:9px;color:var(--t2)}
+.mc-done{font-family:var(--mono);font-size:9px;color:var(--green)}
+.mc-blocked{font-family:var(--mono);font-size:9px;color:var(--t4)}
+.mc-btn{font-family:var(--mono);font-size:10px;font-weight:600;padding:5px 12px;border-radius:99px;border:1px solid rgba(13,189,139,.3);background:rgba(13,189,139,.08);color:var(--green);transition:all .15s}
+.mc-btn:active{background:rgba(13,189,139,.18)}
+.mc-btn-cure{border-color:rgba(245,166,35,.4);background:rgba(245,166,35,.1);color:var(--amber)}
+.mc-btn-cure:active{background:rgba(245,166,35,.2)}
+.mgmt-lock{display:flex;gap:12px;align-items:flex-start;padding:14px;background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r2);margin-bottom:8px;font-size:.8rem;color:var(--t2);line-height:1.5}
+.mgmt-warn{font-family:var(--mono);font-size:8px;color:var(--amber);background:rgba(245,166,35,.07);border:1px solid rgba(245,166,35,.2);padding:6px 10px;border-radius:var(--r1);margin-bottom:8px;letter-spacing:.03em}
+
+/* DIAGNOSIS */
+.dx-sub{font-size:.78rem;color:var(--t2);line-height:1.5}
+.dx-current{font-family:var(--mono);font-size:10px;color:var(--t2);background:rgba(61,168,245,.07);border:1px solid rgba(61,168,245,.2);padding:8px 12px;border-radius:var(--r2);margin-bottom:8px}
+.dx-current strong{color:var(--blue)}
+.dx-list{display:flex;flex-direction:column;gap:5px}
+.dx-opt{display:flex;align-items:center;gap:10px;padding:11px 12px;background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r2);transition:all .15s}
+.dx-opt.dx-sel{border-color:rgba(61,168,245,.45);background:rgba(61,168,245,.06)}
+.dx-r{width:14px;height:14px;border-radius:50%;border:2px solid var(--bdr2);flex-shrink:0;transition:all .15s}
+.dx-r-on{border-color:var(--blue);background:var(--blue);box-shadow:0 0 0 3px rgba(61,168,245,.18)}
+.dx-lbl{font-size:.85rem;color:var(--t1)}
+.dx-note{font-family:var(--mono);font-size:9px;color:var(--t3);text-align:center;padding:12px}
+
+/* LOG DRAWER */
+.log-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:40;opacity:0;pointer-events:none;transition:opacity .25s}
+.log-overlay.active{opacity:1;pointer-events:all}
+.log-drawer{position:fixed;top:0;left:0;bottom:0;width:min(82vw,320px);background:var(--bg1);border-right:1px solid var(--bdr2);z-index:50;display:flex;flex-direction:column;transform:translateX(-100%);transition:transform .28s cubic-bezier(.4,0,.2,1);box-shadow:var(--sh2)}
+.log-drawer.open{transform:translateX(0)}
+.ld-header{display:flex;align-items:center;justify-content:space-between;padding:16px 14px;border-bottom:1px solid var(--bdr);flex-shrink:0}
+.ld-title{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--t3)}
+.ld-close{font-size:20px;color:var(--t2);padding:2px 4px;border-radius:var(--r1)}
+.log-entries{flex:1;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:4px}
+.le{display:flex;flex-direction:column;gap:1px;padding:6px 9px;border-radius:var(--r1);border-left:2px solid transparent;font-size:10px;line-height:1.45}
+.le-t{font-family:var(--mono);font-size:8px;color:var(--t4);letter-spacing:.05em}
+.le-m{color:var(--t2)}
+.le.le-action{background:rgba(61,168,245,.06);border-left-color:var(--blue)}
+.le.le-result{background:rgba(167,139,250,.06);border-left-color:var(--purple)}
+.le.le-system{background:transparent}
+.le.le-warning{background:rgba(245,166,35,.07);border-left-color:var(--amber)}
+.le.le-danger{background:rgba(232,64,90,.07);border-left-color:var(--red)}
+.le.le-success{background:rgba(13,189,139,.07);border-left-color:var(--green)}
+.le.le-info{background:rgba(61,168,245,.06);border-left-color:var(--blue)}
+
+/* SKIP SHEET */
+.sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:40}
+.sheet-skip{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--bdr2);border-radius:var(--r4) var(--r4) 0 0;padding:18px 18px calc(18px + var(--safe-b));z-index:50;box-shadow:0 -8px 32px rgba(0,0,0,.5)}
+.sheet-handle{width:36px;height:4px;background:var(--bdr2);border-radius:99px;margin:0 auto 16px}
+.sheet-title{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--t1);margin-bottom:4px}
+.sheet-desc{font-size:.78rem;color:var(--t2);margin-bottom:14px;line-height:1.4}
+.skip-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.skip-opt{padding:11px 6px;background:var(--bg3);border:1px solid var(--bdr);border-radius:var(--r2);color:var(--blue);font-family:var(--mono);font-size:11px;font-weight:600;text-align:center;transition:all .15s}
+.skip-opt:active{background:rgba(61,168,245,.12);border-color:rgba(61,168,245,.38)}
+.skip-cancel{width:100%;padding:12px;background:none;border:1px solid var(--bdr);border-radius:var(--r2);color:var(--t3);font-family:var(--mono);font-size:10px}
+
+/* STAGE FLASH */
+.sf{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:200;pointer-events:none;animation:sfFade 2.6s ease-out forwards}
+.sf-yellow{background:rgba(245,166,35,.07)}.sf-orange{background:rgba(251,146,60,.09)}.sf-red{background:rgba(232,64,90,.11)}.sf-black{background:rgba(232,64,90,.18)}
+.sf-box{text-align:center;background:var(--bg2);border:2px solid var(--amber);border-radius:var(--r4);padding:24px 36px;box-shadow:0 0 50px rgba(245,166,35,.2)}
+.sf-red .sf-box,.sf-black .sf-box{border-color:var(--red);box-shadow:0 0 60px rgba(232,64,90,.3)}
+.sf-i{font-size:1.8rem;margin-bottom:5px}
+.sf-t{font-family:var(--mono);font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:3px}
+.sf-red .sf-t,.sf-black .sf-t{color:var(--red)}
+.sf-s{font-family:var(--serif);font-size:1.1rem;font-style:italic;color:var(--t1)}
+@keyframes sfFade{0%{opacity:0;transform:scale(.93)}12%{opacity:1;transform:scale(1)}72%{opacity:1}100%{opacity:0}}
+
+/* GAME OVER SHEET */
+.sheet-gameover{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--bdr2);border-radius:var(--r4) var(--r4) 0 0;z-index:60;box-shadow:0 -8px 40px rgba(0,0,0,.6);overflow:hidden}
+.go{padding:32px 22px calc(22px + var(--safe-b));text-align:center}
+.go-death{background:rgba(232,64,90,.06)}.go-transfer{background:rgba(245,166,35,.05)}
+.go-ic{font-size:2.8rem;margin-bottom:8px}
+.go-title{font-family:var(--serif);font-size:1.3rem;font-weight:500;margin-bottom:6px}
+.go-sub{font-size:.8rem;color:var(--t2);line-height:1.5;margin-bottom:20px}
+.go-btn-score{width:100%;padding:13px;border-radius:var(--r2);background:var(--green);color:var(--bg);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;margin-bottom:8px;display:block;transition:all .15s}
+.go-btn-home{width:100%;padding:11px;border-radius:var(--r2);background:none;border:1px solid var(--bdr);color:var(--t3);font-family:var(--mono);font-size:10px;display:block}
+
+/* SCORE SHEET */
+.sheet-score{position:fixed;inset:0;background:var(--bg);z-index:60;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.ss{padding:20px 16px calc(20px + var(--safe-b));max-width:480px;margin:0 auto}
+.ss-head{text-align:center;margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--bdr)}
+.ss-grade{font-family:var(--serif);font-size:3rem;font-weight:500;line-height:1}
+.ss-score{font-family:var(--mono);font-size:1.7rem;font-weight:700;color:var(--t1);margin-top:2px}
+.ss-score span{font-size:.85rem;color:var(--t3)}
+.ss-msg{font-size:.8rem;color:var(--t2);line-height:1.5;margin-top:8px;font-family:var(--serif);font-style:italic}
+.ss-dx-box{background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r2);padding:12px 13px;margin-bottom:12px;display:flex;flex-direction:column;gap:6px}
+.ss-dx-r{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.ss-dx-r span{font-family:var(--mono);font-size:8px;color:var(--t3);text-transform:uppercase;letter-spacing:.1em}
+.dx-ok{font-size:.82rem;color:var(--green)}.dx-bad{font-size:.82rem;color:var(--red)}
+.ss-breakdown{display:flex;flex-direction:column;gap:4px;margin-bottom:12px}
+.ss-row{display:flex;justify-content:space-between;padding:6px 10px;background:var(--bg2);border-radius:var(--r1)}
+.ss-row span{font-size:.78rem;color:var(--t2)}
+.ss-pt{font-family:var(--mono);font-size:12px;font-weight:700}
+.pt-p{color:var(--green)}.pt-n{color:var(--red)}.pt-z{color:var(--t4)}
+.ss-stats{background:var(--bg2);border:1px solid var(--bdr);border-radius:var(--r2);padding:11px 13px;margin-bottom:12px;display:flex;flex-direction:column;gap:6px}
+.ss-sr{display:flex;justify-content:space-between;font-size:.78rem}
+.ss-sr span{color:var(--t3)}.ss-sr strong{font-family:var(--mono);font-size:10px;color:var(--t1)}
+.ss-review{margin-bottom:16px}
+.ss-rev-title{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:6px}
+.ss-m{font-size:.75rem;padding:5px 10px;border-radius:var(--r1);margin-bottom:4px;border-left:3px solid}
+.ss-m-missed{color:var(--amber);background:rgba(245,166,35,.07);border-left-color:var(--amber)}
+.ss-m-wrong,.ss-m-blunder{color:var(--red);background:rgba(232,64,90,.07);border-left-color:var(--red)}
+.ss-m-unnecessary{color:var(--t2);background:var(--bg2);border-left-color:var(--t4)}
+.ss-home{width:100%;padding:13px;background:var(--green);color:var(--bg);border-radius:var(--r2);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;transition:all .15s}
+.ss-home:hover{background:var(--green2)}
+
+/* TOASTS */
+.toast-container{position:fixed;bottom:calc(var(--bnav) + var(--safe-b) + 10px);left:12px;right:12px;display:flex;flex-direction:column;gap:6px;z-index:100;pointer-events:none}
+.toast{font-family:var(--mono);font-size:10px;padding:9px 14px;border-radius:var(--r2);background:var(--bg3);border:1px solid var(--bdr2);color:var(--t1);transform:translateY(12px);opacity:0;transition:all .28s ease;box-shadow:var(--sh);line-height:1.4}
+.toast.t-on{transform:translateY(0);opacity:1}
+.toast-success{border-color:rgba(13,189,139,.38);background:rgba(13,189,139,.1)}
+.toast-danger{border-color:rgba(232,64,90,.38);background:rgba(232,64,90,.1)}
+.toast-warning{border-color:rgba(245,166,35,.38);background:rgba(245,166,35,.1)}
+.toast-info{border-color:rgba(61,168,245,.35);background:rgba(61,168,245,.08)}
+
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* DESKTOP */
+@media(min-width:700px){
+  :root{--vbar:58px;--bnav:64px}
+  .cases-grid{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+  .vb-cc{max-width:160px}
+  .game-wrap{max-width:560px;margin:0 auto;box-shadow:0 0 0 1px var(--bdr),var(--sh2)}
+  body:has(.game-wrap){display:flex;align-items:flex-start;justify-content:center;min-height:100dvh}
+}
+
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div style="height:100dvh;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#233244;letter-spacing:.14em">INITIALISING…</div>
+  </div>
+  <script>
+window.__IDX__   = [
+  {
+    "id": "appendicitis_001",
+    "title": "Acute Abdominal Pain",
+    "subtitle": "Emergency Department · Triage Level 2",
+    "patientAge": 24, "patientSex": "Male", "patientOccupation": "Student",
+    "chiefComplaint": "Abdominal pain for 12 hours, migrating to RLQ",
+    "category": "Surgery", "department": "Emergency", "system": "GI",
+    "difficulty": "Intern", "difficultyLevel": 1,
+    "estimatedTime": "20–30 min", "budget": 3000, "stages": 4,
+    "tags": ["Abdomen", "Emergency", "Surgical"],
+    "description": "A young student presents with classic migrating abdominal pain. Diagnose before complications set in — every minute matters."
+  },
+  {
+    "id": "typhoid_001",
+    "title": "Prolonged Fever with Abdominal Discomfort",
+    "subtitle": "Medicine Ward · Day 3 of Admission",
+    "patientAge": 19, "patientSex": "Female", "patientOccupation": "College Student",
+    "chiefComplaint": "Stepwise fever for 10 days with headache and loose stools",
+    "category": "Medicine", "department": "General Medicine", "system": "Infectious",
+    "difficulty": "MO", "difficultyLevel": 2,
+    "estimatedTime": "25–40 min", "budget": 3000, "stages": 4,
+    "tags": ["Fever", "Infectious", "Tricky", "Overlapping DDx"],
+    "description": "Multiple differentials overlap with similar presentations. Careful workup and clinical reasoning required to separate them."
+  }
+];
+window.__CASES__ = {"appendicitis_001":{
+  "id": "appendicitis_001",
+  "title": "Acute Abdominal Pain",
+  "subtitle": "Emergency Department · Triage Level 2",
+  "difficulty": "Intern", "category": "Surgery", "system": "GI",
+  "tags": ["Abdomen","Emergency","Surgical"], "estimatedTime": "20–30 min",
+
+  "clinicalPresentation": {
+    "patientParticulars": { "age": 24, "sex": "Male", "occupation": "Student", "address": "Pokhara" },
+    "chiefComplaint": "Abdominal pain for 12 hours, started around the navel, now shifted to right lower abdomen",
+    "HOPI": {
+      "onset": "Sudden onset periumbilical colicky pain ~12 hours ago",
+      "progression": "Pain has migrated and localised to RLQ, now constant and sharp",
+      "associatedSymptoms": ["Nausea","Loss of appetite (anorexia)","One episode of vomiting","Low-grade fever"],
+      "relievingFactors": ["Lying still"], "aggravatingFactors": ["Movement","Deep breathing"]
+    },
+    "pastHistory": ["No chronic illness","No prior surgeries","No known drug allergies"],
+    "personalHistory": ["Non-smoker","Occasional alcohol","Normal bowel habits until today"],
+    "vitals": { "temp": 37.5, "pulse": 92, "bp": "120/80", "rr": 18, "spo2": 98, "weight": "68 kg" },
+    "exam": {
+      "general": ["Alert and oriented","Mild distress","Not pale, not icteric"],
+      "abdominal": ["Tenderness at McBurney's point (RLQ)","Voluntary guarding in RLQ","Rovsing's sign: Positive","Rebound tenderness: Absent (early)","Psoas sign: Equivocal","Bowel sounds present"],
+      "others": ["CVS: Normal","Chest: Clear"]
+    }
+  },
+
+  "initialState": {
+    "time": 0, "stage": "early", "budget": 3000, "cost": 0, "penalty": 0,
+    "cured": false, "outcome": null,
+    "vitals": { "hr": 92, "bp": "120/80", "temp": 37.5, "rr": 18, "spo2": 98 },
+    "activeSymptoms": ["Periumbilical pain migrating to RLQ","Nausea","Anorexia"],
+    "completedTests": [], "givenManagement": [], "pendingResults": [],
+    "selectedDiagnosis": null, "diagnosisCorrect": false, "diagnosisHistory": []
+  },
+
+  "stages": {
+    "early":       { "label": "Early Appendicitis",       "color": "yellow", "next": "localized",   "afterTime": 3 },
+    "localized":   { "label": "Localised Peritonitis",    "color": "orange", "next": "perforation", "afterTime": 8 },
+    "perforation": { "label": "Perforated Appendix",      "color": "red",    "next": "death",       "afterTime": 14 },
+    "death":       { "label": "Septic Shock / Death",     "color": "black",  "next": null,          "afterTime": null }
+  },
+
+  "progressionRules": [
+    {
+      "from": "early", "to": "localized", "condition": "no_treatment",
+      "effects": {
+        "symptoms": ["RLQ pain intensifying","Rebound tenderness appearing","Fever rising"],
+        "vitals": { "temp": 38.2, "hr": 104 }, "penalty": 0,
+        "penaltyMsg": "Disease progressed to localised peritonitis — earlier intervention would have been safer."
+      }
+    },
+    {
+      "from": "localized", "to": "perforation", "condition": "no_treatment",
+      "effects": {
+        "symptoms": ["Generalised abdominal rigidity","Patient appears toxic","High-grade fever"],
+        "vitals": { "bp": "90/60", "hr": 126, "temp": 39.3, "rr": 24 }, "penalty": 20,
+        "penaltyMsg": "Appendix has perforated! Peritonitis developing. Open surgery required immediately."
+      }
+    },
+    {
+      "from": "perforation", "to": "death", "condition": "no_treatment",
+      "effects": {
+        "symptoms": ["Multi-organ dysfunction","Unresponsive","Septic shock"],
+        "vitals": { "bp": "60/40", "hr": 140, "temp": 40.1, "rr": 32, "spo2": 86 },
+        "penalty": 50, "penaltyMsg": "Patient died from septic shock secondary to faecal peritonitis.",
+        "endGame": true, "outcome": "death"
+      }
+    }
+  ],
+
+  "tests": [
+    {
+      "id": "cbc", "name": "CBC", "fullName": "Complete Blood Count",
+      "time": 0.5, "cost": 150, "type": "useful", "category": "Blood",
+      "stageAvailability": ["early","localized","perforation"],
+      "results": {
+        "early":       "WBC 12,400/μL (mild leukocytosis). Neutrophils 78%. Hb 14.2 g/dL. Platelets normal.",
+        "localized":   "WBC 18,200/μL (significant leukocytosis). Neutrophils 85%, left shift. Bands 8%.",
+        "perforation": "WBC 26,400/μL (severe). Bands 22%. Thrombocytopenia 98k. Hb 12.8 g/dL."
+      },
+      "interpretation": {
+        "early":       "Mild leukocytosis supports an acute inflammatory process. Consistent with appendicitis.",
+        "localized":   "Significant leukocytosis with left shift — active bacterial infection spreading.",
+        "perforation": "Severe leukocytosis with band forms — meets sepsis criteria."
+      }
+    },
+    {
+      "id": "urine_re", "name": "Urine R/E", "fullName": "Urine Routine Examination",
+      "time": 0.3, "cost": 80, "type": "useful", "category": "Urine",
+      "stageAvailability": ["early","localized","perforation"],
+      "results": {
+        "early":       "Clear urine. No RBCs, no WBCs, no bacteria. Protein absent. Glucose absent.",
+        "localized":   "Trace WBCs (sterile pyuria from adjacent inflammation). No bacteria on culture.",
+        "perforation": "Concentrated urine. Trace WBCs. No organisms. Reflects dehydration in sepsis."
+      },
+      "interpretation": {
+        "early":       "Normal urine effectively rules out UTI and renal colic — important differentials.",
+        "localized":   "Sterile pyuria from adjacent peritoneal irritation, not UTI.",
+        "perforation": "Oliguria reflects poor renal perfusion in septic shock."
+      }
+    },
+    {
+      "id": "crp", "name": "CRP", "fullName": "C-Reactive Protein",
+      "time": 1, "cost": 200, "type": "useful", "category": "Blood",
+      "stageAvailability": ["early","localized","perforation"],
+      "results": {
+        "early":       "CRP: 22 mg/L (mildly elevated, NL <10). Early acute-phase response.",
+        "localized":   "CRP: 94 mg/L (significantly elevated). Active inflammatory process.",
+        "perforation": "CRP: 287 mg/L (markedly elevated). Consistent with peritonitis/sepsis."
+      },
+      "interpretation": {
+        "early":       "Mild CRP elevation is expected in early appendicitis.",
+        "localized":   "High CRP supports spreading peritoneal inflammation.",
+        "perforation": "Markedly raised CRP is a marker of severe sepsis."
+      }
+    },
+    {
+      "id": "usg", "name": "USG Abdomen", "fullName": "Ultrasound Abdomen & Pelvis",
+      "time": 1, "cost": 400, "type": "useful", "category": "Imaging",
+      "stageAvailability": ["early","localized","perforation"],
+      "results": {
+        "early":       "Appendix visualised: 9mm diameter, non-compressible. Mild periappendiceal fat stranding. Consistent with early appendicitis.",
+        "localized":   "Appendix 12mm, non-compressible with appendicolith. Periappendiceal fluid collection 5mm. Localised inflammation.",
+        "perforation": "Perforated appendix — complex heterogeneous collection in RIF. Free fluid in pelvis."
+      },
+      "interpretation": {
+        "early":       "Diameter >6mm + non-compressible is sonographically diagnostic of appendicitis.",
+        "localized":   "Appendicolith with surrounding collection — localised peritonitis confirmed.",
+        "perforation": "Perforation confirmed. CT needed to map extent of contamination."
+      }
+    },
+    {
+      "id": "ct_abdomen", "name": "CT Abdomen", "fullName": "CT Abdomen & Pelvis with IV Contrast",
+      "time": 1.5, "cost": 900, "type": "useful", "category": "Imaging",
+      "stageAvailability": ["early","localized","perforation"],
+      "results": {
+        "early":       "Appendix 9mm. Mild periappendiceal stranding. No perforation. No free gas. Uncomplicated appendicitis.",
+        "localized":   "Appendix 13mm with appendicolith. Periappendiceal fluid collection 3×2cm. Localised peritonitis. No free gas.",
+        "perforation": "Perforated appendix. Extraluminal free air. Pelvic abscess 4×5cm. Diffuse peritoneal contamination."
+      },
+      "interpretation": {
+        "early":       "Gold standard imaging confirms uncomplicated appendicitis.",
+        "localized":   "CT confirms periappendiceal abscess formation.",
+        "perforation": "Free air + pelvic collection — open laparotomy and washout required."
+      }
+    },
+    {
+      "id": "lft", "name": "LFT", "fullName": "Liver Function Tests",
+      "time": 1, "cost": 250, "type": "dummy", "category": "Blood",
+      "stageAvailability": ["early","localized","perforation"],
+      "results": {
+        "early":       "Bilirubin 0.8 mg/dL (NL). AST 28 (NL). ALT 22 (NL). ALP 88 (NL). All within normal limits.",
+        "localized":   "LFT: All parameters within normal limits.",
+        "perforation": "ALP mildly elevated (non-specific in sepsis). Other parameters normal."
+      },
+      "interpretation": {
+        "early":       "Normal LFT — hepatic/biliary pathology unlikely. Not useful in this context.",
+        "localized":   "Normal LFT — no hepatic involvement.",
+        "perforation": "Mild non-specific changes from systemic sepsis."
+      }
+    },
+    {
+      "id": "xray", "name": "X-ray Abdomen", "fullName": "X-ray Abdomen Erect + Supine",
+      "time": 0.5, "cost": 150, "type": "useful", "category": "Imaging",
+      "stageAvailability": ["early","localized","perforation"],
+      "results": {
+        "early":       "No gas under diaphragm. No bowel obstruction. Rightward scoliosis (pain splinting). Non-diagnostic.",
+        "localized":   "Sentinel loop in RLQ. Slightly dilated loops — localised ileus. No free gas.",
+        "perforation": "Free gas under right dome of diaphragm — PNEUMOPERITONEUM. Confirms perforation."
+      },
+      "interpretation": {
+        "early":       "Normal X-ray does not exclude appendicitis. Poor sensitivity in early disease.",
+        "localized":   "Sentinel loop suggests localised peritoneal irritation.",
+        "perforation": "Free gas is a surgical emergency — immediate intervention required."
+      }
+    },
+    {
+      "id": "ecg", "name": "ECG", "fullName": "12-Lead ECG",
+      "time": 0.3, "cost": 100, "type": "dummy", "category": "Cardiac",
+      "stageAvailability": ["early","localized","perforation"],
+      "results": {
+        "early":       "Sinus tachycardia 94 bpm. No ST changes. Normal QRS. Normal axis.",
+        "localized":   "Sinus tachycardia 106 bpm. No ischaemic changes. Normal.",
+        "perforation": "Sinus tachycardia 128 bpm. No specific changes."
+      },
+      "interpretation": {
+        "early":       "Tachycardia consistent with pain/anxiety. ECG not indicated for this presentation.",
+        "localized":   "Tachycardia from sepsis. No primary cardiac pathology.",
+        "perforation": "Septic tachycardia. ECG not useful here."
+      }
+    }
+  ],
+
+  "diagnosisOptions": [
+    { "id": "appendicitis",    "label": "Acute Appendicitis",                  "correct": true },
+    { "id": "gastroenteritis", "label": "Acute Gastroenteritis",               "correct": false },
+    { "id": "renal_colic",     "label": "Right-sided Renal / Ureteric Colic",  "correct": false },
+    { "id": "mesenteric_ad",   "label": "Mesenteric Adenitis",                 "correct": false },
+    { "id": "meckels",         "label": "Meckel's Diverticulitis",             "correct": false },
+    { "id": "ibd",             "label": "Crohn's Disease (Terminal Ileitis)",  "correct": false },
+    { "id": "hernia",          "label": "Strangulated Inguinal Hernia",        "correct": false },
+    { "id": "psoas_abscess",   "label": "Psoas Abscess",                       "correct": false },
+    { "id": "right_colitis",   "label": "Right-sided Colitis / Caecal Mass",   "correct": false },
+    { "id": "testicular",      "label": "Testicular Torsion / Epididymo-orchitis", "correct": false }
+  ],
+  "correctDiagnosis": "appendicitis",
+
+  "managementOptions": {
+    "general": [
+      {
+        "id": "iv_fluids", "name": "IV Fluids", "fullName": "IV Crystalloids (Normal Saline / Ringer's Lactate)",
+        "cost": 100, "type": "supportive", "repeatable": false,
+        "stageEffect": {
+          "early":       { "note": "Maintains hydration. Good pre-operative preparation.", "vitalEffect": { "hr": -3 } },
+          "localized":   { "note": "Essential resuscitation. Stabilises haemodynamics.", "vitalEffect": { "hr": -5 } },
+          "perforation": { "note": "Aggressive fluid resuscitation for septic shock.", "vitalEffect": { "hr": -10 } }
+        }
+      },
+      {
+        "id": "npo", "name": "Keep NPO", "fullName": "Nil Per Oral + NG Tube Insertion",
+        "cost": 60, "type": "preop", "repeatable": false,
+        "stageEffect": {
+          "early":       { "note": "Correct pre-op preparation. Patient fasted for safe anaesthesia." },
+          "localized":   { "note": "NPO maintained. NG tube to decompress distended abdomen." },
+          "perforation": { "note": "NPO + NG decompression essential in peritonitis." }
+        }
+      },
+      {
+        "id": "analgesia", "name": "IV Analgesia", "fullName": "IV Tramadol 50mg (Pain Relief)",
+        "cost": 80, "type": "supportive", "repeatable": false,
+        "stageEffect": {
+          "early":       { "note": "Pain relief administered. Humane care — does not mask diagnosis at this stage." },
+          "localized":   { "note": "IV analgesia given. Important for patient comfort." },
+          "perforation": { "note": "Morphine 5mg IV given. Part of sepsis management bundle." }
+        }
+      },
+      {
+        "id": "monitoring", "name": "Monitoring", "fullName": "Continuous Vitals + Urine Output Monitoring",
+        "cost": 50, "type": "supportive", "repeatable": false,
+        "stageEffect": {
+          "early":       { "note": "Monitoring initiated. Watch for deterioration." },
+          "localized":   { "note": "Hourly vitals and urine output — important in peritonitis." },
+          "perforation": { "note": "ICU-level monitoring. Central line placed." }
+        }
+      },
+      {
+        "id": "antacid", "name": "Oral Antacid", "fullName": "Tab. Pantoprazole 40mg Oral",
+        "cost": 40, "type": "dummy", "repeatable": false,
+        "stageEffect": {
+          "early":       { "note": "No benefit in appendicitis. Oral route contraindicated in NPO patient.", "penalty": 2 },
+          "localized":   { "note": "Inappropriate — patient is NPO. Oral medications contraindicated.", "penalty": 3 },
+          "perforation": { "note": "Wrong and harmful — oral medications in perforated viscus.", "penalty": 3 }
+        }
+      },
+      {
+        "id": "antispasmodic", "name": "Antispasmodic", "fullName": "Inj. Hyoscine Butylbromide IV",
+        "cost": 60, "type": "wrong", "repeatable": false,
+        "stageEffect": {
+          "early":       { "note": "Antispasmodics NOT indicated for appendicitis. May mask clinical signs.", "penalty": 5 },
+          "localized":   { "note": "Dangerous — masks worsening peritoneal signs. Significantly delays surgery.", "penalty": 10 },
+          "perforation": { "note": "Critically harmful — masks signs in deteriorating patient.", "penalty": 15 }
+        }
+      }
+    ],
+    "diseaseSpecific": {
+      "appendicitis": [
+        {
+          "id": "iv_antibiotics", "name": "IV Antibiotics", "fullName": "IV Ceftriaxone 1g + Metronidazole 500mg",
+          "cost": 200, "type": "supportive", "repeatable": false,
+          "stageEffect": {
+            "early":       { "note": "Prophylactic antibiotics before surgery. Slows bacterial progression.", "delayProgression": 1 },
+            "localized":   { "note": "Broad spectrum antibiotics essential before surgery.", "delayProgression": 0.5 },
+            "perforation": { "note": "IV antibiotics for bacteraemia. Necessary but not sufficient — surgery is mandatory." }
+          }
+        },
+        {
+          "id": "lap_appendectomy", "name": "Laparoscopic Appendectomy", "fullName": "Emergency Laparoscopic Appendectomy",
+          "cost": 900, "type": "curative", "repeatable": false,
+          "stageEffect": {
+            "early":       { "cure": true, "note": "Excellent! Laparoscopic appendectomy performed successfully. Minimal blood loss. Patient recovering well." },
+            "localized":   { "cure": true, "note": "Laparoscopic appendectomy completed. Peritoneal washout performed. Patient recovering." },
+            "perforation": { "blocked": true, "note": "Laparoscopic approach not safe after perforation with peritonitis. Use open laparotomy instead." }
+          }
+        },
+        {
+          "id": "open_appendectomy", "name": "Open Appendectomy", "fullName": "Emergency Open Laparotomy + Appendectomy",
+          "cost": 1100, "type": "curative", "repeatable": false,
+          "stageEffect": {
+            "early":       { "cure": true, "note": "Open appendectomy successful. Slightly more invasive than needed but good outcome." },
+            "localized":   { "cure": true, "note": "Open appendectomy with thorough washout performed. Patient recovering." },
+            "perforation": { "cure": true, "note": "Emergency open laparotomy performed. Appendix removed, abdomen washed out, drain placed. Patient in ICU — recovering." }
+          }
+        },
+        {
+          "id": "conservative", "name": "Antibiotics Only (Conservative)", "fullName": "Conservative Management — Antibiotics Only, No Surgery",
+          "cost": 300, "type": "wrong", "repeatable": false,
+          "stageEffect": {
+            "early":       { "note": "Suboptimal — conservative management has 25% failure rate. Surgery is the standard of care.", "penalty": 8 },
+            "localized":   { "note": "Wrong — conservative management is contraindicated in localised peritonitis.", "penalty": 15 },
+            "perforation": { "note": "Catastrophic error — antibiotics alone in perforated appendicitis leads to death.", "penalty": 30 }
+          }
+        },
+        {
+          "id": "obs_wait", "name": "Observe and Wait", "fullName": "Watchful Waiting — No Active Intervention",
+          "cost": 0, "type": "blunder", "repeatable": false,
+          "stageEffect": {
+            "early":       { "note": "BLUNDER — active observation without treatment in confirmed appendicitis directly accelerates perforation.", "penalty": 20 },
+            "localized":   { "note": "BLUNDER — waiting with established peritonitis. Patient deteriorating rapidly.", "penalty": 35 },
+            "perforation": { "note": "FATAL BLUNDER — no surgery in perforated appendicitis.", "penalty": 50, "endGame": true, "outcome": "transfer" }
+          }
+        }
+      ]
+    }
+  },
+
+  "correctManagement": ["iv_fluids","npo","analgesia","monitoring","iv_antibiotics","lap_appendectomy"],
+
+  "scoringRubric": {
+    "correctDiagnosis": 25, "timelyCure": 30, "costEfficiency": 15,
+    "correctTests": 15, "correctManagement": 15, "penaltyPerPoint": -1
+  },
+
+  "endMessages": {
+    "perfect":  "Outstanding! Rapid diagnosis with minimal cost and zero complications. Theatre-ready decision making.",
+    "good":     "Good work. Patient recovered well. Minor inefficiencies in test ordering or timing — review your approach.",
+    "average":  "Patient survived but management had errors. Delayed diagnosis or excess investigations slowed you down.",
+    "poor":     "Patient suffered serious complications from delayed or incorrect management. Review appendicitis guidelines thoroughly."
+  }
+},"typhoid_001":{
+  "id": "typhoid_001",
+  "title": "Prolonged Fever with Abdominal Discomfort",
+  "subtitle": "Medicine Ward · Day 3 of Admission",
+  "difficulty": "MO", "category": "Medicine", "system": "Infectious",
+  "tags": ["Fever","Infectious","Tricky","Overlapping DDx"], "estimatedTime": "25–40 min",
+
+  "clinicalPresentation": {
+    "patientParticulars": { "age": 19, "sex": "Female", "occupation": "College Student", "address": "Hostel, Kathmandu" },
+    "chiefComplaint": "Stepwise rising fever for 10 days with headache, abdominal discomfort and loose stools",
+    "HOPI": {
+      "onset": "Insidious onset low-grade fever starting 10 days ago, gradually rising in a stepwise pattern",
+      "progression": "Fever now reaching 39.5°C with predominantly evening spikes. Frontal headache and generalised malaise throughout. Loose stools (3–4/day, no blood) and abdominal distension appeared on day 5.",
+      "associatedSymptoms": ["Frontal headache (dull, constant)","Severe malaise and lethargy","Anorexia","Abdominal distension","Loose stools 3–4/day (no blood/mucus)","Dry non-productive cough","One episode of epistaxis on day 8"],
+      "relievingFactors": ["Paracetamol temporarily reduces fever"],
+      "aggravatingFactors": ["Evening hours","Physical activity"]
+    },
+    "pastHistory": ["No chronic illness","No prior hospitalisation","No TB contact known","No known drug allergies"],
+    "familyHistory": ["No significant family history","No similar illness in hostel mates"],
+    "personalHistory": ["Eats from hostel canteen and roadside stalls regularly","Drinks tap water at hostel","Non-smoker, no alcohol"],
+    "vitals": { "temp": 39.2, "pulse": 78, "bp": "106/70", "rr": 18, "spo2": 97, "weight": "52 kg" },
+    "exam": {
+      "general": ["Ill-looking, toxic facies","Mildly pale","No icterus","Coated (furred) tongue","No lymphadenopathy"],
+      "abdominal": ["Mild hepatomegaly (liver 2cm below costal margin)","Mild splenomegaly (spleen just palpable)","Soft abdomen, mild generalised tenderness","No guarding or rigidity","Bowel sounds: Normal"],
+      "others": ["Rose spots: 2–3 faint pink macules on upper abdomen (easily missed)","CVS: Relative bradycardia — pulse 78 despite temperature 39.2°C (Faget's sign)","Chest: Clear with occasional dry cough"]
+    }
+  },
+  "clinicalClue": "KEY FINDING: Relative bradycardia (pulse inappropriately low for the degree of fever). Most infections cause tachycardia — this is the opposite. Also note the rose spots on the abdomen.",
+
+  "initialState": {
+    "time": 0, "stage": "first_week", "budget": 3000, "cost": 0, "penalty": 0,
+    "cured": false, "outcome": null,
+    "vitals": { "hr": 78, "bp": "106/70", "temp": 39.2, "rr": 18, "spo2": 97 },
+    "activeSymptoms": ["Stepwise fever 10 days","Frontal headache","Anorexia","Loose stools","Relative bradycardia","Rose spots on abdomen"],
+    "completedTests": [], "givenManagement": [], "pendingResults": [],
+    "selectedDiagnosis": null, "diagnosisCorrect": false, "diagnosisHistory": []
+  },
+
+  "stages": {
+    "first_week":  { "label": "Early Typhoid (Bacteraemic Phase)",   "color": "yellow", "next": "second_week", "afterTime": 4 },
+    "second_week": { "label": "Established Typhoid (Intestinal)",    "color": "orange", "next": "complicated",  "afterTime": 10 },
+    "complicated": { "label": "Complicated Typhoid (Perforation Risk)", "color": "red", "next": "death",        "afterTime": 18 },
+    "death":       { "label": "Death — Typhoid Perforation / Sepsis", "color": "black", "next": null,           "afterTime": null }
+  },
+
+  "progressionRules": [
+    {
+      "from": "first_week", "to": "second_week", "condition": "no_antibiotics",
+      "effects": {
+        "symptoms": ["Abdominal pain worsening","Diarrhoea increasing","Hepatosplenomegaly increasing","Rash spreading"],
+        "vitals": { "temp": 39.8, "hr": 92 }, "penalty": 0,
+        "penaltyMsg": "Untreated typhoid progressing to intestinal phase. Complication risk is now rising."
+      }
+    },
+    {
+      "from": "second_week", "to": "complicated", "condition": "no_antibiotics",
+      "effects": {
+        "symptoms": ["Sudden severe abdominal pain","Abdominal guarding and rigidity","Melaena (blood in stool)","Patient rapidly deteriorating"],
+        "vitals": { "bp": "88/60", "hr": 118, "temp": 40.1, "rr": 26 }, "penalty": 25,
+        "penaltyMsg": "Typhoid perforation or haemorrhage has occurred. Emergency surgical management required."
+      }
+    },
+    {
+      "from": "complicated", "to": "death", "condition": "no_treatment",
+      "effects": {
+        "symptoms": ["Shock","Multi-organ failure","Unresponsive"],
+        "vitals": { "bp": "60/40", "hr": 138, "temp": 40.6, "rr": 32, "spo2": 86 },
+        "penalty": 50, "penaltyMsg": "Patient died from complications of untreated typhoid.",
+        "endGame": true, "outcome": "death"
+      }
+    }
+  ],
+
+  "tests": [
+    {
+      "id": "cbc", "name": "CBC", "fullName": "Complete Blood Count",
+      "time": 0.5, "cost": 150, "type": "useful", "category": "Blood",
+      "stageAvailability": ["first_week","second_week","complicated"],
+      "results": {
+        "first_week":  "WBC: 3,800/μL (LEUCOPENIA). Lymphocyte predominance. Hb 10.8 g/dL (mild anaemia). Platelets: 140k (mildly low).",
+        "second_week": "WBC: 3,200/μL (leucopenia persisting). Hb 9.4 g/dL (worsening). Platelets 98k (thrombocytopenia — watch carefully).",
+        "complicated": "WBC: 18,000/μL (LEUCOCYTOSIS — NEW FINDING — suggests perforation/superinfection). Hb 7.2. Platelets 62k. Band forms present."
+      },
+      "interpretation": {
+        "first_week":  "CRITICAL CLUE: Leucopenia in a febrile patient is the opposite of most infections. Classic for typhoid. Most bacterial infections cause leucocytosis.",
+        "second_week": "Persistent leucopenia with worsening anaemia and thrombocytopenia — typhoid course progressing.",
+        "complicated": "Sudden leucocytosis in established typhoid = perforation or secondary infection. Surgical emergency."
+      }
+    },
+    {
+      "id": "mp_smear", "name": "MP Smear", "fullName": "Malaria Parasite Smear (Thick & Thin)",
+      "time": 0.5, "cost": 120, "type": "useful", "category": "Blood",
+      "stageAvailability": ["first_week","second_week","complicated"],
+      "results": {
+        "first_week":  "No malaria parasites seen. RBC morphology normal. NEGATIVE for P. falciparum and P. vivax.",
+        "second_week": "Negative for malaria parasites.",
+        "complicated": "Negative for malaria parasites."
+      },
+      "interpretation": {
+        "first_week":  "Malaria ruled out — critical differential in febrile patient from Nepal. Typhoid remains top differential.",
+        "second_week": "Malaria excluded. Continue typhoid workup.",
+        "complicated": "Malaria not contributing to complications."
+      }
+    },
+    {
+      "id": "widal", "name": "Widal Test", "fullName": "Widal Test (O and H Agglutination Titres)",
+      "time": 1, "cost": 180, "type": "useful", "category": "Blood",
+      "stageAvailability": ["first_week","second_week","complicated"],
+      "results": {
+        "first_week":  "TO: 1:80 (borderline). TH: 1:80. NOTE: Widal may be false-negative in first week — antibodies take time to develop. Single titre not diagnostic.",
+        "second_week": "TO: 1:320 (positive). TH: 1:160 (positive). Rising titre strongly supports typhoid.",
+        "complicated": "TO: 1:640 (very high). TH: 1:320. Confirmed enteric fever."
+      },
+      "interpretation": {
+        "first_week":  "Low Widal titre in first week does NOT exclude typhoid. Blood culture is more useful at this stage.",
+        "second_week": "Titre of 1:320 in endemic area is highly suggestive of typhoid. Treat accordingly.",
+        "complicated": "Very high titre confirms established typhoid. Note: antibiotics may blunt titre rise."
+      }
+    },
+    {
+      "id": "blood_culture", "name": "Blood Culture", "fullName": "Blood Culture & Sensitivity",
+      "time": 3, "cost": 400, "type": "useful", "category": "Blood",
+      "stageAvailability": ["first_week","second_week","complicated"],
+      "results": {
+        "first_week":  "POSITIVE: Salmonella typhi isolated (72h incubation). Sensitive to: Ceftriaxone, Azithromycin. RESISTANT to: Ampicillin, Chloramphenicol (MDR strain).",
+        "second_week": "POSITIVE: Salmonella typhi isolated. Same sensitivity pattern. Note: positivity drops to ~50% in 2nd week.",
+        "complicated": "POSITIVE: Salmonella typhi + E. coli (polymicrobial — from perforation). Broad spectrum cover required."
+      },
+      "interpretation": {
+        "first_week":  "Gold standard — positive in 80% of first-week cases. Confirms typhoid AND guides antibiotic choice (MDR strain present).",
+        "second_week": "Still useful but lower sensitivity. Confirms typhoid and antibiotic sensitivities.",
+        "complicated": "Polymicrobial growth indicates bowel perforation with faecal contamination."
+      }
+    },
+    {
+      "id": "lft", "name": "LFT", "fullName": "Liver Function Tests",
+      "time": 1, "cost": 250, "type": "useful", "category": "Blood",
+      "stageAvailability": ["first_week","second_week","complicated"],
+      "results": {
+        "first_week":  "Bilirubin: 1.8 mg/dL (mildly elevated). AST: 78 U/L (2x upper limit). ALT: 65 U/L (elevated). ALP: Normal. Pattern of typhoid hepatitis.",
+        "second_week": "Bilirubin: 2.4 mg/dL. AST: 120 U/L. ALT: 98 U/L. Hepatitis picture worsening.",
+        "complicated": "Bilirubin: 4.2 mg/dL (clinical jaundice). PT prolonged. Coagulopathy developing."
+      },
+      "interpretation": {
+        "first_week":  "Mild transaminitis is a helpful diagnostic clue — typhoid hepatitis occurs in 20–40% of cases.",
+        "second_week": "Worsening hepatic involvement. Monitor closely for acute liver failure.",
+        "complicated": "Severe hepatic dysfunction with coagulopathy significantly increases surgical risk."
+      }
+    },
+    {
+      "id": "dengue_serology", "name": "Dengue NS1 + IgM/IgG", "fullName": "Dengue Serology (NS1 Antigen + IgM/IgG)",
+      "time": 1, "cost": 350, "type": "useful", "category": "Blood",
+      "stageAvailability": ["first_week","second_week","complicated"],
+      "results": {
+        "first_week":  "NS1 Antigen: NEGATIVE. IgM: NEGATIVE. IgG: NEGATIVE. Dengue excluded.",
+        "second_week": "All dengue markers: NEGATIVE.",
+        "complicated": "Dengue: NEGATIVE."
+      },
+      "interpretation": {
+        "first_week":  "Dengue excluded — important differential for fever + thrombocytopenia in endemic region.",
+        "second_week": "Dengue ruled out. Focus remains on typhoid.",
+        "complicated": "Dengue not contributing."
+      }
+    },
+    {
+      "id": "usg_abdomen", "name": "USG Abdomen", "fullName": "Ultrasound Abdomen & Pelvis",
+      "time": 1, "cost": 400, "type": "useful", "category": "Imaging",
+      "stageAvailability": ["first_week","second_week","complicated"],
+      "results": {
+        "first_week":  "Hepatomegaly (14.5 cm). Mild splenomegaly (12 cm). Mesenteric lymphadenopathy — multiple enlarged nodes at RIF. No free fluid.",
+        "second_week": "Hepatosplenomegaly increased. Thickened bowel wall at terminal ileum. Small mesenteric nodes. No free fluid yet.",
+        "complicated": "Free fluid in peritoneum (ascites). Dilated bowel loops. Possible perforation at terminal ileum. Emergency CT/surgery."
+      },
+      "interpretation": {
+        "first_week":  "Classic USG triad: hepatomegaly + splenomegaly + mesenteric lymphadenopathy = highly suggestive of typhoid.",
+        "second_week": "Terminal ileal wall thickening — Peyer's patch involvement is pathognomonic for typhoid.",
+        "complicated": "Free fluid strongly suggests intestinal perforation. Surgical emergency."
+      }
+    },
+    {
+      "id": "stool_culture", "name": "Stool Culture", "fullName": "Stool Culture & Sensitivity",
+      "time": 3, "cost": 300, "type": "useful", "category": "Stool",
+      "stageAvailability": ["first_week","second_week","complicated"],
+      "results": {
+        "first_week":  "Processing (72h). Low positivity in week 1. Preliminary: No Salmonella seen on direct smear.",
+        "second_week": "POSITIVE: Salmonella typhi isolated in stool. Sensitive to Ceftriaxone, Azithromycin.",
+        "complicated": "POSITIVE: Salmonella typhi + E. coli — mixed bowel flora, consistent with perforation."
+      },
+      "interpretation": {
+        "first_week":  "Blood culture is more useful than stool culture in first week — Salmonella shedding in stool peaks in weeks 2–3.",
+        "second_week": "Positive stool culture in 2nd week confirms diagnosis. Also useful for contact tracing.",
+        "complicated": "Mixed flora confirms perforation."
+      }
+    },
+    {
+      "id": "urine_re", "name": "Urine R/E", "fullName": "Urine Routine Examination",
+      "time": 0.3, "cost": 80, "type": "dummy", "category": "Urine",
+      "stageAvailability": ["first_week","second_week","complicated"],
+      "results": {
+        "first_week":  "Mildly cloudy. WBC: Trace. Protein: Trace (non-specific). Glucose: Absent. No bacteria. Not consistent with UTI.",
+        "second_week": "Similar findings. Urine culture: Salmonella typhi isolated (Salmonella shed in urine in ~25% of cases).",
+        "complicated": "Oliguria — urine output <0.5 mL/kg/hr. Reflects pre-renal AKI from septic shock."
+      },
+      "interpretation": {
+        "first_week":  "UTI excluded. Trace abnormalities are non-specific.",
+        "second_week": "Salmonella in urine is a secondary diagnostic clue.",
+        "complicated": "Oliguria signals inadequate renal perfusion — septic shock."
+      }
+    },
+    {
+      "id": "cxr", "name": "Chest X-ray", "fullName": "CXR PA View",
+      "time": 0.5, "cost": 150, "type": "dummy", "category": "Imaging",
+      "stageAvailability": ["first_week","second_week","complicated"],
+      "results": {
+        "first_week":  "Clear lung fields. No consolidation, no effusion. Heart size normal. Unremarkable.",
+        "second_week": "Mild basal atelectasis (non-specific, from abdominal distension). No pneumonia.",
+        "complicated": "Free gas under right dome of diaphragm — PNEUMOPERITONEUM. Confirms bowel perforation. Surgical emergency."
+      },
+      "interpretation": {
+        "first_week":  "Normal CXR. Pneumonia excluded. Not useful for diagnosing typhoid.",
+        "second_week": "Atelectasis from abdominal distension. Non-specific finding.",
+        "complicated": "Free air under diaphragm = perforation confirmed. Emergency laparotomy required."
+      }
+    }
+  ],
+
+  "diagnosisOptions": [
+    { "id": "typhoid",         "label": "Enteric Fever (Typhoid / Paratyphoid)",     "correct": true },
+    { "id": "malaria",         "label": "Malaria (P. falciparum / P. vivax)",         "correct": false },
+    { "id": "dengue",          "label": "Dengue Fever (Classic / Severe)",            "correct": false },
+    { "id": "viral_hepatitis", "label": "Viral Hepatitis A or E",                    "correct": false },
+    { "id": "uti",             "label": "Complicated Urinary Tract Infection",        "correct": false },
+    { "id": "tb",              "label": "Tuberculosis (Abdominal TB / Miliary TB)",   "correct": false },
+    { "id": "leptospirosis",   "label": "Leptospirosis",                              "correct": false },
+    { "id": "inf_mono",        "label": "Infectious Mononucleosis (EBV)",             "correct": false },
+    { "id": "brucellosis",     "label": "Brucellosis",                                "correct": false },
+    { "id": "lymphoma",        "label": "Lymphoma (Hodgkin's / NHL)",                 "correct": false }
+  ],
+  "correctDiagnosis": "typhoid",
+
+  "managementOptions": {
+    "general": [
+      {
+        "id": "iv_fluids", "name": "IV Fluids", "fullName": "IV Ringer's Lactate / Normal Saline",
+        "cost": 100, "type": "supportive", "repeatable": false,
+        "stageEffect": {
+          "first_week":  { "note": "Oral rehydration preferred if tolerating. IV for persistent fever and poor intake.", "vitalEffect": { "hr": -3 } },
+          "second_week": { "note": "IV fluids important — diarrhoea and poor oral intake leading to dehydration.", "vitalEffect": { "hr": -5 } },
+          "complicated": { "note": "Aggressive IV resuscitation for septic shock.", "vitalEffect": { "hr": -10 } }
+        }
+      },
+      {
+        "id": "paracetamol", "name": "Paracetamol", "fullName": "Tab. Paracetamol 500mg TDS (Antipyretic)",
+        "cost": 40, "type": "supportive", "repeatable": false,
+        "stageEffect": {
+          "first_week":  { "note": "Correct — symptomatic relief for fever. Does not treat the infection.", "vitalEffect": { "temp": -0.5 } },
+          "second_week": { "note": "Continue antipyretic. Avoid NSAIDs — risk of GI bleeding in typhoid.", "vitalEffect": { "temp": -0.6 } },
+          "complicated": { "note": "Paracetamol for fever. NSAIDs completely contraindicated in complicated typhoid." }
+        }
+      },
+      {
+        "id": "nsaid", "name": "NSAID (Ibuprofen)", "fullName": "Tab. Ibuprofen 400mg TDS",
+        "cost": 50, "type": "wrong", "repeatable": false,
+        "stageEffect": {
+          "first_week":  { "note": "Caution — NSAIDs increase risk of GI bleeding in typhoid. Use paracetamol instead.", "penalty": 5 },
+          "second_week": { "note": "DANGEROUS — NSAIDs contraindicated in typhoid. High risk of intestinal haemorrhage.", "penalty": 12 },
+          "complicated": { "note": "CRITICAL ERROR — NSAIDs in complicated typhoid causes catastrophic GI bleeding.", "penalty": 20 }
+        }
+      },
+      {
+        "id": "monitoring", "name": "Monitoring", "fullName": "Vitals + Stool Output + Hepatic Monitoring",
+        "cost": 60, "type": "supportive", "repeatable": false,
+        "stageEffect": {
+          "first_week":  { "note": "Monitoring initiated. Watch for sudden abdominal pain or melaena." },
+          "second_week": { "note": "Careful watch for perforation signs — sudden pain, peritonism, or melaena." },
+          "complicated": { "note": "ICU monitoring. Hourly urine output, serial abdominal examinations." }
+        }
+      }
+    ],
+    "diseaseSpecific": {
+      "typhoid": [
+        {
+          "id": "ceftriaxone", "name": "IV Ceftriaxone", "fullName": "IV Ceftriaxone 2g OD for 10–14 days",
+          "cost": 400, "type": "curative", "repeatable": false,
+          "stageEffect": {
+            "first_week":  { "cure": true, "note": "Excellent choice! Ceftriaxone is first-line for typhoid. Fever will begin settling in 3–5 days. Patient recovers fully." },
+            "second_week": { "cure": true, "note": "Ceftriaxone started — effective even in 2nd week. Patient will recover. Monitor closely for complications." },
+            "complicated": { "note": "Ceftriaxone alone insufficient in perforated typhoid. Emergency surgery is also required.", "delayProgression": 0 }
+          }
+        },
+        {
+          "id": "azithromycin", "name": "Oral Azithromycin", "fullName": "Tab. Azithromycin 1g OD for 5 days",
+          "cost": 250, "type": "curative", "repeatable": false,
+          "stageEffect": {
+            "first_week":  { "cure": true, "note": "Good choice for uncomplicated typhoid. Oral azithromycin is effective and suitable. Patient recovers." },
+            "second_week": { "note": "Lower efficacy in established disease. IV Ceftriaxone preferred.", "partial": true, "delayProgression": 1 },
+            "complicated": { "note": "Azithromycin alone insufficient for complicated typhoid. Surgery also required.", "delayProgression": 0 }
+          }
+        },
+        {
+          "id": "chloramphenicol", "name": "Chloramphenicol", "fullName": "Tab. Chloramphenicol 500mg QID",
+          "cost": 80, "type": "wrong", "repeatable": false,
+          "stageEffect": {
+            "first_week":  { "note": "Outdated. High resistance in South Asia. This isolate is MDR — RESISTANT to chloramphenicol. Bone marrow suppression risk.", "penalty": 8 },
+            "second_week": { "note": "Chloramphenicol-resistant strain confirmed. Ineffective and potentially harmful.", "penalty": 12 },
+            "complicated": { "note": "Wrong drug for MDR typhoid. Risk of aplastic anaemia.", "penalty": 15 }
+          }
+        },
+        {
+          "id": "antimalarial", "name": "Antimalarial", "fullName": "Artemether-Lumefantrine (Antimalarial)",
+          "cost": 300, "type": "blunder", "repeatable": false,
+          "stageEffect": {
+            "first_week":  { "note": "BLUNDER — giving antimalarial to a patient without malaria. Malaria smear was negative. Delays correct treatment for typhoid.", "penalty": 20 },
+            "second_week": { "note": "BLUNDER — malaria excluded. This wastes time and money while typhoid progresses.", "penalty": 25 },
+            "complicated": { "note": "FATAL BLUNDER — treating wrong disease while patient deteriorates from typhoid perforation.", "penalty": 35 }
+          }
+        },
+        {
+          "id": "surgery_typhoid", "name": "Emergency Laparotomy", "fullName": "Emergency Laparotomy — Typhoid Perforation Repair",
+          "cost": 1100, "type": "curative", "repeatable": false,
+          "stageEffect": {
+            "first_week":  { "note": "Surgery not indicated in uncomplicated typhoid. Unnecessary laparotomy.", "penalty": 10 },
+            "second_week": { "note": "Surgery not yet indicated unless perforation confirmed. Manage medically first.", "penalty": 5 },
+            "complicated": { "cure": true, "note": "Correct! Emergency laparotomy for typhoid perforation. Perforation repaired, peritoneal washout, drain placed. Continue IV antibiotics post-op. Patient recovering in ICU." }
+          }
+        }
+      ]
+    }
+  },
+
+  "correctManagement": ["iv_fluids","paracetamol","monitoring","ceftriaxone"],
+
+  "scoringRubric": {
+    "correctDiagnosis": 25, "timelyCure": 30, "costEfficiency": 15,
+    "correctTests": 15, "correctManagement": 15, "penaltyPerPoint": -1
+  },
+
+  "endMessages": {
+    "perfect":  "Excellent! You identified enteric fever early, ordered targeted investigations, and started first-line antibiotics promptly. Textbook management.",
+    "good":     "Good clinical reasoning. Patient recovered. Minor suboptimal choices — perhaps unnecessary tests or slight treatment delay.",
+    "average":  "Patient survived but management had errors. Delayed antibiotics, wrong empirical treatment, or excess investigations.",
+    "poor":     "Patient developed serious complications. Typhoid is treatable — it carries significant mortality only when missed or mismanaged. Review this case."
+  }
+}};
+  </script>
+  <script>
+/* caseLoader */
+class CaseLoader {
+  constructor() { this.index = []; this.cache = {}; }
+  async loadIndex() { this.index = window.__IDX__; return this.index; }
+  async loadCase(id) {
+    if (this.cache[id]) return this.cache[id];
+    const d = window.__CASES__[id];
+    if (d) { this.cache[id] = d; return d; }
+    return null;
+  }
+}
+  </script>
+  <script>
+/* engine */
+/**
+ * ClinicalEngine v2
+ * 1 real second = 1 sim minute
+ */
+class ClinicalEngine {
+  constructor(caseData) {
+    this.case     = caseData;
+    this.state    = JSON.parse(JSON.stringify(caseData.initialState));
+    this.listeners = {};
+    this.tickInterval = null;
+    this.tickRate = 1000;       // ms per tick
+    this.simMinsPerTick = 1;    // 1 tick = 1 sim-minute
+    this.paused = false;
+    this.ended  = false;
+    this.log    = [];
+    this.progressionDelayBonus = 0;
+    this.userId = 'guest_001'; // future auth hook
+    this._stageEntryTimes = { [this.state.stage]: 0 };
+  }
+
+  // ── Event bus ────────────────────────────────────────────────────────────
+  on(event, cb) {
+    (this.listeners[event] = this.listeners[event] || []).push(cb);
+    return this;
+  }
+  emit(event, data) {
+    (this.listeners[event] || []).forEach(cb => cb(data));
+  }
+
+  // ── Lifecycle ─────────────────────────────────────────────────────────────
+  start() {
+    this.tickInterval = setInterval(() => this._tick(), this.tickRate);
+    this.emit('started', this.state);
+    this.addLog('system', '🏥 Patient assessed. Simulation clock started.');
+  }
+  pause()  { this.paused = true;  this.emit('paused'); }
+  resume() { this.paused = false; this.emit('resumed'); }
+  stop()   { clearInterval(this.tickInterval); }
+
+  // ── Time jump ─────────────────────────────────────────────────────────────
+  jumpTime(hours) {
+    const steps = Math.ceil((hours * 60) / this.simMinsPerTick);
+    for (let i = 0; i < steps; i++) {
+      this._advanceTime(this.simMinsPerTick);
+      if (this.ended) break;
+    }
+    const lbl = hours < 1 ? `${hours * 60} minutes` : `${hours} hour${hours !== 1 ? 's' : ''}`;
+    this.addLog('system', `⏩ Time advanced by ${lbl}.`);
+    this.emit('stateChanged', this.state);
+    this.emit('tick', this.state);
+  }
+
+  // ── Core tick ─────────────────────────────────────────────────────────────
+  _tick() {
+    if (this.paused || this.ended) return;
+    this._advanceTime(this.simMinsPerTick);
+    this.emit('tick', this.state);
+  }
+
+  _advanceTime(mins) {
+    this.state.time += mins / 60;
+    this._processPendingResults();
+    this._checkProgression();
+  }
+
+  // ── Pending test results ──────────────────────────────────────────────────
+  _processPendingResults() {
+    const ready = this.state.pendingResults.filter(r => this.state.time >= r.readyAt);
+    this.state.pendingResults = this.state.pendingResults.filter(r => this.state.time < r.readyAt);
+    ready.forEach(r => {
+      const test = this.case.tests.find(t => t.id === r.testId);
+      if (!test) return;
+      const resultText = test.results[this.state.stage] || test.results[Object.keys(test.results)[0]];
+      const interpText = test.interpretation?.[this.state.stage] || '';
+      const result = {
+        testId: r.testId, name: test.name, fullName: test.fullName,
+        result: resultText, interpretation: interpText,
+        time: this.state.time, timeLabel: this._formatTime(this.state.time),
+        stage: this.state.stage
+      };
+      this.state.completedTests.push(result);
+      this.addLog('result', `📋 <strong>${test.name}</strong> result ready.`);
+      this.emit('testResult', result);
+    });
+  }
+
+  // ── Disease progression ───────────────────────────────────────────────────
+  _checkProgression() {
+    if (this.state.cured || this.ended) return;
+    const cur = this.case.stages[this.state.stage];
+    if (!cur?.next) return;
+    const threshold = cur.afterTime + this.progressionDelayBonus;
+    if (this.state.time >= threshold) {
+      const rule = this.case.progressionRules.find(r => r.from === this.state.stage);
+      this.progressionDelayBonus = 0;
+      this._transitionStage(cur.next, rule);
+    }
+  }
+
+  _transitionStage(newStage, rule) {
+    const oldStage = this.state.stage;
+    this.state.stage = newStage;
+    this._stageEntryTimes[newStage] = this.state.time;
+    if (rule?.effects) {
+      const e = rule.effects;
+      if (e.vitals)   Object.assign(this.state.vitals, e.vitals);
+      if (e.symptoms) this.state.activeSymptoms = [...new Set([...this.state.activeSymptoms, ...e.symptoms])];
+      if (e.penalty)  this.state.penalty += e.penalty;
+      if (e.penaltyMsg) this.addLog('danger', `⚠️ ${e.penaltyMsg}`);
+      if (e.endGame) {
+        this.ended = true; this.stop();
+        this.state.outcome = e.outcome || 'death';
+        setTimeout(() => this.emit('gameOver', { reason: e.outcome, state: this.state }), 400);
+        return;
+      }
+    }
+    this.addLog('warning', `🔴 Stage advanced: <strong>${this.case.stages[newStage]?.label || newStage}</strong>`);
+    this.emit('stageChanged', { from: oldStage, to: newStage, state: this.state });
+  }
+
+  // ── Order test ────────────────────────────────────────────────────────────
+  orderTest(testId) {
+    if (this.ended) return { success: false, msg: 'Case has ended.' };
+    const test = this.case.tests.find(t => t.id === testId);
+    if (!test) return { success: false, msg: 'Test not found.' };
+    if (!test.stageAvailability?.includes(this.state.stage))
+      return { success: false, msg: `${test.name} not available at this stage.` };
+    if (this.state.completedTests.some(t => t.testId === testId) ||
+        this.state.pendingResults.some(t => t.testId === testId))
+      return { success: false, msg: `${test.name} already ordered.` };
+
+    const willOverspend = (this.state.cost + test.cost) > this.state.budget;
+    this.state.cost += test.cost;
+    this.state.pendingResults.push({ testId, readyAt: this.state.time + test.time });
+
+    const over = willOverspend ? ' ⚠️ Over budget.' : '';
+    this.addLog('action', `🔬 Ordered: <strong>${test.name}</strong> · Results in ${this._fmtDur(test.time)} · 🪙 ${test.cost}${over}`);
+    this.emit('stateChanged', this.state);
+    return { success: true, willOverspend };
+  }
+
+  // ── General management ────────────────────────────────────────────────────
+  applyGeneralManagement(mgmtId) {
+    if (this.ended) return { success: false, msg: 'Case has ended.' };
+    const mgmt = this.case.managementOptions.general?.find(m => m.id === mgmtId);
+    if (!mgmt) return { success: false, msg: 'Option not found.' };
+    if (!mgmt.repeatable && this.state.givenManagement.some(g => g.id === mgmtId))
+      return { success: false, msg: `${mgmt.name} already administered.` };
+
+    const eff = mgmt.stageEffect?.[this.state.stage] || {};
+    const willOverspend = (this.state.cost + mgmt.cost) > this.state.budget;
+    this.state.cost += mgmt.cost;
+    this.state.givenManagement.push({ id: mgmtId, name: mgmt.name, time: this.state.time, category: 'general' });
+
+    if (eff.vitalEffect) this._applyVitals(eff.vitalEffect);
+    if (eff.penalty) { this.state.penalty += eff.penalty; this.addLog('warning', `⚠️ Suboptimal: ${eff.note || 'penalty applied.'}`); }
+
+    const over = willOverspend ? ' ⚠️ Over budget.' : '';
+    this.addLog('action', `💉 <strong>${mgmt.name}</strong> · 🪙 ${mgmt.cost}${over}${eff.note ? ' — ' + eff.note : ''}`);
+    this.emit('stateChanged', this.state);
+    return { success: true };
+  }
+
+  // ── Disease-specific management ───────────────────────────────────────────
+  applyDiseaseManagement(mgmtId, diagId) {
+    if (this.ended) return { success: false, msg: 'Case has ended.' };
+    const opts = this.case.managementOptions.diseaseSpecific?.[diagId];
+    if (!opts) return { success: false, msg: 'No options for this diagnosis.' };
+    const mgmt = opts.find(m => m.id === mgmtId);
+    if (!mgmt) return { success: false, msg: 'Option not found.' };
+    if (this.state.givenManagement.some(g => g.id === mgmtId))
+      return { success: false, msg: `${mgmt.name} already administered.` };
+
+    const eff = mgmt.stageEffect?.[this.state.stage] || {};
+    if (eff.blocked) return { success: false, msg: eff.note || 'Not applicable at this stage.' };
+
+    const willOverspend = (this.state.cost + mgmt.cost) > this.state.budget;
+    this.state.cost += mgmt.cost;
+    this.state.givenManagement.push({ id: mgmtId, name: mgmt.name, time: this.state.time, category: 'disease' });
+
+    if (eff.vitalEffect)      this._applyVitals(eff.vitalEffect);
+    if (eff.delayProgression) this.progressionDelayBonus += eff.delayProgression;
+    if (eff.penalty) {
+      this.state.penalty += eff.penalty;
+      this.addLog(mgmt.type === 'blunder' ? 'danger' : 'warning',
+        `${mgmt.type === 'blunder' ? '🚨 BLUNDER' : '⚠️ Wrong treatment'}: ${eff.note || ''}`);
+    }
+
+    const over = willOverspend ? ' ⚠️ Over budget.' : '';
+    this.addLog('action', `💊 <strong>${mgmt.name}</strong> · 🪙 ${mgmt.cost}${over}${eff.note ? ' — ' + eff.note : ''}`);
+
+    if (eff.cure) { this._cure(mgmt, eff); return { success: true }; }
+    if (eff.endGame) {
+      this.state.outcome = eff.outcome || 'transfer';
+      this.ended = true; this.stop();
+      setTimeout(() => this.emit('gameOver', { reason: eff.outcome, state: this.state }), 400);
+      return { success: true };
+    }
+    this.emit('stateChanged', this.state);
+    return { success: true };
+  }
+
+  _cure(mgmt, eff) {
+    this.state.cured = true; this.state.outcome = 'cured';
+    this.ended = true; this.stop();
+    this.addLog('success', `✅ <strong>${mgmt.fullName || mgmt.name}</strong> — ${eff.note}`);
+    this.emit('cured', { state: this.state, mgmt });
+  }
+
+  // ── Diagnosis ─────────────────────────────────────────────────────────────
+  setDiagnosis(diagId) {
+    const opt = this.case.diagnosisOptions.find(d => d.id === diagId);
+    if (!opt) return { success: false };
+    this.state.selectedDiagnosis = diagId;
+    this.state.diagnosisCorrect  = opt.correct;
+    this.state.diagnosisHistory.push({ diagnosis: diagId, time: this.state.time });
+    this.addLog('info', `🩺 Working diagnosis: <strong>${opt.label}</strong>`);
+    this.emit('diagnosisChanged', { diagId, correct: opt.correct, label: opt.label });
+    return { success: true, correct: opt.correct, label: opt.label };
+  }
+
+  // ── Resign ────────────────────────────────────────────────────────────────
+  resignCase() {
+    this.state.outcome = 'transfer';
+    this.state.penalty += 10;
+    this.ended = true; this.stop();
+    this.addLog('warning', '🚑 Patient transferred to higher centre.');
+    this.emit('gameOver', { reason: 'transfer', state: this.state });
+  }
+
+  // ── Score ─────────────────────────────────────────────────────────────────
+  calculateScore() {
+    const r = this.case.scoringRubric;
+    let score = 0;
+    const breakdown = [];
+
+    // Diagnosis
+    const dScore = this.state.diagnosisCorrect ? r.correctDiagnosis : 0;
+    score += dScore;
+    breakdown.push({ label: 'Correct Diagnosis', max: r.correctDiagnosis, earned: dScore });
+
+    // Timely cure
+    let cScore = 0;
+    if (this.state.cured) {
+      const keys = Object.keys(this.case.stages);
+      const idx  = keys.indexOf(this.state.stage);
+      const frac = Math.max(0, 1 - idx / (keys.length - 1));
+      cScore = Math.round(r.timelyCure * (0.4 + 0.6 * frac));
+    }
+    score += cScore;
+    breakdown.push({ label: 'Timely Cure', max: r.timelyCure, earned: cScore });
+
+    // Cost efficiency
+    const spent = this.state.cost, budget = this.state.budget;
+    let costScore = 0;
+    if (spent <= budget) {
+      const p = spent / budget;
+      costScore = p <= 0.5 ? r.costEfficiency : p <= 0.7 ? Math.round(r.costEfficiency * 0.85)
+        : p <= 0.9 ? Math.round(r.costEfficiency * 0.55) : Math.round(r.costEfficiency * 0.2);
+    } else {
+      const overPct = (spent - budget) / budget;
+      const pen = Math.min(25, Math.round(overPct * 25));
+      this.state.penalty += pen;
+      breakdown.push({ label: 'Budget Overspend Penalty', max: 0, earned: -pen });
+    }
+    score += costScore;
+    breakdown.push({ label: 'Cost Efficiency', max: r.costEfficiency, earned: costScore });
+
+    // Tests
+    const usefulIds  = this.case.tests.filter(t => t.type === 'useful').map(t => t.id);
+    const dummyIds   = this.case.tests.filter(t => t.type === 'dummy').map(t => t.id);
+    const orderedIdsSet = new Set(this.state.completedTests.map(t => t.testId));
+    const gotUseful  = usefulIds.filter(id => orderedIdsSet.has(id)).length;
+    const gotDummy   = dummyIds.filter(id => orderedIdsSet.has(id)).length;
+    const tScore     = Math.round((gotUseful / Math.max(usefulIds.length, 1)) * r.correctTests);
+    score += tScore;
+    breakdown.push({ label: 'Relevant Investigations', max: r.correctTests, earned: tScore });
+    if (gotDummy > 0) {
+      const dp = gotDummy * 2;
+      this.state.penalty += dp;
+      breakdown.push({ label: `Unnecessary Tests (×${gotDummy})`, max: 0, earned: -dp });
+    }
+
+    // Management
+    const correctMgmt = this.case.correctManagement || [];
+    const givenIds    = this.state.givenManagement.map(g => g.id);
+    const gotMgmt     = correctMgmt.filter(id => givenIds.includes(id)).length;
+    const mScore      = Math.round((gotMgmt / Math.max(correctMgmt.length, 1)) * r.correctManagement);
+    score += mScore;
+    breakdown.push({ label: 'Correct Management', max: r.correctManagement, earned: mScore });
+
+    // Penalties
+    const penTotal = this.state.penalty * Math.abs(r.penaltyPerPoint);
+    score -= penTotal;
+    if (this.state.penalty > 0)
+      breakdown.push({ label: `Penalties (×${this.state.penalty})`, max: 0, earned: -penTotal });
+
+    score = Math.max(0, Math.min(100, Math.round(score)));
+    const grade = score >= 90 ? 'A+' : score >= 80 ? 'A' : score >= 70 ? 'B' : score >= 60 ? 'C' : 'F';
+    const msg   = score >= 90 ? this.case.endMessages.perfect
+      : score >= 70 ? this.case.endMessages.good
+      : score >= 50 ? this.case.endMessages.average
+      : this.case.endMessages.poor;
+
+    const mistakes = this._buildMistakes(correctMgmt, givenIds, dummyIds);
+    return { score, grade, msg, breakdown, mistakes,
+      time: this.state.time, stage: this.state.stage,
+      cost: spent, budget,
+      cured: this.state.cured, outcome: this.state.outcome,
+      penalty: this.state.penalty,
+      diagnosisCorrect: this.state.diagnosisCorrect,
+      selectedDiagnosis: this.state.selectedDiagnosis,
+      correctDiagnosis: this.case.correctDiagnosis
+    };
+  }
+
+  _buildMistakes(correctMgmt, givenIds, dummyIds) {
+    const mistakes = [];
+    correctMgmt.forEach(id => {
+      if (!givenIds.includes(id)) {
+        const n = this._mgmtName(id);
+        if (n) mistakes.push({ type: 'missed', label: `Missed: ${n}` });
+      }
+    });
+    this.state.givenManagement.forEach(g => {
+      const m = this._findMgmt(g.id);
+      if (m && (m.type === 'wrong' || m.type === 'blunder'))
+        mistakes.push({ type: m.type, label: `${m.type === 'blunder' ? '🚨 Blunder' : '❌ Wrong'}: ${g.name}` });
+    });
+    this.state.completedTests.forEach(t => {
+      if (dummyIds.includes(t.testId)) {
+        const td = this.case.tests.find(x => x.id === t.testId);
+        if (td) mistakes.push({ type: 'unnecessary', label: `Unnecessary test: ${td.name}` });
+      }
+    });
+    return mistakes;
+  }
+
+  _findMgmt(id) {
+    const g = this.case.managementOptions.general?.find(m => m.id === id);
+    if (g) return g;
+    for (const arr of Object.values(this.case.managementOptions.diseaseSpecific || {})) {
+      const f = arr.find(m => m.id === id);
+      if (f) return f;
+    }
+    return null;
+  }
+  _mgmtName(id) { return this._findMgmt(id)?.name || null; }
+
+  // ── Vitals helper ─────────────────────────────────────────────────────────
+  _applyVitals(eff) {
+    Object.entries(eff).forEach(([k, v]) => {
+      if (typeof v === 'string' && (v[0] === '+' || v[0] === '-')) {
+        const n = parseFloat(v);
+        if (k === 'bp') {
+          const [s, d] = this.state.vitals.bp.split('/').map(Number);
+          this.state.vitals.bp = `${Math.max(50, s + n)}/${Math.max(30, d + Math.round(n * 0.6))}`;
+        } else {
+          this.state.vitals[k] = Math.round(((this.state.vitals[k] || 0) + n) * 10) / 10;
+        }
+      } else {
+        this.state.vitals[k] = v;
+      }
+    });
+  }
+
+  // ── Utilities ─────────────────────────────────────────────────────────────
+  addLog(type, msg) {
+    const e = { type, msg, time: this.state.time, timeLabel: this._formatTime(this.state.time) };
+    this.log.push(e);
+    this.emit('log', e);
+  }
+
+  _formatTime(h) {
+    const hh = Math.floor(h), mm = Math.round((h - hh) * 60);
+    return `${String(hh).padStart(2,'0')}h ${String(mm).padStart(2,'0')}m`;
+  }
+  _fmtDur(h) { return h < 1 ? `${Math.round(h * 60)} min` : `${h}h`; }
+
+  getState()             { return this.state; }
+  getCurrentStage()      { return this.case.stages[this.state.stage] || {}; }
+  getCurrentStageLabel() { return this.getCurrentStage().label || this.state.stage; }
+  getCurrentStageColor() { return this.getCurrentStage().color || 'yellow'; }
+  isOverBudget()         { return this.state.cost > this.state.budget; }
+}
+
+  </script>
+  <script>
+/* ui */
+/**
+ * ClinicalUI v3 — Mobile-first phone interface
+ * - Sticky vitals bar at top
+ * - Bottom tab nav (phone app style)
+ * - Swipe left/right between tabs
+ * - Inline test results on test cards
+ * - Slide-in activity log from left
+ */
+class ClinicalUI {
+  constructor(engine, caseData) {
+    this.engine   = engine;
+    this.case     = caseData;
+    this.tabs     = ['history','tests','manage','diagnosis'];
+    this.tabIdx   = 0;
+    this._sx = 0; this._sy = 0;
+    this._bindEngineEvents();
+  }
+
+  _bindEngineEvents() {
+    this.engine
+      .on('tick',             () => this._updateVitals())
+      .on('stateChanged',     () => this._updateVitals())
+      .on('stageChanged',     d  => { this._updateVitals(); this._flashStage(d); })
+      .on('testResult',       r  => { this._showToast(`📋 ${r.name} ready`, 'info'); this._refreshTestCards(); this._updateVitals(); })
+      .on('log',              e  => this._appendLog(e))
+      .on('cured',            () => { this._updateVitals(); this._showToast('✅ Patient treated!', 'success'); this._pulseGlow('green'); document.getElementById('btn-end')?.classList.add('btn-end-ready'); })
+      .on('gameOver',         d  => this._handleGameOver(d))
+      .on('diagnosisChanged', d  => { this._renderDiagnosisTab(); this._renderManageTab(); this._showToast(`🩺 Dx: ${d.label}`, 'info'); });
+  }
+
+  renderGame() {
+    document.getElementById('app').innerHTML = this._shell();
+    this._bindUIEvents();
+    this._renderAllTabs();
+    this._updateVitals();
+    this._goToTab(0, false);
+  }
+
+  _shell() {
+    const c = this.case, p = c.clinicalPresentation.patientParticulars;
+    return `
+<div class="game-wrap">
+  <!-- Sticky vitals bar -->
+  <div class="vitals-bar">
+    <div class="vb-left">
+      <button class="vb-back" id="btn-back">‹</button>
+      <div class="vb-patient">
+        <span class="vb-name">${p.age}y ${p.sex}</span>
+        <span class="vb-cc">${c.clinicalPresentation.chiefComplaint.split(',')[0]}</span>
+      </div>
+    </div>
+    <div class="vb-vitals">
+      <div class="vbv" id="vbv-hr"><span class="vbv-icon">♥</span><span class="vbv-val" id="vv-hr">—</span></div>
+      <div class="vbv" id="vbv-bp"><span class="vbv-icon">⊕</span><span class="vbv-val" id="vv-bp">—</span></div>
+      <div class="vbv" id="vbv-temp"><span class="vbv-icon">◉</span><span class="vbv-val" id="vv-temp">—</span></div>
+      <div class="vbv vbv-time"><span class="vbv-icon">⏱</span><span class="vbv-val" id="vv-time">0m</span></div>
+    </div>
+    <div class="vb-right">
+      <div class="stage-pip glow-y" id="stage-pip"></div>
+      <button class="vb-log" id="btn-log">☰</button>
+    </div>
+  </div>
+
+  <!-- Stage ribbon -->
+  <div class="stage-ribbon ribbon-yellow" id="stage-ribbon">
+    <span class="sr-stage" id="sr-label">—</span>
+    <div class="sr-right">
+      <span class="sr-coins" id="sr-coins">🪙—</span>
+      <button class="sr-skip" id="btn-skip">⏩</button>
+      <button class="sr-end" id="btn-end">End</button>
+    </div>
+  </div>
+
+  <!-- Swipeable pages -->
+  <div class="pages-viewport" id="pages-viewport">
+    <div class="pages-track" id="pages-track">
+      <div class="page" id="page-history"></div>
+      <div class="page" id="page-tests"></div>
+      <div class="page" id="page-manage"></div>
+      <div class="page" id="page-diagnosis"></div>
+    </div>
+  </div>
+
+  <!-- Bottom tab bar -->
+  <nav class="bottom-nav">
+    <button class="bnav active" data-idx="0"><span class="bnav-ic">📋</span><span class="bnav-lb">History</span></button>
+    <button class="bnav" data-idx="1"><span class="bnav-ic">🔬</span><span class="bnav-lb">Tests</span></button>
+    <button class="bnav" data-idx="2"><span class="bnav-ic">💊</span><span class="bnav-lb">Manage</span></button>
+    <button class="bnav" data-idx="3"><span class="bnav-ic">🩺</span><span class="bnav-lb">Diagnose</span></button>
+  </nav>
+</div>
+
+<!-- Log drawer -->
+<div class="log-overlay" id="log-overlay"></div>
+<aside class="log-drawer" id="log-drawer">
+  <div class="ld-head"><span>Activity Log</span><button class="ld-close" id="ld-close">✕</button></div>
+  <div class="ld-body" id="log-entries"></div>
+</aside>
+
+<!-- Skip sheet -->
+<div class="sheet-bg hidden" id="sheet-bg"></div>
+<div class="bottom-sheet hidden" id="sheet-skip">
+  <div class="bs-handle"></div>
+  <div class="bs-title">⏩ Skip Time</div>
+  <div class="bs-sub">Advance clock. Disease evolves, results arrive.</div>
+  <div class="skip-grid">
+    <button class="skip-chip" data-h="0.5">+30 min</button>
+    <button class="skip-chip" data-h="1">+1 hr</button>
+    <button class="skip-chip" data-h="2">+2 hrs</button>
+    <button class="skip-chip" data-h="4">+4 hrs</button>
+    <button class="skip-chip" data-h="6">+6 hrs</button>
+    <button class="skip-chip" data-h="12">+12 hrs</button>
+  </div>
+  <button class="bs-cancel" id="skip-cancel">Cancel</button>
+</div>
+
+<!-- Fullscreen score -->
+<div class="fullscreen hidden" id="sheet-score"><div class="fs-scroll" id="score-content"></div></div>
+<!-- Fullscreen game over -->
+<div class="fullscreen hidden" id="sheet-gameover"><div class="fs-scroll" id="gameover-content"></div></div>
+
+<!-- Toasts -->
+<div class="toast-stack" id="toasts"></div>`;
+  }
+
+  // ── Tab navigation ────────────────────────────────────────────────────────
+  _goToTab(idx, anim = true) {
+    this.tabIdx = Math.max(0, Math.min(this.tabs.length - 1, idx));
+    const track = document.getElementById('pages-track');
+    if (track) {
+      track.style.transition = anim ? 'transform .26s cubic-bezier(.4,0,.2,1)' : 'none';
+      track.style.transform  = `translateX(-${this.tabIdx * 25}%)`;
+    }
+    document.querySelectorAll('.bnav').forEach((b, i) => b.classList.toggle('active', i === this.tabIdx));
+  }
+
+  _renderAllTabs() {
+    this._renderHistoryPage();
+    this._renderTestsPage();
+    this._renderManageTab();
+    this._renderDiagnosisTab();
+  }
+
+  // ── History page ──────────────────────────────────────────────────────────
+  _renderHistoryPage() {
+    const cp = this.case.clinicalPresentation, p = cp.patientParticulars;
+    document.getElementById('page-history').innerHTML = `
+<div class="pg">
+  <div class="card accent-g">
+    <div class="cl">Chief Complaint</div>
+    <div class="cv big">"${cp.chiefComplaint}"</div>
+  </div>
+
+  <div class="row-2">
+    <div class="card">
+      <div class="cl">Patient</div>
+      <div class="cv">${p.age}y ${p.sex}</div>
+      <div class="csub">${p.occupation}</div>
+    </div>
+    <div class="card">
+      <div class="cl">Location</div>
+      <div class="cv">${this.case.subtitle?.split('·')[0]?.trim()||'ED'}</div>
+      <div class="csub">${p.address||'—'}</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="cl">History</div>
+    <div class="hopi">
+      <div class="hopi-r"><span class="hk">Onset</span><span class="hv">${cp.HOPI.onset}</span></div>
+      <div class="hopi-r"><span class="hk">Progress</span><span class="hv">${cp.HOPI.progression}</span></div>
+      <div class="hopi-r"><span class="hk">Associated</span><span class="hv">${cp.HOPI.associatedSymptoms.join(' · ')}</span></div>
+      ${cp.HOPI.aggravatingFactors?.length?`<div class="hopi-r"><span class="hk">Aggravated</span><span class="hv">${cp.HOPI.aggravatingFactors.join(', ')}</span></div>`:''}
+      ${cp.HOPI.relievingFactors?.length?`<div class="hopi-r"><span class="hk">Relieved</span><span class="hv">${cp.HOPI.relievingFactors.join(', ')}</span></div>`:''}
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="cl">Examination</div>
+    <div class="chip-wrap">
+      ${[...cp.exam.general,...cp.exam.abdominal,...(cp.exam.others||[])].map(e=>`<span class="chip">${e}</span>`).join('')}
+    </div>
+  </div>
+
+  ${this.case.clinicalClue?`
+  <div class="card accent-a">
+    <div class="cl">⚡ Clinical Clue</div>
+    <div class="cv clue">${this.case.clinicalClue}</div>
+  </div>`:''}
+
+  <div class="card">
+    <div class="cl">Past & Personal History</div>
+    <ul class="blist">${[...(cp.pastHistory||[]),...(cp.personalHistory||[])].map(h=>`<li>${h}</li>`).join('')}</ul>
+  </div>
+
+  <div class="card">
+    <div class="cl">Active Symptoms</div>
+    <div class="chip-wrap" id="symptom-chips">
+      ${this.engine.state.activeSymptoms.map(s=>`<span class="chip chip-g">${s}</span>`).join('')}
+    </div>
+  </div>
+</div>`;
+  }
+
+  // ── Tests page ────────────────────────────────────────────────────────────
+  _renderTestsPage() {
+    const cats  = [...new Set(this.case.tests.map(t => t.category))];
+    const stage = this.engine.state.stage;
+    let html = '<div class="pg">';
+    cats.forEach(cat => {
+      html += `<div class="cat-label">${cat}</div>`;
+      this.case.tests.filter(t => t.category === cat).forEach(t => {
+        html += this._testCard(t, stage);
+      });
+    });
+    html += '</div>';
+    document.getElementById('page-tests').innerHTML = html;
+    this._bindTestBtns();
+  }
+
+  _testCard(t, stage) {
+    const pend  = this.engine.state.pendingResults.some(r => r.testId === t.id);
+    const done  = this.engine.state.completedTests.find(r => r.testId === t.id);
+    const avail = t.stageAvailability?.includes(stage);
+
+    if (done) return `
+<div class="tcard tcard-done" id="tc-${t.id}">
+  <div class="tc-row">
+    <div class="tc-info"><span class="tc-n">${t.name}</span><span class="tc-fn">${t.fullName}</span></div>
+    <span class="tc-badge tc-done-b">✓ Done</span>
+  </div>
+  <div class="tc-result">
+    <div class="tc-res-text">${done.result}</div>
+    ${done.interpretation?`<div class="tc-interp">💡 ${done.interpretation}</div>`:''}
+  </div>
+</div>`;
+
+    if (pend) {
+      const r = this.engine.state.pendingResults.find(r => r.testId === t.id);
+      const eta = Math.max(0, r.readyAt - this.engine.state.time);
+      return `
+<div class="tcard tcard-pend" id="tc-${t.id}">
+  <div class="tc-row">
+    <div class="tc-info"><span class="tc-n">${t.name}</span><span class="tc-fn">${t.fullName}</span></div>
+    <span class="tc-badge tc-pend-b">⏳ ~${this.engine._fmtDur(eta)}</span>
+  </div>
+  <div class="tc-pend-bar"><div class="tc-pend-fill"></div></div>
+</div>`;
+    }
+
+    if (!avail) return `
+<div class="tcard tcard-na" id="tc-${t.id}">
+  <div class="tc-row">
+    <div class="tc-info"><span class="tc-n">${t.name}</span><span class="tc-fn">${t.fullName}</span></div>
+    <span class="tc-badge tc-na-b">N/A</span>
+  </div>
+</div>`;
+
+    return `
+<div class="tcard" id="tc-${t.id}">
+  <div class="tc-row">
+    <div class="tc-info">
+      <span class="tc-n">${t.name}</span>
+      <span class="tc-fn">${t.fullName}</span>
+      ${t.type==='dummy'?'<span class="tc-dummy">Non-specific</span>':''}
+    </div>
+    <div class="tc-right">
+      <div class="tc-costs"><span class="tc-c">🪙${t.cost}</span><span class="tc-t">⏱${this.engine._fmtDur(t.time)}</span></div>
+      <button class="tc-btn" data-tid="${t.id}">Order</button>
+    </div>
+  </div>
+</div>`;
+  }
+
+  _bindTestBtns() {
+    document.querySelectorAll('.tc-btn').forEach(b => b.addEventListener('click', () => {
+      const res = this.engine.orderTest(b.dataset.tid);
+      if (res.success) { this._refreshTestCards(); if (res.willOverspend) this._showToast('⚠️ Over budget','warning'); }
+      else this._showToast(res.msg, 'warning');
+    }));
+  }
+
+  _refreshTestCards() {
+    const stage = this.engine.state.stage;
+    // Replace each card individually via outerHTML
+    this.case.tests.forEach(t => {
+      const el = document.getElementById(`tc-${t.id}`);
+      if (!el) return;
+      const tmp = document.createElement('div');
+      tmp.innerHTML = this._testCard(t, stage);
+      el.replaceWith(tmp.firstElementChild);
+    });
+    this._bindTestBtns();
+  }
+
+  // ── Manage tab ────────────────────────────────────────────────────────────
+  _renderManageTab() {
+    const diagId    = this.engine.state.selectedDiagnosis;
+    const diagLabel = diagId ? (this.case.diagnosisOptions.find(d=>d.id===diagId)?.label||diagId) : null;
+    const given     = this.engine.state.givenManagement.map(g => g.id);
+    const stage     = this.engine.state.stage;
+    const genOpts   = this.case.managementOptions.general || [];
+    const disOpts   = diagId ? (this.case.managementOptions.diseaseSpecific?.[diagId] || []) : [];
+
+    let html = '<div class="pg">';
+    html += `<div class="cat-label">General Management</div>`;
+    html += genOpts.map(m => this._mgmtCard(m, given, stage, 'general', null)).join('');
+
+    if (!diagId) {
+      html += `<div class="mgmt-lock">
+        <span>🔒</span>
+        <div><strong>Treatment Locked</strong><br>Set a working diagnosis in the Diagnose tab to unlock disease-specific treatments.</div>
+      </div>`;
+    } else {
+      html += `<div class="cat-label cat-disease">Specific Treatment — <em>${diagLabel}</em></div>`;
+      html += `<div class="mgmt-warn">⚠️ Wrong treatments and blunders incur penalties.</div>`;
+      html += disOpts.map(m => this._mgmtCard(m, given, stage, 'disease', diagId)).join('');
+    }
+    html += '</div>';
+    document.getElementById('page-manage').innerHTML = html;
+    this._bindMgmtBtns();
+  }
+
+  _mgmtCard(m, given, stage, cat, diagId) {
+    const isGiven   = given.includes(m.id);
+    const eff       = m.stageEffect?.[stage] || {};
+    const isBlocked = eff.blocked;
+    const isCure    = m.type === 'curative';
+    const isWrong   = m.type === 'wrong';
+    const isBlunder = m.type === 'blunder';
+    const cls       = isGiven?'mc-g':isCure?'mc-cure':isBlunder?'mc-blunder':isWrong?'mc-wrong':'';
+    let badge = isCure?'<span class="mc-tag mc-cure-t">DEFINITIVE</span>':isBlunder?'<span class="mc-tag mc-blunder-t">⚠ RISKY</span>':isWrong?'<span class="mc-tag mc-wrong-t">CAUTION</span>':'';
+    let btn = isGiven
+      ? '<span class="mc-done">✓ Done</span>'
+      : isBlocked
+      ? `<span class="mc-blocked" title="${eff.note||''}">🚫 Blocked</span>`
+      : `<button class="mc-btn${isCure?' mc-btn-cure':''}" data-mid="${m.id}" data-cat="${cat}" data-did="${diagId||''}">${isCure?'⚡ Perform':'Give'}</button>`;
+    return `
+<div class="mcard ${cls}">
+  <div class="mc-row">
+    <div class="mc-info">
+      <span class="mc-n">${m.name}</span>
+      <span class="mc-fn">${m.fullName}</span>
+      ${badge}
+    </div>
+    <div class="mc-side">
+      <span class="mc-cost">🪙${m.cost}</span>
+      ${btn}
+    </div>
+  </div>
+</div>`;
+  }
+
+  _bindMgmtBtns() {
+    document.querySelectorAll('.mc-btn').forEach(b => b.addEventListener('click', () => {
+      const { mid, cat, did } = b.dataset;
+      const res = cat === 'general' ? this.engine.applyGeneralManagement(mid) : this.engine.applyDiseaseManagement(mid, did);
+      if (res.success) { this._renderManageTab(); this._updateVitals(); }
+      else this._showToast(res.msg, 'warning');
+    }));
+  }
+
+  // ── Diagnosis tab ─────────────────────────────────────────────────────────
+  _renderDiagnosisTab() {
+    const cur  = this.engine.state.selectedDiagnosis;
+    const opts = this.case.diagnosisOptions;
+    document.getElementById('page-diagnosis').innerHTML = `
+<div class="pg">
+  <div class="card">
+    <div class="cl">Working Diagnosis</div>
+    <div class="dx-sub">Select and change anytime. Final selection is scored.</div>
+  </div>
+  ${cur?`<div class="dx-current">Current: <strong>${opts.find(o=>o.id===cur)?.label||cur}</strong></div>`:''}
+  <div class="dx-list">
+    ${opts.map(o=>`
+    <div class="dx-opt ${cur===o.id?'dx-sel':''}" data-did="${o.id}">
+      <div class="dx-r ${cur===o.id?'dx-r-on':''}"></div>
+      <span class="dx-lbl">${o.label}</span>
+    </div>`).join('')}
+  </div>
+  <div class="dx-note">🔒 Treatment tab unlocks after selecting a diagnosis.</div>
+</div>`;
+    document.querySelectorAll('.dx-opt').forEach(el => el.addEventListener('click', () => this.engine.setDiagnosis(el.dataset.did)));
+  }
+
+  // ── Vitals update ─────────────────────────────────────────────────────────
+  _updateVitals() {
+    const s = this.engine.state, v = s.vitals;
+    const set = (id, val) => { const e = document.getElementById(id); if (e) e.textContent = val; };
+    set('vv-hr',   v.hr);
+    set('vv-bp',   v.bp);
+    set('vv-temp', `${v.temp}°`);
+    set('vv-time', this._shortTime(s.time));
+
+    document.getElementById('vbv-hr')?.classList.toggle('vbv-warn', v.hr>110||v.hr<50);
+    document.getElementById('vbv-bp')?.classList.toggle('vbv-warn', parseInt((v.bp||'120').split('/')[0])<100);
+    document.getElementById('vbv-temp')?.classList.toggle('vbv-warn', v.temp>38.5);
+
+    const color = s.cured ? 'green' : this.engine.getCurrentStageColor();
+    const ribbon = document.getElementById('stage-ribbon');
+    const pip    = document.getElementById('stage-pip');
+    const lbl    = document.getElementById('sr-label');
+    if (ribbon) ribbon.className = `stage-ribbon ribbon-${color}`;
+    if (pip)    pip.className    = `stage-pip pip-${color}`;
+    if (lbl)    lbl.textContent  = this.engine.getCurrentStageLabel();
+
+    const rem = s.budget - s.cost;
+    const coEl = document.getElementById('sr-coins');
+    if (coEl) {
+      coEl.textContent = `🪙${rem<0?'-':' '}${Math.abs(rem).toLocaleString()}`;
+      coEl.className   = `sr-coins${rem<0?' co-over':rem<600?' co-low':''}`;
+    }
+
+    const sc = document.getElementById('symptom-chips');
+    if (sc) sc.innerHTML = s.activeSymptoms.map(sx=>`<span class="chip chip-g">${sx}</span>`).join('');
+  }
+
+  _shortTime(h) {
+    const hh = Math.floor(h), mm = Math.round((h-hh)*60);
+    return hh>0 ? `${hh}h${mm>0?mm+'m':''}` : `${mm}m`;
+  }
+
+  // ── Log ───────────────────────────────────────────────────────────────────
+  _appendLog(e) {
+    const c = document.getElementById('log-entries');
+    if (!c) return;
+    const d = document.createElement('div');
+    d.className = `le le-${e.type}`;
+    d.innerHTML = `<span class="le-t">${e.timeLabel}</span><span class="le-m">${e.msg}</span>`;
+    c.appendChild(d);
+    c.scrollTop = c.scrollHeight;
+  }
+
+  _openLog()  { document.getElementById('log-drawer')?.classList.add('open'); document.getElementById('log-overlay')?.classList.add('active'); }
+  _closeLog() { document.getElementById('log-drawer')?.classList.remove('open'); document.getElementById('log-overlay')?.classList.remove('active'); }
+
+  // ── Stage flash ───────────────────────────────────────────────────────────
+  _flashStage(d) {
+    const color = this.case.stages[d.to]?.color||'red';
+    const el = document.createElement('div');
+    el.className = `sf sf-${color}`;
+    el.innerHTML = `<div class="sf-box"><div class="sf-i">⚠️</div><div class="sf-t">Condition Worsened</div><div class="sf-s">${this.case.stages[d.to]?.label||d.to}</div></div>`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(), 2600);
+  }
+  _pulseGlow(c) { const p=document.getElementById('stage-pip'); if(p){p.className=`stage-pip pip-${c} pip-pulse`;} }
+
+  // ── Toast ─────────────────────────────────────────────────────────────────
+  _showToast(msg, type='info') {
+    const c = document.getElementById('toasts');
+    if (!c) return;
+    const t = document.createElement('div');
+    t.className = `toast toast-${type}`;
+    t.innerHTML = msg;
+    c.appendChild(t);
+    requestAnimationFrame(()=>t.classList.add('t-on'));
+    setTimeout(()=>{ t.classList.remove('t-on'); setTimeout(()=>t.remove(),280); },3000);
+  }
+
+  // ── Game over ─────────────────────────────────────────────────────────────
+  _handleGameOver(d) {
+    const sheet = document.getElementById('sheet-gameover');
+    const cont  = document.getElementById('gameover-content');
+    if (!sheet||!cont) return;
+    const death = d.reason==='death';
+    cont.innerHTML = `
+<div class="go ${death?'go-death':'go-transfer'}">
+  <div class="go-ic">${death?'💀':'🚑'}</div>
+  <div class="go-title">${death?'Patient Deceased':'Patient Transferred'}</div>
+  <div class="go-sub">${death?'Disease progressed without treatment.':'Patient transferred to a higher centre.'}</div>
+  <button class="go-btn-score" id="go-score">View Scorecard</button>
+  <button class="go-btn-home" id="go-home">Back to Cases</button>
+</div>`;
+    sheet.classList.remove('hidden');
+    document.getElementById('go-score')?.addEventListener('click',()=>{ sheet.classList.add('hidden'); this.showScoreSheet(this.engine.calculateScore()); });
+    document.getElementById('go-home')?.addEventListener('click',()=>window.location.reload());
+  }
+
+  // ── Score sheet ───────────────────────────────────────────────────────────
+  showScoreSheet(sc) {
+    const sheet = document.getElementById('sheet-score');
+    const cont  = document.getElementById('score-content');
+    if (!sheet||!cont) return;
+    const gc  = {'A+':'#10b981',A:'#10b981',B:'#f59e0b',C:'#f97316',F:'#ef4444'}[sc.grade]||'#ef4444';
+    const cdx = this.case.diagnosisOptions.find(d=>d.id===sc.correctDiagnosis)?.label||sc.correctDiagnosis;
+    const udx = this.case.diagnosisOptions.find(d=>d.id===sc.selectedDiagnosis)?.label||'(none)';
+    cont.innerHTML = `
+<div class="ss">
+  <div class="ss-head">
+    <div class="ss-grade" style="color:${gc}">${sc.grade}</div>
+    <div class="ss-score">${sc.score}<span>/100</span></div>
+    <div class="ss-msg">${sc.msg}</div>
+  </div>
+  <div class="ss-dx-box">
+    <div class="ss-dx-r"><span>Correct Dx</span><strong class="dx-ok">${cdx}</strong></div>
+    <div class="ss-dx-r"><span>Your Dx</span><strong class="${sc.diagnosisCorrect?'dx-ok':'dx-bad'}">${udx}</strong></div>
+  </div>
+  <div class="ss-breakdown">
+    ${sc.breakdown.map(b=>`<div class="ss-row"><span>${b.label}</span><span class="ss-pt ${b.earned<0?'pt-n':b.earned===0?'pt-z':'pt-p'}">${b.earned>0?'+':''}${b.earned}</span></div>`).join('')}
+  </div>
+  <div class="ss-stats">
+    <div class="ss-sr"><span>Time elapsed</span><strong>${this.engine._formatTime(sc.time)}</strong></div>
+    <div class="ss-sr"><span>Final stage</span><strong>${this.case.stages[sc.stage]?.label||sc.stage}</strong></div>
+    <div class="ss-sr"><span>Coins spent</span><strong>🪙${sc.cost.toLocaleString()} / ${sc.budget.toLocaleString()}</strong></div>
+    <div class="ss-sr"><span>Outcome</span><strong>${sc.cured?'✅ Cured':sc.outcome==='death'?'💀 Died':'🚑 Transferred'}</strong></div>
+  </div>
+  ${sc.mistakes?.length?`
+  <div class="ss-review">
+    <div class="ss-rev-title">Areas to Review</div>
+    ${sc.mistakes.map(m=>`<div class="ss-m ss-m-${m.type}">${m.label}</div>`).join('')}
+  </div>`:''}
+  <button class="ss-home" id="ss-home">Back to Cases</button>
+</div>`;
+    sheet.classList.remove('hidden');
+    document.getElementById('ss-home')?.addEventListener('click',()=>window.location.reload());
+  }
+
+  // ── Bind UI events ────────────────────────────────────────────────────────
+  _bindUIEvents() {
+    document.querySelectorAll('.bnav').forEach(b => b.addEventListener('click', ()=>this._goToTab(parseInt(b.dataset.idx))));
+    document.getElementById('btn-back')?.addEventListener('click',()=>{ if(confirm('Exit case? Progress will be lost.')){ this.engine.stop(); window.location.reload(); }});
+    document.getElementById('btn-log')?.addEventListener('click',()=>this._openLog());
+    document.getElementById('ld-close')?.addEventListener('click',()=>this._closeLog());
+    document.getElementById('log-overlay')?.addEventListener('click',()=>this._closeLog());
+    document.getElementById('btn-skip')?.addEventListener('click',()=>{ document.getElementById('sheet-skip')?.classList.remove('hidden'); document.getElementById('sheet-bg')?.classList.remove('hidden'); });
+    document.getElementById('skip-cancel')?.addEventListener('click',()=>this._closeSkip());
+    document.getElementById('sheet-bg')?.addEventListener('click',()=>this._closeSkip());
+    document.querySelectorAll('.skip-chip').forEach(b=>b.addEventListener('click',()=>{ this.engine.jumpTime(parseFloat(b.dataset.h)); this._closeSkip(); this._refreshTestCards(); this._renderManageTab(); }));
+    document.getElementById('btn-end')?.addEventListener('click',()=>{ if(!this.engine.state.selectedDiagnosis&&!confirm('No diagnosis — end anyway?')) return; this.engine.stop(); this.engine.ended=true; this.showScoreSheet(this.engine.calculateScore()); });
+    this._bindSwipe();
+  }
+
+  _closeSkip() { document.getElementById('sheet-skip')?.classList.add('hidden'); document.getElementById('sheet-bg')?.classList.add('hidden'); }
+
+  _bindSwipe() {
+    const vp = document.getElementById('pages-viewport');
+    if (!vp) return;
+    vp.addEventListener('touchstart', e=>{ this._sx=e.touches[0].clientX; this._sy=e.touches[0].clientY; }, {passive:true});
+    vp.addEventListener('touchend', e=>{
+      const dx=e.changedTouches[0].clientX-this._sx, dy=e.changedTouches[0].clientY-this._sy;
+      if (Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>50) dx<0 ? this._goToTab(this.tabIdx+1) : this._goToTab(this.tabIdx-1);
+    }, {passive:true});
+  }
+}
+
+  </script>
+  <script>
+/* app */
+/**
+ * app.js — Home screen, pre-game modal, launch
+ */
+const loader = new CaseLoader();
+let allCases = [], activeFilter = 'all';
+
+async function init() {
+  try {
+    allCases = await loader.loadIndex('./data/caseIndex.json');
+    if (!allCases.length) throw new Error('empty');
+    renderHome(allCases);
+  } catch(e) {
+    document.getElementById('app').innerHTML = `<div style="height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;font-family:monospace;text-align:center;padding:20px"><div style="font-size:2rem">⚠️</div><div style="color:#e8405a;font-size:12px">Failed to load case data</div><div style="color:#3d566e;font-size:10px;margin-top:4px">Ensure data/caseIndex.json is accessible.<br>Use a local server: <code>npx serve .</code></div></div>`;
+  }
+}
+
+function renderHome(cases) {
+  document.getElementById('app').innerHTML = homeHTML(cases);
+  bindHomeEvents();
+}
+
+function homeHTML(cases) {
+  const systems = [...new Set(cases.map(c=>c.system))];
+  const diffs   = [...new Set(cases.map(c=>c.difficulty))];
+  return `
+<div class="home-screen">
+  <nav class="home-topbar">
+    <div class="topbar-logo">
+      <div class="logo-icon">🩺</div>
+      <div><div class="logo-text">Clinical Sim OS</div><div class="logo-sub">Medical Decision Engine</div></div>
+    </div>
+    <div class="topbar-right"><div class="topbar-badge">● ONLINE</div></div>
+  </nav>
+  <div class="home-filters">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-btn active" data-filter="all">All</button>
+    <div class="filter-sep"></div>
+    ${diffs.map(d=>`<button class="filter-btn" data-filter="diff:${d}">${d}</button>`).join('')}
+    <div class="filter-sep"></div>
+    ${systems.map(s=>`<button class="filter-btn" data-filter="sys:${s}">${s}</button>`).join('')}
+  </div>
+  <section class="home-hero">
+    <div class="hero-eyebrow">MBBS Clinical Training</div>
+    <h1 class="hero-title">Make decisions.<br/><em>Watch consequences unfold.</em></h1>
+    <p class="hero-sub">Real-time patient simulation. Every action changes outcomes.</p>
+  </section>
+  <div class="home-stats">
+    <div class="home-stat"><div class="home-stat-value">${cases.length}</div><div class="home-stat-label">Live Cases</div></div>
+    <div class="home-stat"><div class="home-stat-value">1s=1min</div><div class="home-stat-label">Real-time</div></div>
+    <div class="home-stat"><div class="home-stat-value">Scored</div><div class="home-stat-label">Outcomes</div></div>
+  </div>
+  <section class="home-cases-section">
+    <div class="section-header"><div class="section-title">Active Cases</div><div class="section-line"></div></div>
+    <div class="cases-grid" id="cases-grid">
+      ${cases.map(c=>caseCardHTML(c)).join('')}
+      ${lockedHTML()}
+    </div>
+  </section>
+  <footer class="home-footer">FOR EDUCATIONAL USE ONLY · NOT FOR CLINICAL PRACTICE · v2.0</footer>
+</div>`;
+}
+
+function caseCardHTML(c) {
+  return `
+<div class="case-card" data-case-id="${c.id}" data-diff="${c.difficulty}" data-sys="${c.system}" tabindex="0" role="button">
+  <div class="card-top">
+    <span class="card-difficulty diff-${c.difficulty}">${c.difficulty}</span>
+    <span class="card-id">${c.id}</span>
+  </div>
+  <div class="card-patient"><div class="patient-dot"></div>${c.patientAge}y ${c.patientSex} · ${c.patientOccupation||c.department}</div>
+  <div class="card-title">${c.title}</div>
+  <div class="card-subtitle">${c.subtitle}</div>
+  <div class="card-desc">${c.description}</div>
+  <div class="card-tags">${(c.tags||[]).map(t=>`<span class="card-tag">${t}</span>`).join('')}</div>
+  <div class="card-footer">
+    <div class="card-meta"><span class="card-time">⏱ ${c.estimatedTime}</span><span class="card-coins">🪙 ${c.budget?.toLocaleString()} coins</span></div>
+    <span class="card-cta">Start →</span>
+  </div>
+</div>`;
+}
+
+function lockedHTML() {
+  return `
+<div class="case-card locked">
+  <div class="card-top"><span class="card-difficulty diff-Resident">Resident</span><span class="card-id">LOCKED</span></div>
+  <div class="card-patient"><div class="patient-dot" style="background:var(--t4)"></div>58y Male · Teacher</div>
+  <div class="card-title">Chest Pain — ACS vs PE</div>
+  <div class="card-subtitle">ICU · Critical Care</div>
+  <div class="card-desc">Crushing chest pain with radiation. Time-critical. High-stakes differentials.</div>
+  <div class="card-tags"><span class="card-tag">Cardiology</span><span class="card-tag">Critical</span></div>
+  <div class="card-footer"><div class="card-meta"><span class="card-time">⏱ 30–45 min</span></div><span class="card-cta">Coming Soon</span></div>
+</div>`;
+}
+
+function bindHomeEvents() {
+  document.querySelectorAll('.case-card:not(.locked)').forEach(card => {
+    card.addEventListener('click', () => openPreGame(card.dataset.caseId));
+    card.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' ') openPreGame(card.dataset.caseId); });
+  });
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      activeFilter = btn.dataset.filter;
+      document.querySelectorAll('.case-card:not(.locked)').forEach(card => {
+        const show = activeFilter==='all'||activeFilter===`diff:${card.dataset.diff}`||activeFilter===`sys:${card.dataset.sys}`;
+        card.style.display = show ? '' : 'none';
+      });
+    });
+  });
+}
+
+async function openPreGame(caseId) {
+  const meta = allCases.find(c=>c.id===caseId);
+  if (!meta) return;
+  const ov = document.createElement('div');
+  ov.className = 'pregame-overlay';
+  ov.id = 'pregame-overlay';
+  ov.innerHTML = `
+<div class="pregame-modal">
+  <div class="pregame-handle"></div>
+  <div class="pregame-head">
+    <div class="pregame-case-label">${meta.category} · ${meta.difficulty}</div>
+    <div class="pregame-title">${meta.title}</div>
+    <div class="pregame-patient">
+      <div class="ppi"><strong>${meta.patientAge}y ${meta.patientSex}</strong><small>Patient</small></div>
+      <div class="ppi"><strong>${meta.patientOccupation||'—'}</strong><small>Occupation</small></div>
+      <div class="ppi"><strong>${meta.department}</strong><small>Department</small></div>
+      <div class="ppi"><strong>${meta.stages} stages</strong><small>Progression</small></div>
+    </div>
+  </div>
+  <div class="pregame-rules">
+    <div class="rules-title">How This Works</div>
+    <div class="rule-item"><div class="ri">⏱️</div><div class="rt"><strong>1 real second = 1 sim minute.</strong> Clock runs automatically. Disease progresses if untreated. Use ⏩ Skip to fast-forward.</div></div>
+    <div class="rule-item"><div class="ri">🔬</div><div class="rt"><strong>Order investigations</strong> from the Tests tab. Results appear inline on the same card. Different stages give different results.</div></div>
+    <div class="rule-item"><div class="ri">🩺</div><div class="rt"><strong>Set a working diagnosis</strong> in the Diagnose tab — this unlocks disease-specific treatments. You can change it anytime.</div></div>
+    <div class="rule-item"><div class="ri">💊</div><div class="rt"><strong>Two treatment tracks:</strong> General (always visible) and Disease-Specific (unlocks after diagnosis). Wrong drugs = penalties. Blunders can end the case.</div></div>
+    <div class="rule-item"><div class="ri">🪙</div><div class="rt"><strong>Budget: ${meta.budget?.toLocaleString()} coins.</strong> Overspending is allowed but penalises your final score. Efficient workup scores highest.</div></div>
+    <div class="rule-item"><div class="ri">☰</div><div class="rt"><strong>Activity log</strong> opens from the left — tap ☰ in the top bar to see your full decision timeline.</div></div>
+  </div>
+  <div class="pregame-meta">
+    <div class="meta-item"><div class="meta-label">Time</div><div class="meta-value">${meta.estimatedTime}</div></div>
+    <div class="meta-item"><div class="meta-label">Difficulty</div><div class="meta-value">${meta.difficulty}</div></div>
+    <div class="meta-item"><div class="meta-label">Budget</div><div class="meta-value coins">🪙 ${meta.budget?.toLocaleString()}</div></div>
+    <div class="meta-item"><div class="meta-label">Stages</div><div class="meta-value">${meta.stages}</div></div>
+  </div>
+  <div class="pregame-actions">
+    <button class="btn-start" id="btn-start-case">Start Simulation →</button>
+    <button class="btn-cancel" id="btn-cancel-case">Cancel</button>
+  </div>
+</div>`;
+  document.body.appendChild(ov);
+  document.getElementById('btn-cancel-case').addEventListener('click', ()=>ov.remove());
+  ov.addEventListener('click', e=>{ if(e.target===ov) ov.remove(); });
+  document.getElementById('btn-start-case').addEventListener('click', async ()=>{ ov.remove(); await launchGame(caseId); });
+}
+
+async function launchGame(caseId) {
+  const app = document.getElementById('app');
+  app.innerHTML = `<div style="height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#3d566e;letter-spacing:.12em"><div style="font-size:1.4rem">🏥</div><div>LOADING CASE…</div></div>`;
+  const caseData = await loader.loadCase(caseId);
+  if (!caseData) {
+    app.innerHTML = `<div style="height:100dvh;display:flex;align-items:center;justify-content:center;font-family:monospace;color:#e8405a;text-align:center;padding:20px">Failed to load: ${caseId}</div>`;
+    return;
+  }
+  app.style.opacity = '0';
+  app.style.transition = 'opacity .2s ease';
+  setTimeout(() => {
+    const engine = new ClinicalEngine(caseData);
+    const ui     = new ClinicalUI(engine, caseData);
+    ui.renderGame();
+    app.style.opacity = '1';
+    setTimeout(() => engine.start(), 120);
+  }, 180);
+}
+
+init();
+
+  </script>
+</body>
+</html>
