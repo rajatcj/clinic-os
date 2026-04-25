@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Play — MedSim Nepal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-deep:#070b0f;--bg-base:#0b1017;--bg-panel:#0f1720;--bg-card:#141d28;--bg-hover:#192433;--bg-up:#1c2a3a;
+  --border:#1a2b3c;--border-lo:#213345;
+  --text-hi:#dde8f2;--text-mid:#6e90ad;--text-lo:#364e65;--text-dim:#243549;
+  --green:#0dbd8b;--green2:#06d4a0;--amber:#f5a623;--red:#e84058;--blue:#3da8f5;--purple:#a78bfa;--orange:#fb923c;
+  --mono:'IBM Plex Mono',monospace;--display:'Newsreader',Georgia,serif;--body:'DM Sans',system-ui,sans-serif;
+  --r2:8px;--r3:14px;--r4:20px;
+}
+html{font-size:14px;scroll-behavior:smooth}
+body{font-family:var(--body);background:var(--bg-deep);color:var(--text-hi);min-height:100vh;-webkit-font-smoothing:antialiased}
+a{color:var(--green);text-decoration:none}
+a:hover{text-decoration:underline}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg-base)}::-webkit-scrollbar-thumb{background:var(--border-lo);border-radius:99px}
+
+.nav{display:flex;align-items:center;gap:14px;padding:14px 28px;background:var(--bg-base);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text-hi)}
+.logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--green),#089e72);border-radius:var(--r2);display:flex;align-items:center;justify-content:center;font-size:16px}
+.logo-text{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.04em}
+.nav-links{margin-left:auto;display:flex;gap:18px}
+.nav-link{font-family:var(--mono);font-size:10px;letter-spacing:.05em;color:var(--text-mid);text-decoration:none;transition:color .15s}
+.nav-link:hover{color:var(--text-hi)}
+.nav-link.active{color:var(--green)}
+.nav-cta{font-family:var(--mono);font-size:10px;font-weight:600;padding:5px 14px;background:rgba(13,189,139,.1);border:1px solid rgba(13,189,139,.28);border-radius:99px;color:var(--green);transition:all .15s;margin-left:auto;text-decoration:none}
+.nav-cta:hover{background:rgba(13,189,139,.2)}
+
+.page-hero{padding:60px 28px 44px;border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.page-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 50% 60% at 30% 50%,rgba(61,168,245,.04) 0%,transparent 65%);pointer-events:none}
+.hero-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--blue);margin-bottom:12px}
+.hero-title{font-family:var(--display);font-size:clamp(1.8rem,4vw,2.8rem);font-weight:500;line-height:1.15;margin-bottom:14px}
+.hero-sub{font-size:.9rem;color:var(--text-mid);max-width:560px;line-height:1.7}
+
+.layout{display:flex;max-width:1100px;margin:0 auto}
+
+.toc{width:230px;flex-shrink:0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;padding:26px 18px;border-right:1px solid var(--border)}
+.toc-label{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--text-dim);margin-bottom:10px}
+.toc-list{list-style:none;display:flex;flex-direction:column;gap:1px}
+.toc-item a{font-family:var(--mono);font-size:10px;color:var(--text-lo);text-decoration:none;padding:4px 8px;border-radius:4px;display:block;transition:all .15s;line-height:1.35}
+.toc-item a:hover{color:var(--text-mid);background:var(--bg-card)}
+.toc-item a.active{color:var(--green);background:rgba(13,189,139,.07)}
+.toc-group{margin-top:12px}
+.toc-group-label{font-family:var(--mono);font-size:7px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--text-dim);padding:4px 8px}
+
+.doc{flex:1;padding:40px 36px 80px;min-width:0}
+
+/* sections */
+.doc-section{margin-bottom:50px;scroll-margin-top:80px}
+.sec-num{font-family:var(--mono);font-size:8px;color:var(--text-dim);letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px}
+.sec-title{font-family:var(--display);font-size:1.4rem;font-weight:500;margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.prose{font-size:.88rem;color:var(--text-mid);line-height:1.8}
+.prose p{margin-bottom:12px}
+.prose p:last-child{margin-bottom:0}
+.prose strong{color:var(--text-hi)}
+.prose ul{padding-left:16px;display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.prose ul li{font-size:.85rem;line-height:1.55}
+.prose ol{padding-left:18px;display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.prose ol li{font-size:.85rem;line-height:1.55}
+
+/* step flow */
+.step-flow{display:flex;flex-direction:column;gap:0;margin:22px 0;position:relative;padding-left:36px}
+.step-flow::before{content:'';position:absolute;left:14px;top:22px;bottom:22px;width:1px;background:linear-gradient(to bottom,var(--green),var(--blue),.3)}
+.step{position:relative;padding:0 0 24px 14px}
+.step:last-child{padding-bottom:0}
+.step-circle{position:absolute;left:-22px;top:2px;width:22px;height:22px;border-radius:50%;background:var(--bg-card);border:1.5px solid var(--green);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9px;font-weight:700;color:var(--green)}
+.step-title{font-size:.9rem;font-weight:600;color:var(--text-hi);margin-bottom:4px}
+.step-desc{font-size:.8rem;color:var(--text-mid);line-height:1.6}
+
+/* cards grid */
+.cards-2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0}
+.cards-3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}
+.rule-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r3);padding:16px}
+.rule-card-icon{font-size:1.3rem;margin-bottom:8px}
+.rule-card-title{font-size:.85rem;font-weight:600;color:var(--text-hi);margin-bottom:5px}
+.rule-card-desc{font-size:.75rem;color:var(--text-mid);line-height:1.55}
+
+/* stage visual */
+.stage-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:18px 0;align-items:stretch}
+.stage-box{border-radius:var(--r2);padding:13px 12px;border:1px solid;display:flex;flex-direction:column;gap:4px}
+.stage-box.s-yellow{background:rgba(245,166,35,.05);border-color:rgba(245,166,35,.25)}
+.stage-box.s-orange{background:rgba(251,146,60,.05);border-color:rgba(251,146,60,.25)}
+.stage-box.s-red{background:rgba(232,64,88,.06);border-color:rgba(232,64,88,.28)}
+.stage-box.s-black{background:rgba(232,64,88,.1);border-color:rgba(232,64,88,.4)}
+.stage-label{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.stage-label.c-y{color:var(--amber)}
+.stage-label.c-o{color:var(--orange)}
+.stage-label.c-r{color:var(--red)}
+.stage-label.c-k{color:var(--red)}
+.stage-name{font-size:.78rem;font-weight:600;color:var(--text-hi);margin-top:2px}
+.stage-desc{font-size:.7rem;color:var(--text-mid);line-height:1.45;margin-top:3px}
+.stage-arrow{display:flex;align-items:center;justify-content:center;color:var(--text-dim);font-size:.7rem;padding-top:4px}
+
+/* type badges */
+.badge-row{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0}
+.badge-type{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.06em;padding:4px 10px;border-radius:var(--r2);border:1px solid}
+.bt-curative{color:var(--amber);background:rgba(245,166,35,.08);border-color:rgba(245,166,35,.25)}
+.bt-supportive{color:var(--green);background:rgba(13,189,139,.07);border-color:rgba(13,189,139,.22)}
+.bt-partial{color:var(--blue);background:rgba(61,168,245,.07);border-color:rgba(61,168,245,.22)}
+.bt-wrong{color:var(--red);background:rgba(232,64,88,.07);border-color:rgba(232,64,88,.22)}
+.bt-blunder{color:var(--red);background:rgba(232,64,88,.12);border-color:rgba(232,64,88,.35)}
+.bt-unnecessary{color:var(--text-mid);background:var(--bg-up);border-color:var(--border-lo)}
+.bt-delaying{color:var(--purple);background:rgba(167,139,250,.07);border-color:rgba(167,139,250,.22)}
+
+/* score table */
+.score-table{width:100%;border-collapse:collapse;margin:16px 0}
+.score-table th{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--text-lo);text-align:left;padding:8px 12px;border-bottom:1px solid var(--border);background:var(--bg-panel)}
+.score-table td{font-size:.82rem;color:var(--text-mid);padding:9px 12px;border-bottom:1px solid var(--border)}
+.score-table tr:last-child td{border-bottom:none}
+.score-table td:last-child{font-family:var(--mono);font-size:11px;font-weight:700;text-align:right}
+.pts-green{color:var(--green)}
+.pts-red{color:var(--red)}
+
+/* callout / notice */
+.callout{padding:12px 16px;border-radius:0 var(--r2) var(--r2) 0;margin:16px 0;font-size:.82rem;line-height:1.6}
+.c-green{background:rgba(13,189,139,.04);border:1px solid rgba(13,189,139,.18);border-left:3px solid var(--green);color:var(--text-mid)}
+.c-green strong{color:var(--green)}
+.c-amber{background:rgba(245,166,35,.04);border:1px solid rgba(245,166,35,.18);border-left:3px solid var(--amber);color:var(--text-mid)}
+.c-amber strong{color:var(--amber)}
+.c-red{background:rgba(232,64,88,.04);border:1px solid rgba(232,64,88,.18);border-left:3px solid var(--red);color:var(--text-mid)}
+.c-red strong{color:var(--red)}
+.c-blue{background:rgba(61,168,245,.04);border:1px solid rgba(61,168,245,.16);border-left:3px solid var(--blue);color:var(--text-mid)}
+.c-blue strong{color:var(--blue)}
+
+/* difficulty table */
+.diff-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:16px 0}
+.diff-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r2);padding:14px}
+.diff-badge{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:99px;border:1px solid;display:inline-block;margin-bottom:8px}
+.diff-badge.intern{color:var(--green);border-color:rgba(13,189,139,.3);background:rgba(13,189,139,.07)}
+.diff-badge.mo{color:var(--amber);border-color:rgba(245,166,35,.3);background:rgba(245,166,35,.07)}
+.diff-badge.resident{color:var(--red);border-color:rgba(232,64,88,.3);background:rgba(232,64,88,.07)}
+.diff-badge.senior{color:var(--purple);border-color:rgba(167,139,250,.3);background:rgba(167,139,250,.07)}
+.diff-title{font-size:.85rem;font-weight:600;color:var(--text-hi);margin-bottom:4px}
+.diff-desc{font-size:.75rem;color:var(--text-mid);line-height:1.55}
+
+/* test type grid */
+.test-type-grid{display:flex;flex-direction:column;gap:8px;margin:16px 0}
+.test-type-row{display:flex;align-items:flex-start;gap:12px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r2);padding:11px 14px}
+.test-type-badge{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:2px 8px;border-radius:4px;flex-shrink:0;margin-top:1px}
+.tt-useful{background:rgba(61,168,245,.1);color:var(--blue);border:1px solid rgba(61,168,245,.25)}
+.tt-dummy{background:var(--bg-up);color:var(--text-lo);border:1px solid var(--border)}
+.tt-confirm{background:rgba(13,189,139,.1);color:var(--green);border:1px solid rgba(13,189,139,.25)}
+.test-type-body{flex:1}
+.test-type-label{font-size:.82rem;font-weight:600;color:var(--text-hi);margin-bottom:3px}
+.test-type-desc{font-size:.75rem;color:var(--text-mid);line-height:1.5}
+
+.footer{background:var(--bg-base);border-top:1px solid var(--border);padding:18px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.footer-left{font-family:var(--mono);font-size:9px;color:var(--text-dim);letter-spacing:.08em}
+.footer-links{display:flex;gap:16px}
+.footer-link{font-family:var(--mono);font-size:9px;color:var(--text-lo);text-decoration:none;letter-spacing:.06em;transition:color .15s}
+.footer-link:hover{color:var(--text-mid)}
+
+@media(max-width:800px){
+  .toc{display:none}
+  .doc{padding:24px 16px 60px}
+  .page-hero{padding:36px 16px 28px}
+  .cards-2,.cards-3{grid-template-columns:1fr}
+  .stage-flow{grid-template-columns:1fr 1fr}
+  .diff-grid{grid-template-columns:1fr}
+  .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <div class="logo-icon">⚕</div>
+    <div class="logo-text">MedSim Nepal</div>
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="about.html" class="nav-link">About</a>
+    <a href="how-to-play.html" class="nav-link active">How to Play</a>
+    <a href="changelog.html" class="nav-link">Changelog</a>
+  </div>
+  <a href="index.html" class="nav-cta">Play Now</a>
+</nav>
+
+<div class="page-hero">
+  <div class="hero-eyebrow">Game Reference</div>
+  <h1 class="hero-title">How to Play MedSim Nepal</h1>
+  <p class="hero-sub">A complete reference for game mechanics, scoring rules, investigation logic, and treatment consequences. Understand the engine — think like a clinician.</p>
+</div>
+
+<div class="layout">
+  <aside class="toc">
+    <div class="toc-label">Contents</div>
+    <ul class="toc-list">
+      <div class="toc-group">
+        <div class="toc-group-label">Getting Started</div>
+        <li class="toc-item"><a href="#overview">Overview</a></li>
+        <li class="toc-item"><a href="#flow">Game Flow</a></li>
+        <li class="toc-item"><a href="#difficulty">Difficulty Tiers</a></li>
+      </div>
+      <div class="toc-group">
+        <div class="toc-group-label">Mechanics</div>
+        <li class="toc-item"><a href="#time">Time & Progression</a></li>
+        <li class="toc-item"><a href="#budget">Budget & Costs</a></li>
+        <li class="toc-item"><a href="#stages">Disease Stages</a></li>
+        <li class="toc-item"><a href="#vitals">Vitals System</a></li>
+      </div>
+      <div class="toc-group">
+        <div class="toc-group-label">Investigations</div>
+        <li class="toc-item"><a href="#tests">Ordering Tests</a></li>
+        <li class="toc-item"><a href="#test-types">Test Types</a></li>
+        <li class="toc-item"><a href="#results">Reading Results</a></li>
+      </div>
+      <div class="toc-group">
+        <div class="toc-group-label">Treatment</div>
+        <li class="toc-item"><a href="#diagnosis">Diagnosis</a></li>
+        <li class="toc-item"><a href="#management">Management</a></li>
+        <li class="toc-item"><a href="#mgmt-types">Treatment Types</a></li>
+        <li class="toc-item"><a href="#general-mgmt">General Management</a></li>
+      </div>
+      <div class="toc-group">
+        <div class="toc-group-label">Scoring</div>
+        <li class="toc-item"><a href="#scoring">Score Rubric</a></li>
+        <li class="toc-item"><a href="#penalties">Penalties</a></li>
+        <li class="toc-item"><a href="#grades">Grade Thresholds</a></li>
+        <li class="toc-item"><a href="#tips">Strategy Tips</a></li>
+      </div>
+    </ul>
+  </aside>
+
+  <main class="doc">
+
+    <!-- OVERVIEW -->
+    <div class="doc-section" id="overview">
+      <div class="sec-num">01</div>
+      <h2 class="sec-title">Overview</h2>
+      <div class="prose">
+        <p>MedSim Nepal is a real-time clinical case simulation. You are the treating clinician. A patient arrives at your department. You review their presentation, order investigations, interpret results, form a diagnosis, and initiate management — all within a time-limited, budget-constrained simulation that faithfully models how the patient's condition evolves.</p>
+        <p><strong>This is not a quiz.</strong> There are no multiple choice questions with a single right answer. Clinical reasoning, investigation strategy, and management decisions all interact with each other and with the passage of simulated time. Your patient can deteriorate, develop complications, and die if you delay, misdiagnose, or treat incorrectly.</p>
+        <p>Every case is set in Nepal, with costs in Nepalese Rupees (NPR), and designed to reflect real disease burdens and clinical presentations seen in South Asian hospitals.</p>
+      </div>
+    </div>
+
+    <!-- FLOW -->
+    <div class="doc-section" id="flow">
+      <div class="sec-num">02</div>
+      <h2 class="sec-title">Game Flow</h2>
+      <div class="prose">
+        <p>Each case follows this structure:</p>
+      </div>
+      <div class="step-flow">
+        <div class="step">
+          <div class="step-circle">1</div>
+          <div class="step-title">Read the Presentation</div>
+          <div class="step-desc">Review the patient's history, vitals, and examination findings in the History tab. This is your clinical data — study it carefully. Every detail is placed deliberately.</div>
+        </div>
+        <div class="step">
+          <div class="step-circle">2</div>
+          <div class="step-title">Order Investigations</div>
+          <div class="step-desc">Select targeted tests from the Investigations tab. Tests cost money, take time to return, and results change depending on the disease stage. Order strategically, not reflexively.</div>
+        </div>
+        <div class="step">
+          <div class="step-circle">3</div>
+          <div class="step-title">Review Results</div>
+          <div class="step-desc">Results appear in the Results tab as they return. Each result includes an interpretation note. Use these to narrow your differential, confirm your diagnosis, and guide management.</div>
+        </div>
+        <div class="step">
+          <div class="step-circle">4</div>
+          <div class="step-title">Reach a Diagnosis</div>
+          <div class="step-desc">From the Diagnosis & Treatment tab, select your working diagnosis from the differential list. Your diagnosis determines which specific treatment options become available. You can change your diagnosis at any time before ending the case.</div>
+        </div>
+        <div class="step">
+          <div class="step-circle">5</div>
+          <div class="step-title">Initiate Management</div>
+          <div class="step-desc">Administer general management options (IV fluids, monitoring, analgesia) and diagnosis-specific treatments. Each management action has clinical consequences — beneficial, harmful, or neutral.</div>
+        </div>
+        <div class="step">
+          <div class="step-circle">6</div>
+          <div class="step-title">End the Case</div>
+          <div class="step-desc">When you're confident, press "End Case". Your performance is scored across five dimensions. The patient's fate depends on whether you identified the correct diagnosis and applied the right curative treatment in time.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DIFFICULTY -->
+    <div class="doc-section" id="difficulty">
+      <div class="sec-num">03</div>
+      <h2 class="sec-title">Difficulty Tiers</h2>
+      <div class="prose">
+        <p>Cases are assigned a difficulty level reflecting the level of clinical training expected to solve them comfortably. Higher difficulty cases feature more overlapping differentials, subtler clinical clues, tighter budgets, and faster disease progression.</p>
+      </div>
+      <div class="diff-grid">
+        <div class="diff-card">
+          <span class="diff-badge intern">Intern</span>
+          <div class="diff-title">Intern / House Officer</div>
+          <div class="diff-desc">Classic presentations with clear discriminating features. Limited differential overlap. Designed to build foundational reasoning skills. Budget generous.</div>
+        </div>
+        <div class="diff-card">
+          <span class="diff-badge mo">MO</span>
+          <div class="diff-title">Medical Officer</div>
+          <div class="diff-desc">Moderate differential overlap. Some trap diagnoses. Results require pattern recognition. Budget requires selective test ordering.</div>
+        </div>
+        <div class="diff-card">
+          <span class="diff-badge resident">Resident</span>
+          <div class="diff-title">Resident / PGY 1–3</div>
+          <div class="diff-desc">Complex presentations with multiple trap differentials. Tests have evolving results. Management consequences are more pronounced. Time pressure elevated.</div>
+        </div>
+        <div class="diff-card">
+          <span class="diff-badge senior">Senior</span>
+          <div class="diff-title">Senior Resident / Consultant</div>
+          <div class="diff-desc">Atypical presentations, rare diagnoses, fine management distinctions. Maximum budget pressure. Designed for senior trainees and faculty calibration.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TIME & PROGRESSION -->
+    <div class="doc-section" id="time">
+      <div class="sec-num">04</div>
+      <h2 class="sec-title">Time &amp; Disease Progression</h2>
+      <div class="prose">
+        <p>Simulated time advances automatically. Each case has a built-in progression timer — if the patient's condition is not addressed, the disease advances through successive stages, each more serious than the last.</p>
+        <p><strong>Time is measured in simulated hours.</strong> Investigations take time to return (from 0.3 hours for a urine dipstick to 24+ hours for a culture). Disease stages advance independently of investigation timelines.</p>
+        <p>Key time mechanics:</p>
+        <ul>
+          <li>Each disease stage has an <strong>afterTime</strong> — the number of simulated hours before it advances to the next stage if no appropriate treatment is given.</li>
+          <li>Correct general management options add a <strong>delayProgression</strong> bonus — buying additional hours before the next stage transition.</li>
+          <li>Correct curative treatment applied in time prevents progression entirely.</li>
+          <li>The "Jump Time" button advances the clock manually — useful to retrieve pending investigation results, but at the cost of disease progression risk.</li>
+        </ul>
+      </div>
+      <div class="callout c-amber">
+        <strong>Critical principle:</strong> In time-sensitive conditions (STEMI, septic shock, surgical emergencies), acting before investigation results return is clinically appropriate — and rewarded. Don't wait for every test to come back if the diagnosis is clinically clear.
+      </div>
+    </div>
+
+    <!-- BUDGET -->
+    <div class="doc-section" id="budget">
+      <div class="sec-num">05</div>
+      <h2 class="sec-title">Budget &amp; Costs</h2>
+      <div class="prose">
+        <p>Every case begins with a fixed budget in NPR (Nepalese Rupees), typically NPR 3,000–8,000 depending on difficulty. All investigations and management options have associated costs in NPR, reflecting approximate real-world costs in Nepali tertiary hospitals.</p>
+        <p>Budget is a hard constraint. Spending more than your budget results in:</p>
+        <ul>
+          <li>A Cost Efficiency score of zero (15 points lost)</li>
+          <li>Potential forced constraint on further investigations</li>
+        </ul>
+        <p><strong>Strategy:</strong> Order only what will meaningfully change your management. Order confirmatory tests after strong clinical suspicion is formed. Avoid "dummy" tests (those the engine flags as non-contributory for this case) unless you have budget to spare.</p>
+        <p>The optimal play is a targeted workup within 50–70% of the available budget, leaving room for treatment costs.</p>
+      </div>
+    </div>
+
+    <!-- STAGES -->
+    <div class="doc-section" id="stages">
+      <div class="sec-num">06</div>
+      <h2 class="sec-title">Disease Stages</h2>
+      <div class="prose">
+        <p>Every case has at least 3 clinical stages plus a terminal stage. Stage names are deliberately non-spoiling — they describe the clinical state, not the diagnosis or the specific pathological process. Stages are colour-coded by severity:</p>
+      </div>
+      <div class="stage-flow">
+        <div class="stage-box s-yellow">
+          <span class="stage-label c-y">● Yellow</span>
+          <div class="stage-name">Initial Stage</div>
+          <div class="stage-desc">Stable. The presenting condition. Adequate window for workup and early treatment. Lowest urgency.</div>
+        </div>
+        <div class="stage-box s-orange">
+          <span class="stage-label c-o">● Orange</span>
+          <div class="stage-name">Worsening Stage</div>
+          <div class="stage-desc">Clinical deterioration. New symptoms. Vital derangement. Urgency elevated. Some tests become less useful or unavailable.</div>
+        </div>
+        <div class="stage-box s-red">
+          <span class="stage-label c-r">● Red</span>
+          <div class="stage-name">Critical Stage</div>
+          <div class="stage-desc">Haemodynamic compromise, systemic failure, or surgical emergency. Major penalties. Limited management options.</div>
+        </div>
+        <div class="stage-box s-black">
+          <span class="stage-label c-k">■ Black</span>
+          <div class="stage-name">Fatal Outcome</div>
+          <div class="stage-desc">Death or critical transfer. Game over. The case ends with an educational post-mortem message.</div>
+        </div>
+      </div>
+      <div class="prose" style="margin-top:8px">
+        <p>When a stage transition occurs, a stage flash overlay appears with a brief clinical message explaining what has happened pathophysiologically. This is an educational moment — read it.</p>
+        <p>Stage transitions also add new active symptoms and alter vital signs, which may give you additional clinical clues even if progression is unwanted.</p>
+      </div>
+    </div>
+
+    <!-- VITALS -->
+    <div class="doc-section" id="vitals">
+      <div class="sec-num">07</div>
+      <h2 class="sec-title">Vitals System</h2>
+      <div class="prose">
+        <p>The patient's vital signs are displayed in the HUD header at all times and evolve with disease progression and management interventions.</p>
+        <p>Monitored vitals: <strong>Heart Rate (HR)</strong>, <strong>Blood Pressure (BP)</strong>, <strong>Temperature (Temp)</strong>, <strong>Respiratory Rate (RR)</strong>, <strong>SpO₂</strong>.</p>
+        <p>When vitals reach clinically dangerous thresholds, they display in red with a pulsing animation — a visual alarm.</p>
+        <p>Management options with a <strong>vitalEffect</strong> modify vitals directly. For example, IV fluids in dengue critical phase reduce HR and raise BP. Beta-blockers in STEMI reduce HR but are harmful in cardiogenic shock.</p>
+      </div>
+      <div class="callout c-blue">
+        <strong>Clinical clue:</strong> Vital signs at each stage are clinically accurate. A rising haematocrit in dengue, rising HR with a falling BP in sepsis, or a bradycardic patient with an anterior STEMI should all trigger specific diagnostic suspicion.
+      </div>
+    </div>
+
+    <!-- TESTS -->
+    <div class="doc-section" id="tests">
+      <div class="sec-num">08</div>
+      <h2 class="sec-title">Ordering Tests</h2>
+      <div class="prose">
+        <p>The Investigations tab shows all available tests, organised by category. Tests that are unavailable at the current disease stage are greyed out. Tests you have already ordered or received are marked accordingly.</p>
+        <p>Each test card shows:</p>
+        <ul>
+          <li>Test name and full clinical name</li>
+          <li>Cost in NPR</li>
+          <li>Return time in simulated hours</li>
+          <li>Availability status</li>
+        </ul>
+        <p>Results appear automatically in the Results tab once the simulated return time has elapsed. Pending results can be retrieved by using the "Jump Time" feature (which advances the clock). Results that return in a later disease stage will reflect the results appropriate to that stage.</p>
+      </div>
+      <div class="callout c-red">
+        <strong>Budget warning:</strong> Ordering every available test will exceed your budget and result in zero cost efficiency points. Think before you order — would this result change your management decision?
+      </div>
+    </div>
+
+    <!-- TEST TYPES -->
+    <div class="doc-section" id="test-types">
+      <div class="sec-num">09</div>
+      <h2 class="sec-title">Test Types</h2>
+      <div class="test-type-grid">
+        <div class="test-type-row">
+          <span class="test-type-badge tt-confirm">Confirmatory</span>
+          <div class="test-type-body">
+            <div class="test-type-label">Confirmatory</div>
+            <div class="test-type-desc">The gold standard or highly specific test for the correct diagnosis. A positive result in the right clinical context is diagnostic. This is what you're working toward with your differential reasoning.</div>
+          </div>
+        </div>
+        <div class="test-type-row">
+          <span class="test-type-badge tt-useful">Useful</span>
+          <div class="test-type-body">
+            <div class="test-type-label">Useful</div>
+            <div class="test-type-desc">Eliminates differentials when negative, supports the diagnosis when positive, or provides important monitoring data. Most investigations in a case are "useful" — their value depends on which differentials are still live.</div>
+          </div>
+        </div>
+        <div class="test-type-row">
+          <span class="test-type-badge tt-dummy">Dummy</span>
+          <div class="test-type-body">
+            <div class="test-type-label">Dummy</div>
+            <div class="test-type-desc">Ordered commonly in clinical practice but contributes nothing to this specific case. Results are non-discriminatory. Ordering these wastes budget. The engine reveals the dummy classification after the result returns.</div>
+          </div>
+        </div>
+      </div>
+      <div class="prose">
+        <p>Test results change meaningfully across stages. A test that is confirmatory at Stage 1 may become less sensitive by Stage 3 (e.g., NS1 antigen in dengue drops after Day 5). A normal chest X-ray at Stage 1 may show pulmonary oedema at Stage 3. Stage-aware test interpretation is part of the clinical skill being trained.</p>
+      </div>
+    </div>
+
+    <!-- RESULTS -->
+    <div class="doc-section" id="results">
+      <div class="sec-num">10</div>
+      <h2 class="sec-title">Reading Results</h2>
+      <div class="prose">
+        <p>Every completed test shows two pieces of information:</p>
+        <ul>
+          <li><strong>Result text</strong> — the raw clinical result, formatted as it would appear on a lab report or imaging report.</li>
+          <li><strong>Interpretation</strong> — an educational note explaining what this result means in the context of this case, which differentials it supports or eliminates, and what clinical action it should prompt.</li>
+        </ul>
+        <p>The interpretation is your teaching moment. It explains why the result looks the way it does, references the relevant textbook principle, and flags when results are misleading, stage-dependent, or require correlation with other findings.</p>
+      </div>
+    </div>
+
+    <!-- DIAGNOSIS -->
+    <div class="doc-section" id="diagnosis">
+      <div class="sec-num">11</div>
+      <h2 class="sec-title">Reaching a Diagnosis</h2>
+      <div class="prose">
+        <p>Each case has 7–10 diagnosis options — a curated differential list including the correct diagnosis, trap diagnoses sharing multiple clinical features, and plausible-but-incorrect alternatives.</p>
+        <p>You select your working diagnosis from the Diagnosis &amp; Treatment tab. This determines which disease-specific management options are displayed. You can change your selected diagnosis at any time before ending the case — changing your diagnosis does not automatically change any management already administered.</p>
+        <p>The correct diagnosis is <strong>not always listed first</strong>. The list is not ordered by likelihood. Clinical reasoning from the presentation and test results is required.</p>
+      </div>
+      <div class="callout c-green">
+        <strong>Key mechanic:</strong> Selecting the wrong diagnosis and administering its curative treatment will either have no effect on the patient's actual condition (neutral) or worsen it (harmful). The simulation models pathophysiological accuracy — treating dengue as scrub typhus with doxycycline does nothing; treating it with chloramphenicol worsens thrombocytopenia.
+      </div>
+    </div>
+
+    <!-- MANAGEMENT -->
+    <div class="doc-section" id="management">
+      <div class="sec-num">12</div>
+      <h2 class="sec-title">Management Options</h2>
+      <div class="prose">
+        <p>Management is divided into two categories:</p>
+        <ul>
+          <li><strong>General Management</strong> — supportive interventions that apply regardless of diagnosis (IV fluids, monitoring, oxygen, analgesia, antipyretics). These slow disease progression and stabilise the patient but do not cure.</li>
+          <li><strong>Disease-Specific Management</strong> — treatments that are appropriate for the selected diagnosis. These range from curative (if the diagnosis is correct) to harmful (if the diagnosis is wrong).</li>
+        </ul>
+        <p>Once a management option is administered, it cannot be undone. Its effects (beneficial, neutral, or harmful) are applied immediately to the game state.</p>
+        <p>Management options are not labelled with their type in-game — you must use clinical knowledge to determine what is appropriate. The type classification is revealed in the end-of-case results screen.</p>
+      </div>
+    </div>
+
+    <!-- MGMT TYPES -->
+    <div class="doc-section" id="mgmt-types">
+      <div class="sec-num">13</div>
+      <h2 class="sec-title">Treatment Types Explained</h2>
+      <div class="prose">
+        <p>Every management option in the engine has an assigned type. These are not visible during gameplay — you must reason to them. They determine what happens when you administer the option.</p>
+      </div>
+      <div class="badge-row">
+        <span class="badge-type bt-curative">✦ Curative</span>
+        <span class="badge-type bt-supportive">+ Supportive</span>
+        <span class="badge-type bt-partial">~ Partial</span>
+        <span class="badge-type bt-wrong">✕ Wrong</span>
+        <span class="badge-type bt-blunder">⚠ Blunder</span>
+        <span class="badge-type bt-unnecessary">$ Unnecessary</span>
+        <span class="badge-type bt-delaying">⏳ Delaying</span>
+      </div>
+      <div class="cards-2" style="margin-top:12px">
+        <div class="rule-card">
+          <div class="rule-card-title" style="color:var(--amber)">✦ Curative</div>
+          <div class="rule-card-desc">Directly addresses the pathological process. Only cures if the selected diagnosis is correct. Applying a curative treatment for the wrong diagnosis has no curative effect.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-card-title" style="color:var(--green)">+ Supportive</div>
+          <div class="rule-card-desc">Appropriate adjunct or symptomatic treatment. Doesn't cure but helps stabilise, delay progression, and improve patient comfort. Scored positively if appropriate.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-card-title" style="color:var(--blue)">~ Partial</div>
+          <div class="rule-card-desc">Marginally beneficial — may slow progression slightly but misses the core treatment need. Acceptable if correct treatment is also given; insufficient alone.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-card-title" style="color:var(--red)">✕ Wrong</div>
+          <div class="rule-card-desc">Appropriate for the selected (wrong) diagnosis but neutral or mildly harmful to the actual patient. No progression of actual disease; mild penalty.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-card-title" style="color:var(--red)">⚠ Blunder</div>
+          <div class="rule-card-desc">Clinically dangerous regardless of diagnosis. Causes direct harm, significant penalties, and may trigger immediate game-ending outcomes. The engine reserves this for treatments with no defensible rationale in context (e.g., NSAIDs in dengue with thrombocytopenia).</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-card-title" style="color:var(--text-mid)">$ Unnecessary</div>
+          <div class="rule-card-desc">Expensive option with no clinical benefit for this patient. Wastes budget. Small or no penalty but significantly impacts Cost Efficiency scoring.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-card-title" style="color:var(--purple)">⏳ Delaying</div>
+          <div class="rule-card-desc">Creates false reassurance. May appear superficially reasonable but does nothing clinically meaningful. Gives the appearance of action while progression continues. Common in cases where learners reach for "observe and wait".</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GENERAL MGMT -->
+    <div class="doc-section" id="general-mgmt">
+      <div class="sec-num">14</div>
+      <h2 class="sec-title">General Management</h2>
+      <div class="prose">
+        <p>General management options are available regardless of your selected diagnosis and are appropriate in most clinical contexts:</p>
+        <ul>
+          <li>IV access and monitoring</li>
+          <li>IV fluids (crystalloids per appropriate protocol)</li>
+          <li>Oxygen therapy (when indicated)</li>
+          <li>Antipyretics (Paracetamol — not NSAIDs in febrile illness with thrombocytopenia risk)</li>
+          <li>Antiemetics, analgesia (appropriate to context)</li>
+          <li>NPO if surgical or procedural case</li>
+          <li>Monitoring protocols (vitals, urine output, serial labs)</li>
+        </ul>
+        <p>Each general management option has a <strong>stageEffect</strong> — a specific clinical outcome description and progression delay for each active stage. These are shown after administration.</p>
+        <p>Some general management options are themselves contextually harmful — for example, IV morphine in cardiogenic shock, or aggressive IV fluids in a case of pulmonary oedema. The engine models these consequences accurately.</p>
+      </div>
+    </div>
+
+    <!-- SCORING -->
+    <div class="doc-section" id="scoring">
+      <div class="sec-num">15</div>
+      <h2 class="sec-title">Scoring Rubric</h2>
+      <div class="prose">
+        <p>Your final score is calculated across five dimensions, totalling 100 base points plus penalties:</p>
+      </div>
+      <table class="score-table">
+        <thead>
+          <tr>
+            <th>Dimension</th>
+            <th>Description</th>
+            <th>Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Correct Diagnosis</strong></td>
+            <td>You identified the correct diagnosis from the differential list</td>
+            <td class="pts-green">+25</td>
+          </tr>
+          <tr>
+            <td><strong>Timely Cure</strong></td>
+            <td>Correct curative treatment was administered before significant progression. Full points if cure achieved in Stage 1; partial if Stage 2.</td>
+            <td class="pts-green">+30</td>
+          </tr>
+          <tr>
+            <td><strong>Cost Efficiency</strong></td>
+            <td>Total spend relative to budget. Full points for ≤70% spend; graded down above; zero if over budget.</td>
+            <td class="pts-green">+15</td>
+          </tr>
+          <tr>
+            <td><strong>Correct Tests</strong></td>
+            <td>Ratio of useful/confirmatory tests ordered vs dummy tests ordered. Penalised for excessive dummy tests.</td>
+            <td class="pts-green">+15</td>
+          </tr>
+          <tr>
+            <td><strong>Correct Management</strong></td>
+            <td>Match of administered treatments against the case's ideal management list. Includes appropriate general management and disease-specific supportive care.</td>
+            <td class="pts-green">+15</td>
+          </tr>
+          <tr>
+            <td><strong>Penalties</strong></td>
+            <td>Each penalty point deducted from total. Accumulates from blunders, wrong management, unnecessary treatment, and stage transitions.</td>
+            <td class="pts-red">−1 per pt</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- PENALTIES -->
+    <div class="doc-section" id="penalties">
+      <div class="sec-num">16</div>
+      <h2 class="sec-title">Penalties</h2>
+      <div class="prose">
+        <p>Penalties accumulate throughout the case and are subtracted from your base score at the end. Common penalty triggers:</p>
+        <ul>
+          <li><strong>Stage progression without treatment</strong> — each stage advance carries an educational penalty reflecting avoidable harm</li>
+          <li><strong>Administering a blunder treatment</strong> — immediate penalty ranging from 10–50 points</li>
+          <li><strong>Ordering investigations after cure</strong> — wasteful spending post-recovery</li>
+          <li><strong>Wrong management in disease-specific section</strong> — 5–20 points depending on harm level</li>
+          <li><strong>Fatal blunders</strong> — may trigger immediate end-game (death outcome)</li>
+        </ul>
+        <p>The penalty system is calibrated so that a learner who makes reasonable clinical decisions — even if not perfectly optimal — achieves a passing score. Blunders and systematic errors are what drive scores into the failing range.</p>
+      </div>
+    </div>
+
+    <!-- GRADES -->
+    <div class="doc-section" id="grades">
+      <div class="sec-num">17</div>
+      <h2 class="sec-title">Grade Thresholds</h2>
+      <div class="cards-2">
+        <div class="rule-card">
+          <div class="rule-card-icon">🏆</div>
+          <div class="rule-card-title" style="color:var(--green)">Perfect — ≥90%</div>
+          <div class="rule-card-desc">Correct diagnosis, early curative treatment, targeted investigations, ideal management, no blunders. The textbook case.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-card-icon">✓</div>
+          <div class="rule-card-title" style="color:var(--blue)">Good — 70–89%</div>
+          <div class="rule-card-desc">Correct diagnosis and cure. Minor inefficiencies — perhaps slightly delayed treatment, a few unnecessary tests, or suboptimal (but not harmful) management choices.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-card-icon">⚠</div>
+          <div class="rule-card-title" style="color:var(--amber)">Average — 50–69%</div>
+          <div class="rule-card-desc">Patient survived but with complications. Diagnosis reached late, excess spending, or some wrong management administered without cure being timely.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-card-icon">✕</div>
+          <div class="rule-card-title" style="color:var(--red)">Poor — &lt;50%</div>
+          <div class="rule-card-desc">Patient died or suffered severe complications. Significant diagnostic or management failures. Educational post-case feedback provided.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TIPS -->
+    <div class="doc-section" id="tips">
+      <div class="sec-num">18</div>
+      <h2 class="sec-title">Strategy Tips</h2>
+      <div class="cards-2">
+        <div class="rule-card">
+          <div class="rule-card-icon">🔬</div>
+          <div class="rule-card-title">Narrow before ordering</div>
+          <div class="rule-card-desc">Form a differential of 3–4 diagnoses from the presentation alone. Order only tests that discriminate between them. Don't order a battery hoping something will light up.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-card-icon">⏱</div>
+          <div class="rule-card-title">Act on the ECG, not the troponin</div>
+          <div class="rule-card-desc">In STEMI-type emergencies, the ECG is diagnostic. Waiting for all results before treating time-sensitive conditions is a penalised behaviour.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-card-icon">💉</div>
+          <div class="rule-card-title">General management first</div>
+          <div class="rule-card-desc">Start IV access, monitoring, and appropriate general management early. These provide progression delay while you form your diagnosis. They are almost always correct to give.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-card-icon">🧪</div>
+          <div class="rule-card-title">Read the interpretation</div>
+          <div class="rule-card-desc">Every test result has an interpretation note. These explain the pathophysiology, textbook basis, and differential implications. They are the primary educational content of the platform.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-card-icon">💰</div>
+          <div class="rule-card-title">Leave budget for treatment</div>
+          <div class="rule-card-desc">Investigations and treatment both cost money. A thrombolysis or primary PCI can cost NPR 1,500–3,500. If you've spent all your budget on tests, you may not be able to afford the cure.</div>
+        </div>
+        <div class="rule-card">
+          <div class="rule-card-icon">📋</div>
+          <div class="rule-card-title">The clue is real</div>
+          <div class="rule-card-desc">Every case has a highlighted "Clinical Clue" — a key finding or reasoning pearl that distinguishes the correct diagnosis. Find it, and you'll often crack the case without running every test.</div>
+        </div>
+      </div>
+      <div class="callout c-green" style="margin-top:20px">
+        <strong>Remember:</strong> MedSim Nepal is a learning tool. The end-of-case screen shows exactly what the ideal management was, which treatments were correct or harmful, and why. A poor score is an opportunity to learn — not a reflection of your value as a future clinician.
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<footer class="footer">
+  <div class="footer-left">© 2025 MedSim Nepal · Game Reference v1.0</div>
+  <div class="footer-links">
+    <a href="about.html" class="footer-link">About</a>
+    <a href="privacy.html" class="footer-link">Privacy</a>
+    <a href="tos.html" class="footer-link">Terms</a>
+    <a href="changelog.html" class="footer-link">Changelog</a>
+  </div>
+</footer>
+
+</body>
+</html>

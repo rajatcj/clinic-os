@@ -522,11 +522,11 @@
   ],
 
   "diagnosisOptions": [
-    { "id": "adhesive_sbo", "label": "Adhesive Small Bowel Obstruction (Post-surgical Adhesions)", "correct": true },
     { "id": "acute_pancreatitis", "label": "Acute Pancreatitis (Severe)", "correct": false },
     { "id": "peptic_ulcer_perf", "label": "Perforated Peptic Ulcer", "correct": false },
     { "id": "acute_gastroenteritis", "label": "Acute Gastroenteritis / Infectious Diarrhoea", "correct": false },
     { "id": "volvulus", "label": "Sigmoid or Small Bowel Volvulus", "correct": false },
+    { "id": "adhesive_sbo", "label": "Adhesive Small Bowel Obstruction (Post-surgical Adhesions)", "correct": true },
     { "id": "large_bowel_obstruction", "label": "Large Bowel Obstruction (Colonic Carcinoma)", "correct": false },
     { "id": "incarcerated_hernia", "label": "Incarcerated / Strangulated Inguinal Hernia", "correct": false },
     { "id": "mesenteric_ischaemia", "label": "Acute Mesenteric Ischaemia", "correct": false },

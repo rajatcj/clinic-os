@@ -460,9 +460,9 @@
   ],
 
   "diagnosisOptions": [
-    { "id": "stemi_anterior", "label": "Anterior STEMI (Acute Anterior Myocardial Infarction — LAD Occlusion)", "correct": true },
     { "id": "nstemi", "label": "NSTEMI / Unstable Angina (Non-ST Elevation ACS)", "correct": false },
     { "id": "aortic_dissection", "label": "Acute Aortic Dissection (Type A)", "correct": false },
+    { "id": "stemi_anterior", "label": "Anterior STEMI (Acute Anterior Myocardial Infarction — LAD Occlusion)", "correct": true },
     { "id": "pe_massive", "label": "Massive Pulmonary Embolism", "correct": false },
     { "id": "myocarditis_acute", "label": "Acute Myocarditis", "correct": false },
     { "id": "gerd_oesophageal", "label": "Oesophageal Spasm / GERD", "correct": false },

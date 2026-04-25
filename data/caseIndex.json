@@ -12,17 +12,29 @@
     "description": "A young student presents with classic migrating abdominal pain. Diagnose before complications set in — every minute matters."
   },
   {
-    "id": "fever_abd_001",
-    "title": "Prolonged Fever with Abdominal Discomfort",
-    "subtitle": "Medicine Ward · Day 3 of Admission",
-    "patientAge": 19, "patientSex": "Female", "patientOccupation": "College Student",
-    "chiefComplaint": "Stepwise fever for 10 days with headache and loose stools",
-    "category": "Medicine", "department": "General Medicine", "system": "Infectious",
-    "difficulty": "MO", "difficultyLevel": 2,
-    "estimatedTime": "25–40 min", "budget": 3000, "stages": 4,
-    "tags": ["Fever", "Infectious", "Tricky", "Overlapping DDx"],
-    "description": "Multiple differentials overlap with similar presentations. Careful workup and clinical reasoning required to separate them."
-  },
+  "id": "fever_abd_001",
+  "title": "Prolonged Fever with Abdominal Discomfort",
+  "subtitle": "Medicine Ward · Day 3 of Admission",
+  "patientAge": 19,
+  "patientSex": "Female",
+  "patientOccupation": "College Student",
+  "chiefComplaint": "Stepwise rising fever for 10 days with headache, abdominal discomfort and loose stools",
+  "category": "Medicine",
+  "department": "General Medicine",
+  "system": "Infectious",
+  "difficulty": "MO",
+  "difficultyLevel": 2,
+  "estimatedTime": "25–40 min",
+  "budget": 3500,
+  "stages": 4,
+  "tags": [
+    "Fever",
+    "Infectious",
+    "Tricky",
+    "Overlapping DDx"
+  ],
+  "description": "10 days of stepwise rising fever, anorexia, loose stools, and subtle physical findings. Multiple tropical infections share overlapping features."
+},
   {
   "id": "chest_pain_001",
   "title": "Crushing Chest Pain with Diaphoresis",

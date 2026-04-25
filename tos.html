@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terms of Service — MedSim Nepal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-deep:#070b0f;--bg-base:#0b1017;--bg-panel:#0f1720;--bg-card:#141d28;--bg-up:#1c2a3a;
+  --border:#1a2b3c;--border-lo:#213345;
+  --text-hi:#dde8f2;--text-mid:#6e90ad;--text-lo:#364e65;--text-dim:#243549;
+  --green:#0dbd8b;--amber:#f5a623;--red:#e84058;--blue:#3da8f5;
+  --mono:'IBM Plex Mono',monospace;--display:'Newsreader',Georgia,serif;--body:'DM Sans',system-ui,sans-serif;
+  --r2:8px;--r3:14px;--r4:20px;
+}
+html{font-size:14px;scroll-behavior:smooth}
+body{font-family:var(--body);background:var(--bg-deep);color:var(--text-hi);min-height:100vh;-webkit-font-smoothing:antialiased}
+a{color:var(--green)}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg-base)}::-webkit-scrollbar-thumb{background:var(--border-lo);border-radius:99px}
+
+.nav{display:flex;align-items:center;gap:14px;padding:14px 28px;background:var(--bg-base);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text-hi)}
+.logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--green),#089e72);border-radius:var(--r2);display:flex;align-items:center;justify-content:center;font-size:16px}
+.logo-text{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.04em}
+.nav-links{margin-left:auto;display:flex;gap:18px}
+.nav-link{font-family:var(--mono);font-size:10px;letter-spacing:.05em;color:var(--text-mid);text-decoration:none;transition:color .15s}
+.nav-link:hover{color:var(--text-hi)}
+.nav-link.active{color:var(--green)}
+
+.page-hero{padding:52px 28px 40px;border-bottom:1px solid var(--border);background:var(--bg-base)}
+.hero-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-lo);margin-bottom:10px}
+.hero-title{font-family:var(--display);font-size:2rem;font-weight:500;margin-bottom:10px}
+.hero-meta{font-family:var(--mono);font-size:10px;color:var(--text-lo);letter-spacing:.06em}
+
+.layout{display:flex;gap:0;max-width:1060px;margin:0 auto}
+
+/* sidebar toc */
+.toc{width:220px;flex-shrink:0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;padding:28px 20px;border-right:1px solid var(--border)}
+.toc-label{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px}
+.toc-list{list-style:none;display:flex;flex-direction:column;gap:2px}
+.toc-item a{font-family:var(--mono);font-size:10px;color:var(--text-lo);text-decoration:none;padding:4px 8px;border-radius:4px;display:block;transition:all .15s;line-height:1.4}
+.toc-item a:hover{color:var(--text-mid);background:var(--bg-card)}
+.toc-item a.active{color:var(--green);background:rgba(13,189,139,.07)}
+
+/* doc content */
+.doc{flex:1;padding:40px 36px 80px;min-width:0}
+
+.doc-section{margin-bottom:42px;scroll-margin-top:80px}
+.sec-num{font-family:var(--mono);font-size:9px;color:var(--text-lo);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.sec-title{font-family:var(--display);font-size:1.3rem;font-weight:500;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.prose{font-size:.88rem;color:var(--text-mid);line-height:1.8}
+.prose p{margin-bottom:12px}
+.prose p:last-child{margin-bottom:0}
+.prose strong{color:var(--text-hi)}
+.prose ul{padding-left:18px;margin-bottom:12px;display:flex;flex-direction:column;gap:5px}
+.prose ul li{color:var(--text-mid);font-size:.85rem;line-height:1.55}
+.prose ol{padding-left:18px;margin-bottom:12px;display:flex;flex-direction:column;gap:5px}
+.prose ol li{color:var(--text-mid);font-size:.85rem;line-height:1.55}
+
+.notice{padding:12px 16px;border-radius:var(--r2);margin:14px 0;font-size:.82rem;line-height:1.6}
+.notice-warn{background:rgba(245,166,35,.06);border:1px solid rgba(245,166,35,.22);border-left:3px solid var(--amber);color:var(--text-mid)}
+.notice-warn strong{color:var(--amber)}
+.notice-info{background:rgba(61,168,245,.05);border:1px solid rgba(61,168,245,.18);border-left:3px solid var(--blue);color:var(--text-mid)}
+.notice-danger{background:rgba(232,64,88,.05);border:1px solid rgba(232,64,88,.18);border-left:3px solid var(--red);color:var(--text-mid)}
+.notice-danger strong{color:var(--red)}
+
+.contact-box{background:var(--bg-card);border:1px solid var(--border-lo);border-radius:var(--r3);padding:18px 20px;margin-top:18px}
+.contact-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-lo);margin-bottom:8px}
+.contact-email{font-family:var(--mono);font-size:12px;color:var(--green)}
+
+.footer{background:var(--bg-base);border-top:1px solid var(--border);padding:18px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.footer-left{font-family:var(--mono);font-size:9px;color:var(--text-dim);letter-spacing:.08em}
+.footer-links{display:flex;gap:16px}
+.footer-link{font-family:var(--mono);font-size:9px;color:var(--text-lo);text-decoration:none;letter-spacing:.06em;transition:color .15s}
+.footer-link:hover{color:var(--text-mid)}
+
+@media(max-width:720px){
+  .toc{display:none}
+  .doc{padding:24px 16px 60px}
+  .page-hero{padding:36px 16px 28px}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <div class="logo-icon">⚕</div>
+    <div class="logo-text">MedSim Nepal</div>
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="about.html" class="nav-link">About</a>
+    <a href="privacy.html" class="nav-link">Privacy</a>
+    <a href="tos.html" class="nav-link active">Terms</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="hero-eyebrow">Legal</div>
+  <h1 class="hero-title">Terms of Service</h1>
+  <div class="hero-meta">Last updated: January 2025 &nbsp;·&nbsp; Effective immediately</div>
+</div>
+
+<div class="layout">
+  <aside class="toc">
+    <div class="toc-label">Contents</div>
+    <ul class="toc-list">
+      <li class="toc-item"><a href="#acceptance">1. Acceptance</a></li>
+      <li class="toc-item"><a href="#description">2. Service Description</a></li>
+      <li class="toc-item"><a href="#medical">3. Medical Disclaimer</a></li>
+      <li class="toc-item"><a href="#eligibility">4. Eligibility</a></li>
+      <li class="toc-item"><a href="#conduct">5. Acceptable Use</a></li>
+      <li class="toc-item"><a href="#ip">6. Intellectual Property</a></li>
+      <li class="toc-item"><a href="#accuracy">7. Content Accuracy</a></li>
+      <li class="toc-item"><a href="#liability">8. Limitation of Liability</a></li>
+      <li class="toc-item"><a href="#availability">9. Availability</a></li>
+      <li class="toc-item"><a href="#changes">10. Changes to Terms</a></li>
+      <li class="toc-item"><a href="#contact">11. Contact</a></li>
+    </ul>
+  </aside>
+
+  <main class="doc">
+
+    <div class="notice notice-warn">
+      <strong>Important:</strong> Please read these Terms of Service carefully before using MedSim Nepal. By accessing or using this platform, you agree to be bound by these terms.
+    </div>
+
+    <div class="doc-section" id="acceptance">
+      <div class="sec-num">Section 01</div>
+      <h2 class="sec-title">Acceptance of Terms</h2>
+      <div class="prose">
+        <p>By accessing, browsing, or using MedSim Nepal ("the Platform", "we", "us", or "our"), you confirm that you have read, understood, and agree to be bound by these Terms of Service and any applicable laws and regulations.</p>
+        <p>If you do not agree with any part of these terms, you must discontinue use of the Platform immediately.</p>
+        <p>These terms apply to all visitors, learners, educators, and any other users of the Platform.</p>
+      </div>
+    </div>
+
+    <div class="doc-section" id="description">
+      <div class="sec-num">Section 02</div>
+      <h2 class="sec-title">Service Description</h2>
+      <div class="prose">
+        <p>MedSim Nepal is a free, web-based clinical case simulation platform designed for medical education. The Platform provides:</p>
+        <ul>
+          <li>Interactive clinical case simulations for MBBS-level learners</li>
+          <li>A game-based scoring and progression system</li>
+          <li>Educational feedback and clinical reasoning training</li>
+          <li>A library of structured clinical cases set in Nepal</li>
+        </ul>
+        <p>The Platform is provided free of charge and does not require account registration to access core features.</p>
+      </div>
+    </div>
+
+    <div class="doc-section" id="medical">
+      <div class="sec-num">Section 03</div>
+      <h2 class="sec-title">Medical Disclaimer</h2>
+      <div class="notice notice-danger">
+        <strong>This is not medical advice.</strong> MedSim Nepal is a simulation tool for educational purposes only. Nothing on this Platform constitutes medical advice, clinical guidance, or a substitute for professional medical training, clinical judgment, or consultation with a qualified healthcare provider.
+      </div>
+      <div class="prose">
+        <p>All clinical content on the Platform, including case presentations, investigation results, management options, and scoring feedback, is authored for educational simulation purposes only.</p>
+        <p>Clinical cases are based on educational textbooks including Davidson's Principles of Medicine (23rd Ed.), Harrison's Principles of Internal Medicine (21st Ed.), Bailey &amp; Love's Short Practice of Surgery (27th Ed.), and applicable WHO guidelines. These cases are simplifications and may not reflect the full complexity of real clinical scenarios.</p>
+        <p><strong>Do not use information from this Platform to make decisions about your own health or the health of others.</strong> Always seek the advice of a qualified medical professional for any medical condition or treatment decision.</p>
+        <p>MedSim Nepal assumes no liability for any clinical decisions made based on, or influenced by, content encountered on this Platform.</p>
+      </div>
+    </div>
+
+    <div class="doc-section" id="eligibility">
+      <div class="sec-num">Section 04</div>
+      <h2 class="sec-title">Eligibility</h2>
+      <div class="prose">
+        <p>The Platform is intended for:</p>
+        <ul>
+          <li>Medical students (MBBS, BDS, BNS, and equivalent programmes)</li>
+          <li>Medical officers, interns, and residents in training</li>
+          <li>Medical educators and faculty</li>
+          <li>Healthcare professionals seeking refresher education</li>
+          <li>Any curious learner interested in medical education</li>
+        </ul>
+        <p>You must be at least 16 years of age to use this Platform. By using MedSim Nepal, you represent that you meet this requirement.</p>
+        <p>There are no geographic restrictions on access to the Platform.</p>
+      </div>
+    </div>
+
+    <div class="doc-section" id="conduct">
+      <div class="sec-num">Section 05</div>
+      <h2 class="sec-title">Acceptable Use</h2>
+      <div class="prose">
+        <p>You agree to use the Platform only for lawful, educational purposes. You must not:</p>
+        <ul>
+          <li>Attempt to reverse-engineer, scrape, or extract case data systematically without permission</li>
+          <li>Use automated tools to access or interact with the Platform in a manner that places undue load on the service</li>
+          <li>Distribute or reproduce case content commercially without written permission</li>
+          <li>Attempt to circumvent the scoring system or artificially manipulate results</li>
+          <li>Use the Platform in any way that could mislead others about the nature of the content (e.g., presenting simulation outcomes as real clinical findings)</li>
+          <li>Engage in any activity that violates applicable laws or regulations</li>
+        </ul>
+        <p>Educational use, including citation in academic work, non-commercial sharing, and classroom use, is expressly encouraged provided attribution is given.</p>
+      </div>
+    </div>
+
+    <div class="doc-section" id="ip">
+      <div class="sec-num">Section 06</div>
+      <h2 class="sec-title">Intellectual Property</h2>
+      <div class="prose">
+        <p>The Platform's user interface, design system, and case engine code are the intellectual property of MedSim Nepal and its developer. The case JSON files and clinical content are published under an open-access educational licence.</p>
+        <p>You are permitted to:</p>
+        <ul>
+          <li>Fork, adapt, and contribute to the open-source repository under the applicable licence</li>
+          <li>Use case content in non-commercial educational settings with attribution</li>
+          <li>Share screenshots or recordings of gameplay for educational or review purposes</li>
+        </ul>
+        <p>You may not reproduce, distribute, or commercialise the Platform's design, interface, or branding without prior written consent.</p>
+        <p>All referenced textbooks (Davidson's, Harrison's, Bailey &amp; Love, etc.) remain the intellectual property of their respective publishers. Their content is referenced for educational commentary only.</p>
+      </div>
+    </div>
+
+    <div class="doc-section" id="accuracy">
+      <div class="sec-num">Section 07</div>
+      <h2 class="sec-title">Content Accuracy</h2>
+      <div class="prose">
+        <p>We make every reasonable effort to ensure clinical content is accurate and aligned with current guidelines. However:</p>
+        <ul>
+          <li>Medical knowledge evolves. Cases may not reflect the most recent updates to clinical guidelines at any given time.</li>
+          <li>Cases are simplifications designed for educational value, not comprehensive clinical references.</li>
+          <li>Drug doses, investigation costs, and management protocols are provided as educational approximations based on Nepal-context practice. Always verify with current guidelines and local formularies.</li>
+          <li>We do not warrant that any clinical information on the Platform is current, complete, or error-free.</li>
+        </ul>
+        <p>If you identify a factual inaccuracy in a clinical case, we encourage you to report it via the contact details below. We take content accuracy seriously.</p>
+      </div>
+    </div>
+
+    <div class="doc-section" id="liability">
+      <div class="sec-num">Section 08</div>
+      <h2 class="sec-title">Limitation of Liability</h2>
+      <div class="prose">
+        <p>To the maximum extent permitted by applicable law, MedSim Nepal and its developer shall not be liable for:</p>
+        <ul>
+          <li>Any direct, indirect, incidental, or consequential damages arising from use of the Platform</li>
+          <li>Any clinical decisions made based on content encountered on the Platform</li>
+          <li>Data loss, service interruptions, or technical failures</li>
+          <li>Any harm resulting from reliance on simulation outcomes as clinical guidance</li>
+        </ul>
+        <p>The Platform is provided "as is" and "as available" without warranties of any kind, express or implied, including but not limited to warranties of merchantability, fitness for a particular purpose, or non-infringement.</p>
+      </div>
+    </div>
+
+    <div class="doc-section" id="availability">
+      <div class="sec-num">Section 09</div>
+      <h2 class="sec-title">Service Availability</h2>
+      <div class="prose">
+        <p>MedSim Nepal is a free platform maintained by a solo developer. We make no guarantees regarding uptime, availability, or continuity of service.</p>
+        <p>We reserve the right to modify, suspend, or discontinue any part of the Platform at any time without notice. We will endeavour to provide advance notice of any planned extended downtime or major changes.</p>
+      </div>
+    </div>
+
+    <div class="doc-section" id="changes">
+      <div class="sec-num">Section 10</div>
+      <h2 class="sec-title">Changes to These Terms</h2>
+      <div class="prose">
+        <p>We may update these Terms of Service from time to time. When changes are made, we will update the "Last updated" date at the top of this page.</p>
+        <p>Continued use of the Platform after any changes constitutes your acceptance of the revised terms. We encourage you to review these terms periodically.</p>
+        <p>Material changes — particularly those affecting liability or user rights — will be noted prominently on the Platform's homepage.</p>
+      </div>
+    </div>
+
+    <div class="doc-section" id="contact">
+      <div class="sec-num">Section 11</div>
+      <h2 class="sec-title">Contact</h2>
+      <div class="prose">
+        <p>If you have questions, concerns, or feedback regarding these Terms of Service, please contact us:</p>
+      </div>
+      <div class="contact-box">
+        <div class="contact-label">Email</div>
+        <div class="contact-email">hello@rajatcj.com</div>
+      </div>
+      <div class="prose" style="margin-top:12px">
+        <p>For case accuracy corrections or clinical content feedback, please include the case ID and a brief description of the issue. We aim to respond within 14 days.</p>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<footer class="footer">
+  <div class="footer-left">© 2025 MedSim Nepal · Pokhara, Nepal</div>
+  <div class="footer-links">
+    <a href="about.html" class="footer-link">About</a>
+    <a href="how-to-play.html" class="footer-link">How to Play</a>
+    <a href="privacy.html" class="footer-link">Privacy</a>
+    <a href="tos.html" class="footer-link">Terms</a>
+    <a href="changelog.html" class="footer-link">Changelog</a>
+  </div>
+</footer>
+
+</body>
+</html>

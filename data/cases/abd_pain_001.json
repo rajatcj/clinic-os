@@ -15,13 +15,13 @@
       "occupation": "Student",
       "address": "Pokhara, Gandaki, Nepal"
     },
-    "chiefComplaint": "Abdominal pain for 12 hours — started around the navel, now shifted to right lower abdomen",
+    "chiefComplaint": "Abdominal pain for 12 hours, started around the navel, now shifted to right lower abdomen",
     "HOPI": {
       "onset": "Sudden onset periumbilical colicky pain approximately 12 hours ago",
       "progression": "Pain has migrated and localised to the right iliac fossa, now constant and sharp in character. Anorexia preceding pain onset by several hours. One episode of vomiting. Low-grade fever developing over last 4 hours.",
       "associatedSymptoms": [
         "Nausea",
-        "Loss of appetite (anorexia) — preceding pain onset",
+        "Loss of appetite (anorexia), preceding pain onset",
         "One episode of vomiting",
         "Low-grade fever",
         "Absolute constipation since pain onset"
@@ -57,14 +57,14 @@
     "exam": {
       "general": [
         "Alert and oriented",
-        "Mild distress — lies still, hips slightly flexed",
+        "Mild distress, lies still, hips slightly flexed",
         "Not pale, not icteric",
         "No palpable lymphadenopathy"
       ],
       "abdominal": [
         "Tenderness at McBurney's point (2/3 from umbilicus to ASIS)",
         "Voluntary guarding in RLQ",
-        "Rovsing's sign: POSITIVE — LLQ pressure causes RLQ pain",
+        "Rovsing's sign: POSITIVE, LLQ pressure causes RLQ pain",
         "Rebound tenderness: Absent at this stage",
         "Psoas sign: Equivocal",
         "Obturator sign: Not tested",
@@ -74,14 +74,14 @@
       "others": [
         "CVS: Normal S1 S2. No murmurs",
         "Chest: Clear. No crepitations",
-        "External genitalia: Both testes normal — no tenderness, no swelling",
+        "External genitalia: Both testes normal, no tenderness, no swelling",
         "Per rectal examination: Mild right-sided tenderness on palpation (performed gently)",
         "No costovertebral angle tenderness bilaterally"
       ]
     }
   },
 
-  "clinicalClue": "KEY FINDING: The classic migration of pain from periumbilical to RLQ (McBurney's point) combined with anorexia preceding pain, positive Rovsing's sign, and voluntary guarding is the hallmark triad of acute appendicitis. Anorexia is the most sensitive symptom (~95%) — its absence should question the diagnosis. The Alvarado score in this patient is ≥6, indicating high clinical probability for appendicitis.",
+  "clinicalClue": "KEY FINDING: The classic migration of pain from periumbilical to RLQ (McBurney's point) combined with anorexia preceding pain, positive Rovsing's sign, and voluntary guarding is the hallmark triad of acute appendicitis. Anorexia is the most sensitive symptom (~95%) its absence should question the diagnosis. The Alvarado score in this patient is ≥6, indicating high clinical probability for appendicitis.",
 
   "initialState": {
     "time": 0,
@@ -116,22 +116,22 @@
 
   "stages": {
     "early": {
-      "label": "Early Appendicitis",
+      "label": "Mild Pain",
       "color": "yellow",
       "next": "localized",
       "afterTime": 3
     },
     "localized": {
-      "label": "Localised Peritonitis",
+      "label": "Severe Pain",
       "color": "orange",
       "next": "perforation",
       "afterTime": 8
     },
     "perforation": {
-      "label": "Perforated Appendix",
+      "label": "Excruciating Pain",
       "color": "red",
       "next": "death",
-      "afterTime": 14
+      "afterTime": 15
     },
     "death": {
       "label": "Septic Shock",
@@ -155,7 +155,7 @@
         ],
         "vitals": { "temp": 38.2, "hr": 104 },
         "penalty": 0,
-        "penaltyMsg": "Disease progressed to localised peritonitis — earlier intervention would have been safer and less morbid."
+        "penaltyMsg": "Pain Progressing! Intervene asap!"
       }
     },
     {
@@ -164,7 +164,7 @@
       "condition": "no_surgery",
       "effects": {
         "symptoms": [
-          "Generalised abdominal rigidity — board-like abdomen",
+          "Generalised abdominal rigidity, board-like abdomen",
           "Patient appears toxic and distressed",
           "High-grade fever",
           "Sudden worsening then brief easing of pain (classic perforation event)",
@@ -172,7 +172,7 @@
         ],
         "vitals": { "bp": "90/60", "hr": 126, "temp": 39.3, "rr": 24 },
         "penalty": 20,
-        "penaltyMsg": "Appendix has perforated. Faecal peritonitis developing. Open surgery with washout is now mandatory."
+        "penaltyMsg": "Faecal peritonitis developing. Open surgery with washout is now mandatory."
       }
     },
     {
@@ -439,11 +439,11 @@
   ],
 
   "diagnosisOptions": [
-    { "id": "appendicitis",    "label": "Acute Appendicitis",                         "correct": true },
     { "id": "gastroenteritis", "label": "Acute Gastroenteritis",                      "correct": false },
     { "id": "renal_colic",     "label": "Right-sided Renal / Ureteric Colic",         "correct": false },
     { "id": "mesenteric_ad",   "label": "Mesenteric Adenitis",                        "correct": false },
     { "id": "meckels",         "label": "Meckel's Diverticulitis",                    "correct": false },
+    { "id": "appendicitis",    "label": "Acute Appendicitis",                         "correct": true },
     { "id": "ibd",             "label": "Crohn's Disease (Terminal Ileitis)",         "correct": false },
     { "id": "hernia",          "label": "Strangulated Inguinal Hernia",               "correct": false },
     { "id": "psoas_abscess",   "label": "Psoas Abscess",                              "correct": false },

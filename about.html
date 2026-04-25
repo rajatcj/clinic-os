@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — MedSim Nepal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-deep:#070b0f;--bg-base:#0b1017;--bg-panel:#0f1720;--bg-card:#141d28;--bg-hover:#192433;--bg-up:#1c2a3a;
+  --border:#1a2b3c;--border-lo:#213345;
+  --text-hi:#dde8f2;--text-mid:#6e90ad;--text-lo:#364e65;--text-dim:#243549;
+  --green:#0dbd8b;--green2:#06d4a0;--amber:#f5a623;--red:#e84058;--blue:#3da8f5;--purple:#a78bfa;
+  --mono:'IBM Plex Mono',monospace;--display:'Newsreader',Georgia,serif;--body:'DM Sans',system-ui,sans-serif;
+  --r2:8px;--r3:14px;--r4:20px;
+}
+html{font-size:14px;scroll-behavior:smooth}
+body{font-family:var(--body);background:var(--bg-deep);color:var(--text-hi);min-height:100vh;-webkit-font-smoothing:antialiased}
+a{color:var(--green);text-decoration:none}
+a:hover{text-decoration:underline}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg-base)}::-webkit-scrollbar-thumb{background:var(--border-lo);border-radius:99px}
+
+/* nav */
+.nav{display:flex;align-items:center;gap:14px;padding:14px 28px;background:var(--bg-base);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--green),#089e72);border-radius:var(--r2);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.logo-text{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.04em;color:var(--text-hi)}
+.nav-links{margin-left:auto;display:flex;gap:18px}
+.nav-link{font-family:var(--mono);font-size:10px;letter-spacing:.05em;color:var(--text-mid);transition:color .15s}
+.nav-link:hover{color:var(--text-hi);text-decoration:none}
+.nav-link.active{color:var(--green)}
+.nav-cta{font-family:var(--mono);font-size:10px;font-weight:600;padding:5px 14px;background:rgba(13,189,139,.1);border:1px solid rgba(13,189,139,.28);border-radius:99px;color:var(--green);transition:all .15s}
+.nav-cta:hover{background:rgba(13,189,139,.2);text-decoration:none}
+
+/* hero */
+.about-hero{padding:70px 28px 50px;text-align:center;position:relative;overflow:hidden;border-bottom:1px solid var(--border)}
+.about-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(13,189,139,.05) 0%,transparent 65%);pointer-events:none}
+.hero-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);margin-bottom:16px}
+.hero-title{font-family:var(--display);font-size:clamp(2rem,5vw,3.2rem);font-weight:500;line-height:1.1;letter-spacing:-.02em;margin-bottom:18px}
+.hero-title em{font-style:italic;color:var(--green)}
+.hero-sub{font-size:.95rem;color:var(--text-mid);max-width:540px;margin:0 auto;line-height:1.7}
+
+/* content */
+.content{max-width:820px;margin:0 auto;padding:52px 28px 80px}
+.section{margin-bottom:56px}
+.section-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);margin-bottom:10px}
+.section-title{font-family:var(--display);font-size:1.6rem;font-weight:500;line-height:1.2;margin-bottom:18px}
+.prose{font-size:.9rem;color:var(--text-mid);line-height:1.75}
+.prose p{margin-bottom:14px}
+.prose p:last-child{margin-bottom:0}
+.prose strong{color:var(--text-hi);font-weight:600}
+
+/* mission pillars */
+.pillars{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px;margin-top:24px}
+.pillar{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r3);padding:20px}
+.pillar-icon{font-size:1.5rem;margin-bottom:10px}
+.pillar-title{font-family:var(--display);font-size:1rem;font-weight:500;margin-bottom:6px}
+.pillar-desc{font-size:.78rem;color:var(--text-mid);line-height:1.6}
+
+/* timeline */
+.timeline{display:flex;flex-direction:column;gap:0;margin-top:22px;position:relative;padding-left:28px}
+.timeline::before{content:'';position:absolute;left:6px;top:8px;bottom:8px;width:1px;background:var(--border)}
+.tl-item{position:relative;padding:0 0 28px 16px}
+.tl-item:last-child{padding-bottom:0}
+.tl-dot{position:absolute;left:-22px;top:4px;width:12px;height:12px;border-radius:50%;background:var(--bg-card);border:2px solid var(--border-lo)}
+.tl-item.active .tl-dot{background:var(--green);border-color:var(--green)}
+.tl-item.future .tl-dot{background:var(--bg-up);border-color:var(--text-dim)}
+.tl-date{font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--text-lo);text-transform:uppercase;margin-bottom:4px}
+.tl-title{font-size:.88rem;font-weight:600;color:var(--text-hi);margin-bottom:4px}
+.tl-desc{font-size:.77rem;color:var(--text-mid);line-height:1.55}
+
+/* dev card */
+.dev-card{background:var(--bg-card);border:1px solid var(--border-lo);border-radius:var(--r4);padding:28px;display:flex;gap:24px;margin-top:22px;align-items:flex-start}
+.dev-avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,rgba(13,189,139,.2),rgba(61,168,245,.2));border:2px solid rgba(13,189,139,.3);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:1.6rem;font-weight:700;color:var(--green)}
+.dev-info{flex:1}
+.dev-name{font-family:var(--display);font-size:1.3rem;font-weight:500;margin-bottom:3px}
+.dev-role{font-family:var(--mono);font-size:10px;color:var(--green);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+.dev-bio{font-size:.82rem;color:var(--text-mid);line-height:1.65;margin-bottom:14px}
+.dev-links{display:flex;gap:8px;flex-wrap:wrap}
+.dev-link{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.06em;padding:4px 11px;border-radius:99px;border:1px solid var(--border-lo);color:var(--text-mid);background:var(--bg-up);transition:all .15s;text-decoration:none}
+.dev-link:hover{color:var(--green);border-color:rgba(13,189,139,.35);text-decoration:none}
+
+/* stats strip */
+.stat-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--r3);overflow:hidden;margin-top:22px}
+.stat-strip-item{background:var(--bg-card);padding:16px;text-align:center}
+.stat-strip-value{font-family:var(--mono);font-size:1.4rem;font-weight:700;color:var(--green);display:block}
+.stat-strip-label{font-family:var(--mono);font-size:9px;color:var(--text-lo);text-transform:uppercase;letter-spacing:.1em;margin-top:3px;display:block}
+
+/* tech stack */
+.stack{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+.stack-tag{font-family:var(--mono);font-size:10px;padding:4px 12px;background:var(--bg-up);border:1px solid var(--border);border-radius:99px;color:var(--text-mid)}
+
+/* callout */
+.callout{background:rgba(13,189,139,.04);border:1px solid rgba(13,189,139,.2);border-left:3px solid var(--green);border-radius:0 var(--r2) var(--r2) 0;padding:14px 16px;margin-top:22px}
+.callout-title{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green);margin-bottom:6px}
+.callout-text{font-size:.82rem;color:var(--text-mid);line-height:1.6}
+
+/* divider */
+.divider{height:1px;background:var(--border);margin:0 0 56px}
+
+/* footer */
+.footer{background:var(--bg-base);border-top:1px solid var(--border);padding:22px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+.footer-left{font-family:var(--mono);font-size:9px;color:var(--text-dim);letter-spacing:.08em}
+.footer-links{display:flex;gap:16px}
+.footer-link{font-family:var(--mono);font-size:9px;color:var(--text-lo);letter-spacing:.06em;transition:color .15s;text-decoration:none}
+.footer-link:hover{color:var(--text-mid)}
+
+@media(max-width:640px){
+  .nav-links{display:none}
+  .dev-card{flex-direction:column;align-items:center;text-align:center}
+  .dev-links{justify-content:center}
+  .stat-strip{grid-template-columns:1fr 1fr}
+  .about-hero,.content{padding-left:16px;padding-right:16px}
+  .footer{flex-direction:column;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <div class="logo-icon">⚕</div>
+    <div>
+      <div class="logo-text">MedSim Nepal</div>
+    </div>
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Home</a>
+    <a href="about.html" class="nav-link active">About</a>
+    <a href="how-to-play.html" class="nav-link">How to Play</a>
+    <a href="changelog.html" class="nav-link">Changelog</a>
+  </div>
+  <a href="index.html" class="nav-cta" style="margin-left:auto">Play Now</a>
+</nav>
+
+<section class="about-hero">
+  <div class="hero-eyebrow">About the Project</div>
+  <h1 class="hero-title">Clinical reasoning,<br><em>simulated</em></h1>
+  <p class="hero-sub">A free, open-access medical education platform built for South Asian clinical contexts — where textbook cases meet real-world Nepal.</p>
+</section>
+
+<div class="content">
+
+  <!-- Mission -->
+  <div class="section">
+    <div class="section-eyebrow">Our Mission</div>
+    <h2 class="section-title">Why this exists</h2>
+    <div class="prose">
+      <p>Medical education in Nepal and across South Asia has long relied on memorisation over reasoning. Students can recite Davidson's by chapter, but freeze at the bedside when presentations overlap, budgets are constrained, and every decision has real consequences.</p>
+      <p>MedSim Nepal was built to bridge that gap — a simulation engine that places learners inside the Emergency Department, the Medicine Ward, the OT — and forces them to <strong>think</strong>, not just recall. Every case is written to MBBS-level clinical standards, grounded in Davidson's, Harrison's, Bailey &amp; Love, and WHO guidelines, and set in the hospitals and communities of Nepal.</p>
+      <p>This is not a quiz app. It is a clinical reasoning trainer.</p>
+    </div>
+
+    <div class="pillars">
+      <div class="pillar">
+        <div class="pillar-icon">🩺</div>
+        <div class="pillar-title">Authentic Cases</div>
+        <div class="pillar-desc">Every patient is from Nepal. Epidemiology, costs in NPR, local disease burden — the context is real.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">⚖️</div>
+        <div class="pillar-title">Consequential Decisions</div>
+        <div class="pillar-desc">Wrong treatments harm patients in real time. Blunders carry penalties. Time pressure is built in.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">📚</div>
+        <div class="pillar-title">Guideline-Based</div>
+        <div class="pillar-desc">All management options cite Davidson's, Harrison's, Bailey &amp; Love, or WHO guidelines. No fabricated medicine.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-icon">🆓</div>
+        <div class="pillar-title">Free to Access</div>
+        <div class="pillar-desc">No paywall, no subscription, no account required. Built for students who need it most.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Stats -->
+  <div class="section">
+    <div class="section-eyebrow">By the Numbers</div>
+    <h2 class="section-title">The platform today</h2>
+    <div class="stat-strip">
+      <div class="stat-strip-item">
+        <span class="stat-strip-value">12+</span>
+        <span class="stat-strip-label">Clinical Cases</span>
+      </div>
+      <div class="stat-strip-item">
+        <span class="stat-strip-value">6</span>
+        <span class="stat-strip-label">Departments</span>
+      </div>
+      <div class="stat-strip-item">
+        <span class="stat-strip-value">4</span>
+        <span class="stat-strip-label">Difficulty Tiers</span>
+      </div>
+      <div class="stat-strip-item">
+        <span class="stat-strip-value">0</span>
+        <span class="stat-strip-label">Cost to Play</span>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:22px">
+      <div class="callout-title">Open Source</div>
+      <div class="callout-text">The case engine, scoring logic, and all case JSON files are open source and available on GitHub. Medical educators are encouraged to contribute, review, and extend the case library. Pull requests welcome.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Developer -->
+  <div class="section">
+    <div class="section-eyebrow">The Developer</div>
+    <h2 class="section-title">Who built this</h2>
+    <div class="dev-card">
+      <div class="dev-avatar">RJ</div>
+      <div class="dev-info">
+        <div class="dev-name">Rajat</div>
+        <div class="dev-role">Developer &amp; Designer · Pokhara, Nepal</div>
+        <div class="dev-bio">
+          A web developer from Pokhara with a deep interest in educational technology and the intersection of good design and clinical learning. MedSim Nepal was built as a personal project after observing how underserved interactive medical education is across South Asia — particularly for students who can't afford costly prep platforms.<br><br>
+          Built entirely in vanilla HTML, CSS, and JavaScript — no frameworks, no dependencies, no compromises on performance.
+        </div>
+        <div class="dev-links">
+          <a href="https://rajatcj.com" class="dev-link" target="_blank" rel="noopener">rajatcj.com</a>
+          <a href="https://github.com" class="dev-link" target="_blank" rel="noopener">GitHub</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Roadmap -->
+  <div class="section">
+    <div class="section-eyebrow">Roadmap</div>
+    <h2 class="section-title">Where we're going</h2>
+    <div class="prose" style="margin-bottom:0">
+      <p>MedSim Nepal is actively developed. Here's a rough trajectory — things change based on feedback and capacity.</p>
+    </div>
+    <div class="timeline">
+      <div class="tl-item active">
+        <div class="tl-dot"></div>
+        <div class="tl-date">v1.0 — 2025</div>
+        <div class="tl-title">Public Launch</div>
+        <div class="tl-desc">Core simulation engine, 12+ cases across Medicine, Emergency, and Surgery. Full scoring system, stage-based progression, management consequences.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">v1.2 — 2025</div>
+        <div class="tl-title">Paediatrics &amp; Obs-Gyn Cases</div>
+        <div class="tl-desc">Expanding the case library into Paediatrics and Obstetrics &amp; Gynaecology, with Nepal-specific epidemiology.</div>
+      </div>
+      <div class="tl-item future">
+        <div class="tl-dot"></div>
+        <div class="tl-date">v1.5 — 2026</div>
+        <div class="tl-title">Learner Profiles &amp; Progress Tracking</div>
+        <div class="tl-desc">Optional account system for tracking scores, weak areas, and case history across sessions.</div>
+      </div>
+      <div class="tl-item future">
+        <div class="tl-dot"></div>
+        <div class="tl-date">v2.0 — 2026</div>
+        <div class="tl-title">Community Case Submissions</div>
+        <div class="tl-desc">Structured submission pipeline for medical educators to contribute reviewed cases to the library.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Tech -->
+  <div class="section" style="margin-bottom:0">
+    <div class="section-eyebrow">Technology</div>
+    <h2 class="section-title">How it's built</h2>
+    <div class="prose">
+      <p>MedSim Nepal is intentionally minimal in its technology stack — fast to load, no build step, deployable anywhere. Cases are authored as structured JSON files that the engine interprets at runtime. The simulation logic, progression system, and scoring rubric are all driven by data, not hardcoded behaviour.</p>
+    </div>
+    <div class="stack">
+      <span class="stack-tag">Vanilla HTML5</span>
+      <span class="stack-tag">CSS3 (no frameworks)</span>
+      <span class="stack-tag">Vanilla JavaScript</span>
+      <span class="stack-tag">JSON Case Engine</span>
+      <span class="stack-tag">IBM Plex Mono</span>
+      <span class="stack-tag">Newsreader</span>
+      <span class="stack-tag">DM Sans</span>
+    </div>
+    <div class="callout">
+      <div class="callout-title">Medical Accuracy Disclaimer</div>
+      <div class="callout-text">All clinical content is authored for educational simulation purposes and is based on Davidson's Principles of Medicine (23rd Ed.), Harrison's Principles of Internal Medicine (21st Ed.), Bailey &amp; Love's Short Practice of Surgery (27th Ed.), and applicable WHO guidelines. <strong>This platform is not a substitute for clinical training, clinical judgment, or professional medical advice.</strong> Cases are designed for MBBS-level learners under the supervision of qualified faculty.</div>
+    </div>
+  </div>
+
+</div>
+
+<footer class="footer">
+  <div class="footer-left">© 2025 MedSim Nepal · Built in Pokhara</div>
+  <div class="footer-links">
+    <a href="about.html" class="footer-link">About</a>
+    <a href="how-to-play.html" class="footer-link">How to Play</a>
+    <a href="privacy.html" class="footer-link">Privacy</a>
+    <a href="tos.html" class="footer-link">Terms</a>
+    <a href="changelog.html" class="footer-link">Changelog</a>
+  </div>
+</footer>
+
+</body>
+</html>

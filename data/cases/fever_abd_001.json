@@ -2,346 +2,1400 @@
   "id": "fever_abd_001",
   "title": "Prolonged Fever with Abdominal Discomfort",
   "subtitle": "Medicine Ward · Day 3 of Admission",
-  "difficulty": "MO", 
-  "category": "Medicine", 
+  "difficulty": "MO",
+  "category": "Medicine",
   "system": "Infectious",
-  "tags": ["Fever","Infectious","Tricky","Overlapping DDx"], 
+  "tags": ["Fever", "Infectious", "Tricky", "Overlapping DDx"],
   "estimatedTime": "25–40 min",
 
   "clinicalPresentation": {
-    "patientParticulars": { "age": 19, "sex": "Female", "occupation": "College Student", "address": "Hostel, Kathmandu" },
+    "patientParticulars": {
+      "age": 19,
+      "sex": "Female",
+      "occupation": "College Student",
+      "address": "Hostel, Kathmandu, Nepal"
+    },
     "chiefComplaint": "Stepwise rising fever for 10 days with headache, abdominal discomfort and loose stools",
     "HOPI": {
-      "onset": "Insidious onset low-grade fever starting 10 days ago, gradually rising in a stepwise pattern",
-      "progression": "Fever now reaching 39.5°C with predominantly evening spikes. Frontal headache and generalised malaise throughout. Loose stools (3–4/day, no blood) and abdominal distension appeared on day 5.",
-      "associatedSymptoms": ["Frontal headache (dull, constant)","Severe malaise and lethargy","Anorexia","Abdominal distension","Loose stools 3–4/day (no blood/mucus)","Dry non-productive cough","One episode of epistaxis on day 8"],
+      "onset": "Insidious onset low-grade fever 10 days ago, gradually rising in a stepwise pattern each day",
+      "progression": "Fever now reaching 39.5°C with predominantly evening spikes. Frontal headache and generalised malaise throughout. Loose stools (3–4/day, no blood) and abdominal distension appeared on day 5. Epistaxis on day 8.",
+      "associatedSymptoms": [
+        "Frontal headache — dull, constant",
+        "Severe malaise and lethargy",
+        "Anorexia",
+        "Abdominal distension",
+        "Loose stools 3–4/day — no blood, no mucus",
+        "Dry non-productive cough",
+        "One episode of epistaxis on day 8"
+      ],
       "relievingFactors": ["Paracetamol temporarily reduces fever"],
-      "aggravatingFactors": ["Evening hours","Physical activity"]
+      "aggravatingFactors": ["Evening hours", "Physical activity"]
     },
-    "pastHistory": ["No chronic illness","No prior hospitalisation","No TB contact known","No known drug allergies"],
-    "familyHistory": ["No significant family history","No similar illness in hostel mates"],
-    "personalHistory": ["Eats from hostel canteen and roadside stalls regularly","Drinks tap water at hostel","Non-smoker, no alcohol"],
-    "vitals": { "temp": 39.2, "pulse": 78, "bp": "106/70", "rr": 18, "spo2": 97, "weight": "52 kg" },
+    "pastHistory": [
+      "No chronic illness",
+      "No prior hospitalisation",
+      "No known TB contact",
+      "No known drug allergies"
+    ],
+    "familyHistory": [
+      "No significant family history",
+      "No similar illness in hostel mates"
+    ],
+    "personalHistory": [
+      "Eats from hostel canteen and roadside stalls regularly",
+      "Drinks tap water at hostel — no filtration",
+      "Non-smoker, no alcohol"
+    ],
+    "vitals": {
+      "temp": 39.2,
+      "pulse": 78,
+      "bp": "106/70",
+      "rr": 18,
+      "spo2": 97,
+      "weight": "52 kg"
+    },
     "exam": {
-      "general": ["Ill-looking, toxic facies","Mildly pale","No icterus","Coated (furred) tongue","No lymphadenopathy"],
-      "abdominal": ["Mild hepatomegaly (liver 2cm below costal margin)","Mild splenomegaly (spleen just palpable)","Soft abdomen, mild generalised tenderness","No guarding or rigidity","Bowel sounds: Normal"],
-      "others": ["Rose spots: 2–3 faint pink macules on upper abdomen (easily missed)","CVS: Relative bradycardia — pulse 78 despite temperature 39.2°C (Faget's sign)","Chest: Clear with occasional dry cough"]
+      "general": [
+        "Ill-looking, toxic facies",
+        "Mildly pale",
+        "No icterus",
+        "Coated (furred) tongue",
+        "No peripheral lymphadenopathy"
+      ],
+      "abdominal": [
+        "Mild hepatomegaly — liver 2 cm below costal margin",
+        "Mild splenomegaly — spleen just palpable",
+        "Soft abdomen, mild generalised tenderness",
+        "No guarding, no rigidity",
+        "Bowel sounds: Normal"
+      ],
+      "others": [
+        "Rose spots: 2–3 faint pink maculopapular lesions on upper abdomen — easily missed",
+        "CVS: Pulse 78 bpm despite temperature 39.2°C — relative bradycardia",
+        "Chest: Clear, occasional dry cough",
+        "No neck stiffness, no photophobia",
+        "No jaundice, no conjunctival suffusion"
+      ]
     }
   },
-  "clinicalClue": "KEY FINDING: Relative bradycardia (pulse inappropriately low for the degree of fever). Most infections cause tachycardia — this is the opposite. Also note the rose spots on the abdomen.",
+
+  "clinicalClue": "KEY FINDING: Relative bradycardia — pulse inappropriately low for the degree of fever. Most febrile illnesses cause tachycardia proportional to temperature rise. Combined with faint rose spots on the abdomen, stepwise fever, and leucopenia, this points strongly away from common viral infections.",
 
   "initialState": {
-    "time": 0, "stage": "first_week", "budget": 3000, "cost": 0, "penalty": 0,
-    "cured": false, "outcome": null,
-    "vitals": { "hr": 78, "bp": "106/70", "temp": 39.2, "rr": 18, "spo2": 97 },
-    "activeSymptoms": ["Stepwise fever 10 days","Frontal headache","Anorexia","Loose stools","Relative bradycardia","Rose spots on abdomen"],
-    "completedTests": [], "givenManagement": [], "pendingResults": [],
-    "selectedDiagnosis": null, "diagnosisCorrect": false, "diagnosisHistory": []
+    "time": 0,
+    "stage": "early_febrile",
+    "budget": 3500,
+    "cost": 0,
+    "penalty": 0,
+    "cured": false,
+    "outcome": null,
+    "vitals": {
+      "hr": 78,
+      "bp": "106/70",
+      "temp": 39.2,
+      "rr": 18,
+      "spo2": 97
+    },
+    "activeSymptoms": [
+      "Stepwise fever for 10 days",
+      "Frontal headache",
+      "Anorexia and malaise",
+      "Loose stools 3–4/day",
+      "Relative bradycardia",
+      "Rose spots on upper abdomen",
+      "Mild hepatosplenomegaly"
+    ],
+    "completedTests": [],
+    "givenManagement": [],
+    "pendingResults": [],
+    "selectedDiagnosis": null,
+    "diagnosisCorrect": false,
+    "diagnosisHistory": []
   },
 
   "stages": {
-    "first_week":  { "label": "Early Typhoid (Bacteraemic Phase)",   "color": "yellow", "next": "second_week", "afterTime": 4 },
-    "second_week": { "label": "Established Typhoid (Intestinal)",    "color": "orange", "next": "complicated",  "afterTime": 10 },
-    "complicated": { "label": "Complicated Typhoid (Perforation Risk)", "color": "red", "next": "death",        "afterTime": 18 },
-    "death":       { "label": "Death — Typhoid Perforation / Sepsis", "color": "black", "next": null,           "afterTime": null }
+    "early_febrile": {
+      "label": "Bacteraemic Phase",
+      "color": "yellow",
+      "next": "intestinal_phase",
+      "afterTime": 4
+    },
+    "intestinal_phase": {
+      "label": "Intestinal Phase",
+      "color": "orange",
+      "next": "haemodynamic_compromise",
+      "afterTime": 10
+    },
+    "haemodynamic_compromise": {
+      "label": "Haemodynamic Compromise",
+      "color": "red",
+      "next": "death",
+      "afterTime": 18
+    },
+    "death": {
+      "label": "Fatal Outcome",
+      "color": "black",
+      "next": null,
+      "afterTime": null
+    }
   },
 
   "progressionRules": [
     {
-      "from": "first_week", "to": "second_week", "condition": "no_antibiotics",
+      "from": "early_febrile",
+      "to": "intestinal_phase",
+      "condition": "no_antibiotics",
       "effects": {
-        "symptoms": ["Abdominal pain worsening","Diarrhoea increasing","Hepatosplenomegaly increasing","Rash spreading"],
-        "vitals": { "temp": 39.8, "hr": 92 }, "penalty": 0,
-        "penaltyMsg": "Untreated typhoid progressing to intestinal phase. Complication risk is now rising."
+        "symptoms": [
+          "Abdominal pain worsening",
+          "Diarrhoea increasing in frequency",
+          "Hepatosplenomegaly increasing",
+          "More rose spots appearing on trunk"
+        ],
+        "vitals": { "temp": 39.8, "hr": 92 },
+        "penalty": 0,
+        "penaltyMsg": "Untreated infection progressing. Intestinal involvement increasing with complication risk rising."
       }
     },
     {
-      "from": "second_week", "to": "complicated", "condition": "no_antibiotics",
+      "from": "intestinal_phase",
+      "to": "haemodynamic_compromise",
+      "condition": "no_antibiotics",
       "effects": {
-        "symptoms": ["Sudden severe abdominal pain","Abdominal guarding and rigidity","Melaena (blood in stool)","Patient rapidly deteriorating"],
-        "vitals": { "bp": "88/60", "hr": 118, "temp": 40.1, "rr": 26 }, "penalty": 25,
-        "penaltyMsg": "Typhoid perforation or haemorrhage has occurred. Emergency surgical management required."
+        "symptoms": [
+          "Sudden severe abdominal pain",
+          "Abdominal guarding and rigidity developing",
+          "Melaena — blood in stool",
+          "Patient rapidly deteriorating"
+        ],
+        "vitals": { "bp": "88/60", "hr": 118, "temp": 40.1, "rr": 26 },
+        "penalty": 25,
+        "penaltyMsg": "Intestinal complication has occurred. Emergency surgical management is now required alongside antibiotics."
       }
     },
     {
-      "from": "complicated", "to": "death", "condition": "no_treatment",
+      "from": "haemodynamic_compromise",
+      "to": "death",
+      "condition": "no_treatment",
       "effects": {
-        "symptoms": ["Shock","Multi-organ failure","Unresponsive"],
+        "symptoms": [
+          "Septic shock",
+          "Multi-organ failure",
+          "Unresponsive to resuscitation"
+        ],
         "vitals": { "bp": "60/40", "hr": 138, "temp": 40.6, "rr": 32, "spo2": 86 },
-        "penalty": 50, "penaltyMsg": "Patient died from complications of untreated typhoid.",
-        "endGame": true, "outcome": "death"
+        "penalty": 50,
+        "penaltyMsg": "Patient died from complications of untreated enteric fever. Timely antibiotics and clinical monitoring were the key interventions.",
+        "endGame": true,
+        "outcome": "death"
       }
     }
   ],
 
   "tests": [
     {
-      "id": "cbc", "name": "CBC", "fullName": "Complete Blood Count",
-      "time": 0.5, "cost": 150, "type": "useful", "category": "Blood",
-      "stageAvailability": ["first_week","second_week","complicated"],
+      "id": "cbc",
+      "name": "CBC",
+      "fullName": "Complete Blood Count",
+      "time": 0.5,
+      "cost": 150,
+      "type": "useful",
+      "category": "Blood",
+      "stageAvailability": ["early_febrile", "intestinal_phase", "haemodynamic_compromise"],
       "results": {
-        "first_week":  "WBC: 3,800/μL (LEUCOPENIA). Lymphocyte predominance. Hb 10.8 g/dL (mild anaemia). Platelets: 140k (mildly low).",
-        "second_week": "WBC: 3,200/μL (leucopenia persisting). Hb 9.4 g/dL (worsening). Platelets 98k (thrombocytopenia — watch carefully).",
-        "complicated": "WBC: 18,000/μL (LEUCOCYTOSIS — NEW FINDING — suggests perforation/superinfection). Hb 7.2. Platelets 62k. Band forms present."
+        "early_febrile":           "WBC: 3,800/μL (leucopenia). Lymphocyte predominance. Hb 10.8 g/dL. Platelets: 140,000/μL (mildly low).",
+        "intestinal_phase":        "WBC: 3,200/μL (leucopenia persisting). Hb 9.4 g/dL (worsening). Platelets: 98,000/μL (thrombocytopenia).",
+        "haemodynamic_compromise": "WBC: 18,000/μL (new leucocytosis — significant change). Hb 7.2 g/dL. Platelets: 62,000/μL. Band forms present."
       },
       "interpretation": {
-        "first_week":  "CRITICAL CLUE: Leucopenia in a febrile patient is the opposite of most infections. Classic for typhoid. Most bacterial infections cause leucocytosis.",
-        "second_week": "Persistent leucopenia with worsening anaemia and thrombocytopenia — typhoid course progressing.",
-        "complicated": "Sudden leucocytosis in established typhoid = perforation or secondary infection. Surgical emergency."
+        "early_febrile":           "Leucopenia in a febrile patient is opposite to most bacterial infections. Classic for enteric fever and some viral causes. Narrows DDx significantly.",
+        "intestinal_phase":        "Persistent leucopenia with worsening anaemia and thrombocytopenia — continuing systemic course.",
+        "haemodynamic_compromise": "New leucocytosis in a previously leucopenic patient signals intestinal perforation or secondary infection. Surgical emergency."
       }
     },
     {
-      "id": "mp_smear", "name": "MP Smear", "fullName": "Malaria Parasite Smear (Thick & Thin)",
-      "time": 0.5, "cost": 120, "type": "useful", "category": "Blood",
-      "stageAvailability": ["first_week","second_week","complicated"],
+      "id": "mp_smear",
+      "name": "MP Smear",
+      "fullName": "Malaria Parasite Thick and Thin Smear",
+      "time": 0.5,
+      "cost": 120,
+      "type": "useful",
+      "category": "Microbiology",
+      "stageAvailability": ["early_febrile", "intestinal_phase", "haemodynamic_compromise"],
       "results": {
-        "first_week":  "No malaria parasites seen. RBC morphology normal. NEGATIVE for P. falciparum and P. vivax.",
-        "second_week": "Negative for malaria parasites.",
-        "complicated": "Negative for malaria parasites."
+        "early_febrile":           "No malaria parasites seen. Giemsa stain negative for P. falciparum and P. vivax.",
+        "intestinal_phase":        "Repeat smear: NEGATIVE for malaria parasites.",
+        "haemodynamic_compromise": "Malaria smear: NEGATIVE."
       },
       "interpretation": {
-        "first_week":  "Malaria ruled out — critical differential in febrile patient from Nepal. Typhoid remains top differential.",
-        "second_week": "Malaria excluded. Continue typhoid workup.",
-        "complicated": "Malaria not contributing to complications."
+        "early_febrile":           "Malaria ruled out — essential differential in febrile patient from Kathmandu. Enteric fever remains top differential.",
+        "intestinal_phase":        "Malaria excluded. Complication is not from malaria.",
+        "haemodynamic_compromise": "Malaria not contributing to haemodynamic deterioration."
       }
     },
     {
-      "id": "widal", "name": "Widal Test", "fullName": "Widal Test (O and H Agglutination Titres)",
-      "time": 1, "cost": 180, "type": "useful", "category": "Blood",
-      "stageAvailability": ["first_week","second_week","complicated"],
+      "id": "rdt_malaria",
+      "name": "Malaria RDT",
+      "fullName": "Malaria Rapid Diagnostic Test (HRP-2 / pLDH)",
+      "time": 0.3,
+      "cost": 200,
+      "type": "useful",
+      "category": "Serology",
+      "stageAvailability": ["early_febrile", "intestinal_phase", "haemodynamic_compromise"],
       "results": {
-        "first_week":  "TO: 1:80 (borderline). TH: 1:80. NOTE: Widal may be false-negative in first week — antibodies take time to develop. Single titre not diagnostic.",
-        "second_week": "TO: 1:320 (positive). TH: 1:160 (positive). Rising titre strongly supports typhoid.",
-        "complicated": "TO: 1:640 (very high). TH: 1:320. Confirmed enteric fever."
+        "early_febrile":           "Malaria RDT: NEGATIVE — P. falciparum and P. vivax antigens absent.",
+        "intestinal_phase":        "Malaria RDT: NEGATIVE.",
+        "haemodynamic_compromise": "Malaria RDT: NEGATIVE."
       },
       "interpretation": {
-        "first_week":  "Low Widal titre in first week does NOT exclude typhoid. Blood culture is more useful at this stage.",
-        "second_week": "Titre of 1:320 in endemic area is highly suggestive of typhoid. Treat accordingly.",
-        "complicated": "Very high titre confirms established typhoid. Note: antibiotics may blunt titre rise."
+        "early_febrile":           "Rapid malaria exclusion. Higher sensitivity than smear for low parasitaemia P. falciparum. Malaria DDx safely eliminated.",
+        "intestinal_phase":        "Malaria definitively excluded.",
+        "haemodynamic_compromise": "Not the cause of deterioration."
       }
     },
     {
-      "id": "blood_culture", "name": "Blood Culture", "fullName": "Blood Culture & Sensitivity",
-      "time": 3, "cost": 400, "type": "useful", "category": "Blood",
-      "stageAvailability": ["first_week","second_week","complicated"],
+      "id": "widal",
+      "name": "Widal Test",
+      "fullName": "Widal Test — O and H Agglutination Titres",
+      "time": 1,
+      "cost": 180,
+      "type": "useful",
+      "category": "Serology",
+      "stageAvailability": ["early_febrile", "intestinal_phase", "haemodynamic_compromise"],
       "results": {
-        "first_week":  "POSITIVE: Salmonella typhi isolated (72h incubation). Sensitive to: Ceftriaxone, Azithromycin. RESISTANT to: Ampicillin, Chloramphenicol (MDR strain).",
-        "second_week": "POSITIVE: Salmonella typhi isolated. Same sensitivity pattern. Note: positivity drops to ~50% in 2nd week.",
-        "complicated": "POSITIVE: Salmonella typhi + E. coli (polymicrobial — from perforation). Broad spectrum cover required."
+        "early_febrile":           "TO: 1:80 (borderline). TH: 1:80. Single titre — antibodies may not yet be elevated at day 10. Non-diagnostic in isolation.",
+        "intestinal_phase":        "TO: 1:320 (positive). TH: 1:160 (positive). Rising titre strongly supports enteric fever.",
+        "haemodynamic_compromise": "TO: 1:640 (very high). TH: 1:320. Established enteric fever confirmed serologically."
       },
       "interpretation": {
-        "first_week":  "Gold standard — positive in 80% of first-week cases. Confirms typhoid AND guides antibiotic choice (MDR strain present).",
-        "second_week": "Still useful but lower sensitivity. Confirms typhoid and antibiotic sensitivities.",
-        "complicated": "Polymicrobial growth indicates bowel perforation with faecal contamination."
+        "early_febrile":           "Low single Widal titre does NOT exclude enteric fever — antibodies lag 7–10 days. Blood culture is more reliable at this stage. In Nepal, background titres of 1:80 are common from prior exposure.",
+        "intestinal_phase":        "Titre of 1:320 in a symptomatic patient in an endemic area is highly suggestive. Treat accordingly.",
+        "haemodynamic_compromise": "Very high titre confirms established disease. Note: antibiotic treatment may blunt further titre rise."
       }
     },
     {
-      "id": "lft", "name": "LFT", "fullName": "Liver Function Tests",
-      "time": 1, "cost": 250, "type": "useful", "category": "Blood",
-      "stageAvailability": ["first_week","second_week","complicated"],
+      "id": "blood_culture",
+      "name": "Blood Culture",
+      "fullName": "Blood Culture and Sensitivity — Aerobic and Anaerobic x2 sets",
+      "time": 3,
+      "cost": 400,
+      "type": "confirmatory",
+      "category": "Microbiology",
+      "stageAvailability": ["early_febrile", "intestinal_phase", "haemodynamic_compromise"],
       "results": {
-        "first_week":  "Bilirubin: 1.8 mg/dL (mildly elevated). AST: 78 U/L (2x upper limit). ALT: 65 U/L (elevated). ALP: Normal. Pattern of typhoid hepatitis.",
-        "second_week": "Bilirubin: 2.4 mg/dL. AST: 120 U/L. ALT: 98 U/L. Hepatitis picture worsening.",
-        "complicated": "Bilirubin: 4.2 mg/dL (clinical jaundice). PT prolonged. Coagulopathy developing."
+        "early_febrile":           "POSITIVE at 72 hours: Salmonella typhi isolated. Sensitive to: Ceftriaxone, Azithromycin. RESISTANT to: Ampicillin, Chloramphenicol (MDR strain).",
+        "intestinal_phase":        "POSITIVE: Salmonella typhi. Same sensitivity pattern. Note: sensitivity drops to ~50% in week 2.",
+        "haemodynamic_compromise": "POSITIVE: Salmonella typhi + E. coli isolated (polymicrobial — from intestinal source). Broad-spectrum cover required."
       },
       "interpretation": {
-        "first_week":  "Mild transaminitis is a helpful diagnostic clue — typhoid hepatitis occurs in 20–40% of cases.",
-        "second_week": "Worsening hepatic involvement. Monitor closely for acute liver failure.",
-        "complicated": "Severe hepatic dysfunction with coagulopathy significantly increases surgical risk."
+        "early_febrile":           "Gold standard — positive in ~80% of first-week cases. Confirms diagnosis AND guides antibiotic choice. MDR strain present — chloramphenicol and ampicillin are inactive.",
+        "intestinal_phase":        "Still useful but reduced sensitivity. Confirms sensitivities for ongoing management.",
+        "haemodynamic_compromise": "Polymicrobial growth indicates intestinal perforation with faecal contamination."
       }
     },
     {
-      "id": "dengue_serology", "name": "Dengue NS1 + IgM/IgG", "fullName": "Dengue Serology (NS1 Antigen + IgM/IgG)",
-      "time": 1, "cost": 350, "type": "useful", "category": "Blood",
-      "stageAvailability": ["first_week","second_week","complicated"],
+      "id": "lft",
+      "name": "LFT",
+      "fullName": "Liver Function Tests",
+      "time": 1,
+      "cost": 250,
+      "type": "useful",
+      "category": "Blood",
+      "stageAvailability": ["early_febrile", "intestinal_phase", "haemodynamic_compromise"],
       "results": {
-        "first_week":  "NS1 Antigen: NEGATIVE. IgM: NEGATIVE. IgG: NEGATIVE. Dengue excluded.",
-        "second_week": "All dengue markers: NEGATIVE.",
-        "complicated": "Dengue: NEGATIVE."
+        "early_febrile":           "Bilirubin: 1.8 mg/dL (mildly elevated). AST: 78 U/L (~2x ULN). ALT: 65 U/L (elevated). ALP: Normal. Pattern: mild hepatitis.",
+        "intestinal_phase":        "Bilirubin: 2.4 mg/dL. AST: 120 U/L. ALT: 98 U/L. Worsening transaminitis.",
+        "haemodynamic_compromise": "Bilirubin: 4.2 mg/dL (clinical jaundice). PT prolonged. Coagulopathy developing."
       },
       "interpretation": {
-        "first_week":  "Dengue excluded — important differential for fever + thrombocytopenia in endemic region.",
-        "second_week": "Dengue ruled out. Focus remains on typhoid.",
-        "complicated": "Dengue not contributing."
+        "early_febrile":           "Mild transaminitis occurs in 20–40% of enteric fever cases. Helps distinguish from viral hepatitis (which shows higher ALT, conjugated bilirubin rise, and no leucopenia).",
+        "intestinal_phase":        "Worsening hepatic involvement. Monitor for acute liver failure.",
+        "haemodynamic_compromise": "Coagulopathy with jaundice significantly increases surgical risk if perforation requires laparotomy."
       }
     },
     {
-      "id": "usg_abdomen", "name": "USG Abdomen", "fullName": "Ultrasound Abdomen & Pelvis",
-      "time": 1, "cost": 400, "type": "useful", "category": "Imaging",
-      "stageAvailability": ["first_week","second_week","complicated"],
+      "id": "dengue_serology",
+      "name": "Dengue NS1 + IgM/IgG",
+      "fullName": "Dengue Serology — NS1 Antigen + IgM/IgG ELISA",
+      "time": 1,
+      "cost": 350,
+      "type": "useful",
+      "category": "Serology",
+      "stageAvailability": ["early_febrile", "intestinal_phase", "haemodynamic_compromise"],
       "results": {
-        "first_week":  "Hepatomegaly (14.5 cm). Mild splenomegaly (12 cm). Mesenteric lymphadenopathy — multiple enlarged nodes at RIF. No free fluid.",
-        "second_week": "Hepatosplenomegaly increased. Thickened bowel wall at terminal ileum. Small mesenteric nodes. No free fluid yet.",
-        "complicated": "Free fluid in peritoneum (ascites). Dilated bowel loops. Possible perforation at terminal ileum. Emergency CT/surgery."
+        "early_febrile":           "NS1 Antigen: NEGATIVE. Dengue IgM: NEGATIVE. Dengue IgG: NEGATIVE. Dengue excluded.",
+        "intestinal_phase":        "All dengue markers: NEGATIVE.",
+        "haemodynamic_compromise": "Dengue serology: NEGATIVE."
       },
       "interpretation": {
-        "first_week":  "Classic USG triad: hepatomegaly + splenomegaly + mesenteric lymphadenopathy = highly suggestive of typhoid.",
-        "second_week": "Terminal ileal wall thickening — Peyer's patch involvement is pathognomonic for typhoid.",
-        "complicated": "Free fluid strongly suggests intestinal perforation. Surgical emergency."
+        "early_febrile":           "Dengue excluded — important differential for fever with thrombocytopenia in Nepal. NS1 negativity by day 10 would be expected even if dengue were the cause, so IgM negativity is the key exclusion here.",
+        "intestinal_phase":        "Dengue not contributing. Thrombocytopenia is from enteric fever, not dengue.",
+        "haemodynamic_compromise": "Dengue not the cause of deterioration."
       }
     },
     {
-      "id": "stool_culture", "name": "Stool Culture", "fullName": "Stool Culture & Sensitivity",
-      "time": 3, "cost": 300, "type": "useful", "category": "Stool",
-      "stageAvailability": ["first_week","second_week","complicated"],
+      "id": "usg_abdomen",
+      "name": "USG Abdomen",
+      "fullName": "Ultrasound Abdomen and Pelvis",
+      "time": 1,
+      "cost": 400,
+      "type": "useful",
+      "category": "Imaging",
+      "stageAvailability": ["early_febrile", "intestinal_phase", "haemodynamic_compromise"],
       "results": {
-        "first_week":  "Processing (72h). Low positivity in week 1. Preliminary: No Salmonella seen on direct smear.",
-        "second_week": "POSITIVE: Salmonella typhi isolated in stool. Sensitive to Ceftriaxone, Azithromycin.",
-        "complicated": "POSITIVE: Salmonella typhi + E. coli — mixed bowel flora, consistent with perforation."
+        "early_febrile":           "Hepatomegaly (14.5 cm). Mild splenomegaly (12 cm). Multiple enlarged mesenteric lymph nodes at RIF. No free fluid. Gallbladder: normal.",
+        "intestinal_phase":        "Hepatosplenomegaly increased. Thickened bowel wall at terminal ileum. Small mesenteric nodes persisting. No free fluid yet.",
+        "haemodynamic_compromise": "Free fluid in peritoneum (ascites). Dilated bowel loops. Discontinuity at terminal ileum region — possible perforation. Emergency CT or direct surgical exploration indicated."
       },
       "interpretation": {
-        "first_week":  "Blood culture is more useful than stool culture in first week — Salmonella shedding in stool peaks in weeks 2–3.",
-        "second_week": "Positive stool culture in 2nd week confirms diagnosis. Also useful for contact tracing.",
-        "complicated": "Mixed flora confirms perforation."
+        "early_febrile":           "Classic sonographic triad: hepatomegaly + splenomegaly + mesenteric lymphadenopathy — highly characteristic of enteric fever. Helps exclude biliary disease and appendicitis.",
+        "intestinal_phase":        "Terminal ileal wall thickening reflects Peyer's patch involvement — characteristic of enteric fever. No free fluid yet.",
+        "haemodynamic_compromise": "Free intraperitoneal fluid strongly suggests intestinal perforation. Surgical emergency."
       }
     },
     {
-      "id": "urine_re", "name": "Urine R/E", "fullName": "Urine Routine Examination",
-      "time": 0.3, "cost": 80, "type": "dummy", "category": "Urine",
-      "stageAvailability": ["first_week","second_week","complicated"],
+      "id": "stool_culture",
+      "name": "Stool Culture",
+      "fullName": "Stool Culture and Sensitivity",
+      "time": 3,
+      "cost": 300,
+      "type": "useful",
+      "category": "Stool",
+      "stageAvailability": ["early_febrile", "intestinal_phase", "haemodynamic_compromise"],
       "results": {
-        "first_week":  "Mildly cloudy. WBC: Trace. Protein: Trace (non-specific). Glucose: Absent. No bacteria. Not consistent with UTI.",
-        "second_week": "Similar findings. Urine culture: Salmonella typhi isolated (Salmonella shed in urine in ~25% of cases).",
-        "complicated": "Oliguria — urine output <0.5 mL/kg/hr. Reflects pre-renal AKI from septic shock."
+        "early_febrile":           "Processing (72 hours). Low positivity in week 1. No Salmonella seen on direct smear.",
+        "intestinal_phase":        "POSITIVE: Salmonella typhi isolated in stool. Sensitive to Ceftriaxone and Azithromycin.",
+        "haemodynamic_compromise": "POSITIVE: Salmonella typhi + E. coli — mixed bowel flora, consistent with intestinal perforation."
       },
       "interpretation": {
-        "first_week":  "UTI excluded. Trace abnormalities are non-specific.",
-        "second_week": "Salmonella in urine is a secondary diagnostic clue.",
-        "complicated": "Oliguria signals inadequate renal perfusion — septic shock."
+        "early_febrile":           "Blood culture is more useful in week 1. Salmonella shedding in stool peaks in weeks 2–3.",
+        "intestinal_phase":        "Positive stool culture in week 2 confirms diagnosis. Useful also for contact tracing.",
+        "haemodynamic_compromise": "Mixed flora confirms intestinal source of contamination."
       }
     },
     {
-      "id": "cxr", "name": "Chest X-ray", "fullName": "CXR PA View",
-      "time": 0.5, "cost": 150, "type": "dummy", "category": "Imaging",
-      "stageAvailability": ["first_week","second_week","complicated"],
+      "id": "urine_re",
+      "name": "Urine R/E",
+      "fullName": "Urine Routine Examination and Microscopy",
+      "time": 0.3,
+      "cost": 80,
+      "type": "dummy",
+      "category": "Urine",
+      "stageAvailability": ["early_febrile", "intestinal_phase", "haemodynamic_compromise"],
       "results": {
-        "first_week":  "Clear lung fields. No consolidation, no effusion. Heart size normal. Unremarkable.",
-        "second_week": "Mild basal atelectasis (non-specific, from abdominal distension). No pneumonia.",
-        "complicated": "Free gas under right dome of diaphragm — PNEUMOPERITONEUM. Confirms bowel perforation. Surgical emergency."
+        "early_febrile":           "Mildly cloudy. WBC: Trace. Protein: Trace (non-specific). Glucose: Absent. No bacteria on microscopy.",
+        "intestinal_phase":        "Trace WBCs. No bacteria. Urine culture (if sent): Salmonella typhi isolated (shed in urine in ~25% of cases).",
+        "haemodynamic_compromise": "Oliguria — urine output <0.5 mL/kg/hr. Concentrated urine. Reflects pre-renal AKI from septic shock."
       },
       "interpretation": {
-        "first_week":  "Normal CXR. Pneumonia excluded. Not useful for diagnosing typhoid.",
-        "second_week": "Atelectasis from abdominal distension. Non-specific finding.",
-        "complicated": "Free air under diaphragm = perforation confirmed. Emergency laparotomy required."
+        "early_febrile":           "UTI excluded. Trace abnormalities are non-specific. Not helpful for diagnosis.",
+        "intestinal_phase":        "Salmonella in urine is a secondary diagnostic clue — not the primary route. Does not change management.",
+        "haemodynamic_compromise": "Oliguria signals inadequate renal perfusion. Aggressive IV resuscitation required."
+      }
+    },
+    {
+      "id": "cxr",
+      "name": "CXR",
+      "fullName": "Chest X-Ray PA View",
+      "time": 0.5,
+      "cost": 150,
+      "type": "dummy",
+      "category": "Imaging",
+      "stageAvailability": ["early_febrile", "intestinal_phase", "haemodynamic_compromise"],
+      "results": {
+        "early_febrile":           "Clear lung fields. No consolidation, no pleural effusion. Heart size normal. Unremarkable.",
+        "intestinal_phase":        "Mild basal atelectasis bilaterally — non-specific, from abdominal distension. No pneumonia.",
+        "haemodynamic_compromise": "Free gas under right dome of diaphragm — PNEUMOPERITONEUM. Confirms intestinal perforation. Surgical emergency."
+      },
+      "interpretation": {
+        "early_febrile":           "Normal CXR. Pneumonia and TB excluded as primary diagnosis at this stage. Not useful for diagnosing enteric fever.",
+        "intestinal_phase":        "Basal atelectasis from abdominal distension — non-specific. No change in management.",
+        "haemodynamic_compromise": "Pneumoperitoneum on CXR confirms perforation. Emergency laparotomy is mandatory."
+      }
+    },
+    {
+      "id": "serum_electrolytes",
+      "name": "Serum Electrolytes",
+      "fullName": "Serum Sodium, Potassium, Chloride, Bicarbonate",
+      "time": 1,
+      "cost": 250,
+      "cost": 250,
+      "type": "useful",
+      "category": "Blood",
+      "stageAvailability": ["early_febrile", "intestinal_phase", "haemodynamic_compromise"],
+      "results": {
+        "early_febrile":           "Na: 134 mEq/L (mildly low). K: 3.4 mEq/L (low-normal). Cl: 98 mEq/L. HCO3: 22 mEq/L. Mild hyponatraemia consistent with prolonged fever and poor intake.",
+        "intestinal_phase":        "Na: 130 mEq/L (worsening hyponatraemia). K: 3.0 mEq/L (hypokalaemia from diarrhoea). HCO3: 20 mEq/L.",
+        "haemodynamic_compromise": "Na: 126 mEq/L. K: 2.8 mEq/L (severe). HCO3: 14 mEq/L (metabolic acidosis from septic shock). Lactate: 5.2 mmol/L."
+      },
+      "interpretation": {
+        "early_febrile":           "Mild hyponatraemia from SIADH — a recognised feature of enteric fever. Guides IV fluid replacement (use NS, not hypotonic fluids).",
+        "intestinal_phase":        "Hypokalaemia from diarrhoeal losses — requires active replacement. Monitor for arrhythmia.",
+        "haemodynamic_compromise": "Severe metabolic acidosis with elevated lactate — septic shock. Aggressive resuscitation and surgical source control required."
+      }
+    },
+    {
+      "id": "scrub_typhus_serology",
+      "name": "Scrub Typhus IFA",
+      "fullName": "Scrub Typhus Indirect Immunofluorescence Assay (IFA) — Orientia tsutsugamushi",
+      "time": 2,
+      "cost": 500,
+      "type": "useful",
+      "category": "Serology",
+      "stageAvailability": ["early_febrile", "intestinal_phase", "haemodynamic_compromise"],
+      "results": {
+        "early_febrile":           "Scrub Typhus IFA: NEGATIVE (titre <1:80). No evidence of Orientia tsutsugamushi infection.",
+        "intestinal_phase":        "Scrub Typhus IFA: NEGATIVE. Repeat titre: Negative.",
+        "haemodynamic_compromise": "Scrub Typhus IFA: NEGATIVE."
+      },
+      "interpretation": {
+        "early_febrile":           "Scrub typhus excluded — important differential in Nepal for prolonged fever. Scrub typhus classically has an eschar, which is absent here. No rash in hair-bearing areas. IFA negative.",
+        "intestinal_phase":        "Scrub typhus not contributing to presentation.",
+        "haemodynamic_compromise": "Not the cause of haemodynamic compromise."
       }
     }
   ],
 
   "diagnosisOptions": [
-    { "id": "typhoid",         "label": "Enteric Fever (Typhoid / Paratyphoid)",     "correct": true },
-    { "id": "malaria",         "label": "Malaria (P. falciparum / P. vivax)",         "correct": false },
-    { "id": "dengue",          "label": "Dengue Fever (Classic / Severe)",            "correct": false },
-    { "id": "viral_hepatitis", "label": "Viral Hepatitis A or E",                    "correct": false },
-    { "id": "uti",             "label": "Complicated Urinary Tract Infection",        "correct": false },
-    { "id": "tb",              "label": "Tuberculosis (Abdominal TB / Miliary TB)",   "correct": false },
-    { "id": "leptospirosis",   "label": "Leptospirosis",                              "correct": false },
-    { "id": "inf_mono",        "label": "Infectious Mononucleosis (EBV)",             "correct": false },
-    { "id": "brucellosis",     "label": "Brucellosis",                                "correct": false },
-    { "id": "lymphoma",        "label": "Lymphoma (Hodgkin's / NHL)",                 "correct": false }
+    { "id": "malaria",         "label": "Malaria — P. falciparum or P. vivax",           "correct": false },
+    { "id": "dengue",          "label": "Dengue Fever",                                  "correct": false },
+    { "id": "viral_hepatitis", "label": "Viral Hepatitis A or E",                        "correct": false },
+    { "id": "uti",             "label": "Complicated Urinary Tract Infection / Urosepsis","correct": false },
+    { "id": "tb",              "label": "Tuberculosis — Abdominal or Miliary",           "correct": false },
+    { "id": "leptospirosis",   "label": "Leptospirosis",                                 "correct": false },
+    { "id": "inf_mono",        "label": "Infectious Mononucleosis (EBV)",                "correct": false },
+    { "id": "brucellosis",     "label": "Brucellosis",                                   "correct": false },
+    { "id": "typhoid",         "label": "Enteric Fever (Typhoid / Paratyphoid)",        "correct": true },
+    { "id": "lymphoma",        "label": "Lymphoma — Hodgkin's or Non-Hodgkin's",         "correct": false }
   ],
+
   "correctDiagnosis": "typhoid",
 
   "managementOptions": {
     "general": [
       {
-        "id": "iv_fluids", "name": "IV Fluids", "fullName": "IV Ringer's Lactate / Normal Saline",
-        "cost": 100, "type": "supportive", "repeatable": false,
+        "id": "iv_fluids",
+        "name": "IV Fluids",
+        "fullName": "IV Normal Saline 0.9% or Ringer's Lactate 1L 8-hourly",
+        "cost": 100,
+        "type": "supportive",
+        "repeatable": false,
         "stageEffect": {
-          "first_week":  { "note": "Oral rehydration preferred if tolerating. IV for persistent fever and poor intake.", "vitalEffect": { "hr": -3 } },
-          "second_week": { "note": "IV fluids important — diarrhoea and poor oral intake leading to dehydration.", "vitalEffect": { "hr": -5 } },
-          "complicated": { "note": "Aggressive IV resuscitation for septic shock.", "vitalEffect": { "hr": -10 } }
+          "early_febrile": {
+            "note": "Oral rehydration preferred if tolerating. IV for persistent fever and poor intake. Normal saline preferred given mild hyponatraemia.",
+            "vitalEffect": { "hr": -3 },
+            "delayProgression": 0.5
+          },
+          "intestinal_phase": {
+            "note": "IV fluids important — diarrhoea and poor oral intake causing dehydration and hypokalaemia. Add KCl supplementation.",
+            "vitalEffect": { "hr": -5 },
+            "delayProgression": 0.5
+          },
+          "haemodynamic_compromise": {
+            "note": "Aggressive IV resuscitation for septic shock — 30 mL/kg crystalloid bolus per Surviving Sepsis Campaign. Monitor urine output.",
+            "vitalEffect": { "hr": -10 },
+            "delayProgression": 1
+          }
         }
       },
       {
-        "id": "paracetamol", "name": "Paracetamol", "fullName": "Tab. Paracetamol 500mg TDS (Antipyretic)",
-        "cost": 40, "type": "supportive", "repeatable": false,
+        "id": "paracetamol",
+        "name": "Paracetamol",
+        "fullName": "Tab. Paracetamol 500 mg TDS (Antipyretic)",
+        "cost": 40,
+        "type": "supportive",
+        "repeatable": false,
         "stageEffect": {
-          "first_week":  { "note": "Correct — symptomatic relief for fever. Does not treat the infection.", "vitalEffect": { "temp": -0.5 } },
-          "second_week": { "note": "Continue antipyretic. Avoid NSAIDs — risk of GI bleeding in typhoid.", "vitalEffect": { "temp": -0.6 } },
-          "complicated": { "note": "Paracetamol for fever. NSAIDs completely contraindicated in complicated typhoid." }
+          "early_febrile": {
+            "note": "Correct antipyretic — symptomatic relief. NSAIDs must be avoided in enteric fever due to GI bleeding risk.",
+            "vitalEffect": { "temp": -0.5 },
+            "delayProgression": 0.3
+          },
+          "intestinal_phase": {
+            "note": "Continue paracetamol only. NSAIDs absolutely contraindicated in intestinal phase.",
+            "vitalEffect": { "temp": -0.6 }
+          },
+          "haemodynamic_compromise": {
+            "note": "Paracetamol for fever. IV route if oral not tolerated. NSAIDs remain contraindicated."
+          }
         }
       },
       {
-        "id": "nsaid", "name": "NSAID (Ibuprofen)", "fullName": "Tab. Ibuprofen 400mg TDS",
-        "cost": 50, "type": "wrong", "repeatable": false,
+        "id": "nsaid",
+        "name": "NSAID (Ibuprofen)",
+        "fullName": "Tab. Ibuprofen 400 mg TDS",
+        "cost": 50,
+        "type": "wrong",
+        "repeatable": false,
         "stageEffect": {
-          "first_week":  { "note": "Caution — NSAIDs increase risk of GI bleeding in typhoid. Use paracetamol instead.", "penalty": 5 },
-          "second_week": { "note": "DANGEROUS — NSAIDs contraindicated in typhoid. High risk of intestinal haemorrhage.", "penalty": 12 },
-          "complicated": { "note": "CRITICAL ERROR — NSAIDs in complicated typhoid causes catastrophic GI bleeding.", "penalty": 20 }
+          "early_febrile": {
+            "note": "NSAIDs increase risk of GI bleeding over the inflamed Peyer's patches in enteric fever. Paracetamol is the correct choice.",
+            "penalty": 5
+          },
+          "intestinal_phase": {
+            "note": "DANGEROUS — NSAIDs contraindicated. High risk of intestinal haemorrhage from ulcerated Peyer's patches.",
+            "penalty": 12
+          },
+          "haemodynamic_compromise": {
+            "note": "CRITICAL ERROR — NSAIDs in complicated disease causes catastrophic intestinal bleeding.",
+            "penalty": 20
+          }
         }
       },
       {
-        "id": "monitoring", "name": "Monitoring", "fullName": "Vitals + Stool Output + Hepatic Monitoring",
-        "cost": 60, "type": "supportive", "repeatable": false,
+        "id": "monitoring",
+        "name": "Monitoring",
+        "fullName": "Vitals + Stool Output + Hepatic Monitoring + Daily Abdominal Exam",
+        "cost": 60,
+        "type": "supportive",
+        "repeatable": false,
         "stageEffect": {
-          "first_week":  { "note": "Monitoring initiated. Watch for sudden abdominal pain or melaena." },
-          "second_week": { "note": "Careful watch for perforation signs — sudden pain, peritonism, or melaena." },
-          "complicated": { "note": "ICU monitoring. Hourly urine output, serial abdominal examinations." }
+          "early_febrile": {
+            "note": "Monitoring initiated. Watch for sudden abdominal pain, melaena, or change in pulse.",
+            "delayProgression": 0.5
+          },
+          "intestinal_phase": {
+            "note": "Close monitoring for perforation signs — sudden severe pain, peritonism, melaena, or new tachycardia.",
+            "delayProgression": 0.5
+          },
+          "haemodynamic_compromise": {
+            "note": "ICU-level monitoring. Hourly urine output, serial abdominal examination, continuous cardiac monitoring."
+          }
         }
       }
     ],
     "diseaseSpecific": {
       "typhoid": [
         {
-          "id": "ceftriaxone", "name": "IV Ceftriaxone", "fullName": "IV Ceftriaxone 2g OD for 10–14 days",
-          "cost": 400, "type": "curative", "repeatable": false,
+          "id": "ceftriaxone",
+          "name": "IV Ceftriaxone",
+          "fullName": "Inj. Ceftriaxone 2 g IV OD x 10–14 days (WHO first-line for enteric fever — Harrison's)",
+          "cost": 400,
+          "type": "curative",
+          "repeatable": false,
           "stageEffect": {
-            "first_week":  { "cure": true, "note": "Excellent choice! Ceftriaxone is first-line for typhoid. Fever will begin settling in 3–5 days. Patient recovers fully." },
-            "second_week": { "cure": true, "note": "Ceftriaxone started — effective even in 2nd week. Patient will recover. Monitor closely for complications." },
-            "complicated": { "note": "Ceftriaxone alone insufficient in perforated typhoid. Emergency surgery is also required.", "delayProgression": 0 }
+            "early_febrile": {
+              "cure": true,
+              "note": "First-line treatment. Fever begins settling in 3–5 days. MDR sensitivity confirmed. Full course required."
+            },
+            "intestinal_phase": {
+              "cure": true,
+              "note": "Effective even in week 2. Patient will recover with close monitoring for intestinal complications."
+            },
+            "haemodynamic_compromise": {
+              "note": "Antibiotics alone insufficient in intestinal perforation. Surgical source control is also required.",
+              "delayProgression": 2
+            }
           }
         },
         {
-          "id": "azithromycin", "name": "Oral Azithromycin", "fullName": "Tab. Azithromycin 1g OD for 5 days",
-          "cost": 250, "type": "curative", "repeatable": false,
+          "id": "azithromycin",
+          "name": "Oral Azithromycin",
+          "fullName": "Tab. Azithromycin 1 g OD x 5 days (WHO guideline — uncomplicated enteric fever)",
+          "cost": 250,
+          "type": "curative",
+          "repeatable": false,
           "stageEffect": {
-            "first_week":  { "cure": true, "note": "Good choice for uncomplicated typhoid. Oral azithromycin is effective and suitable. Patient recovers." },
-            "second_week": { "note": "Lower efficacy in established disease. IV Ceftriaxone preferred.", "partial": true, "delayProgression": 1 },
-            "complicated": { "note": "Azithromycin alone insufficient for complicated typhoid. Surgery also required.", "delayProgression": 0 }
+            "early_febrile": {
+              "cure": true,
+              "note": "Good oral option for uncomplicated enteric fever. Effective against MDR strains. Patient recovers."
+            },
+            "intestinal_phase": {
+              "partial": true,
+              "note": "Suboptimal in established disease. IV Ceftriaxone preferred at this stage. Partial benefit only.",
+              "delayProgression": 1
+            },
+            "haemodynamic_compromise": {
+              "note": "Insufficient for complicated disease — IV antibiotics and surgery required. Oral route also unsafe.",
+              "delayProgression": 0
+            }
           }
         },
         {
-          "id": "chloramphenicol", "name": "Chloramphenicol", "fullName": "Tab. Chloramphenicol 500mg QID",
-          "cost": 80, "type": "wrong", "repeatable": false,
+          "id": "chloramphenicol",
+          "name": "Chloramphenicol",
+          "fullName": "Tab. Chloramphenicol 500 mg QID x 14 days",
+          "cost": 80,
+          "type": "wrong",
+          "repeatable": false,
           "stageEffect": {
-            "first_week":  { "note": "Outdated. High resistance in South Asia. This isolate is MDR — RESISTANT to chloramphenicol. Bone marrow suppression risk.", "penalty": 8 },
-            "second_week": { "note": "Chloramphenicol-resistant strain confirmed. Ineffective and potentially harmful.", "penalty": 12 },
-            "complicated": { "note": "Wrong drug for MDR typhoid. Risk of aplastic anaemia.", "penalty": 15 }
+            "early_febrile": {
+              "note": "Outdated. This isolate is MDR — culture confirms resistance to chloramphenicol. Also causes bone marrow suppression, worsening existing anaemia.",
+              "penalty": 8
+            },
+            "intestinal_phase": {
+              "note": "Chloramphenicol-resistant strain confirmed. Ineffective and risks aplastic anaemia.",
+              "penalty": 12
+            },
+            "haemodynamic_compromise": {
+              "note": "Wrong drug for MDR strain. Bone marrow suppression in an already thrombocytopenic patient.",
+              "penalty": 18
+            }
           }
         },
         {
-          "id": "antimalarial", "name": "Antimalarial", "fullName": "Artemether-Lumefantrine (Antimalarial)",
-          "cost": 300, "type": "blunder", "repeatable": false,
+          "id": "fluoroquinolone",
+          "name": "Ciprofloxacin",
+          "fullName": "Tab. Ciprofloxacin 500 mg BD x 10 days",
+          "cost": 150,
+          "type": "wrong",
+          "repeatable": false,
           "stageEffect": {
-            "first_week":  { "note": "BLUNDER — giving antimalarial to a patient without malaria. Malaria smear was negative. Delays correct treatment for typhoid.", "penalty": 20 },
-            "second_week": { "note": "BLUNDER — malaria excluded. This wastes time and money while typhoid progresses.", "penalty": 25 },
-            "complicated": { "note": "FATAL BLUNDER — treating wrong disease while patient deteriorates from typhoid perforation.", "penalty": 35 }
+            "early_febrile": {
+              "note": "Fluoroquinolone resistance in S. typhi is widespread in South Asia, including Nepal. Not recommended empirically per WHO guidelines. Risk of treatment failure.",
+              "penalty": 10
+            },
+            "intestinal_phase": {
+              "note": "Fluoroquinolone-resistant strain — ineffective. Disease progressing.",
+              "penalty": 14
+            },
+            "haemodynamic_compromise": {
+              "note": "Inadequate coverage. Patient deteriorating on wrong antibiotic.",
+              "penalty": 18
+            }
           }
         },
         {
-          "id": "surgery_typhoid", "name": "Emergency Laparotomy", "fullName": "Emergency Laparotomy — Typhoid Perforation Repair",
-          "cost": 1100, "type": "curative", "repeatable": false,
+          "id": "antimalarial_typhoid",
+          "name": "Artemether-Lumefantrine",
+          "fullName": "Tab. Artemether-Lumefantrine 80/480 mg BD x 3 days (ACT — antimalarial)",
+          "cost": 300,
+          "type": "blunder",
+          "repeatable": false,
           "stageEffect": {
-            "first_week":  { "note": "Surgery not indicated in uncomplicated typhoid. Unnecessary laparotomy.", "penalty": 10 },
-            "second_week": { "note": "Surgery not yet indicated unless perforation confirmed. Manage medically first.", "penalty": 5 },
-            "complicated": { "cure": true, "note": "Correct! Emergency laparotomy for typhoid perforation. Perforation repaired, peritoneal washout, drain placed. Continue IV antibiotics post-op. Patient recovering in ICU." }
+            "early_febrile": {
+              "note": "BLUNDER — giving antimalarials to a patient without malaria. MP smear and RDT are both negative. Delays correct treatment while enteric fever progresses.",
+              "penalty": 20
+            },
+            "intestinal_phase": {
+              "note": "BLUNDER — wrong treatment for wrong disease. Intestinal phase advancing.",
+              "penalty": 28
+            },
+            "haemodynamic_compromise": {
+              "note": "FATAL BLUNDER — treating wrong disease during haemodynamic compromise.",
+              "penalty": 38
+            }
+          }
+        },
+        {
+          "id": "surgery_typhoid",
+          "name": "Emergency Laparotomy",
+          "fullName": "Emergency Laparotomy — Intestinal Perforation Repair + Peritoneal Washout",
+          "cost": 1100,
+          "type": "curative",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "Surgery not indicated in uncomplicated enteric fever — patient has no signs of perforation. Unnecessary laparotomy with significant morbidity.",
+              "penalty": 12
+            },
+            "intestinal_phase": {
+              "note": "Surgery not yet indicated unless perforation is confirmed. Continue antibiotics and monitor closely.",
+              "penalty": 5
+            },
+            "haemodynamic_compromise": {
+              "cure": true,
+              "note": "Correct! Emergency laparotomy for intestinal perforation. Perforation repaired, peritoneal washout performed, drain placed. IV antibiotics continued post-op. Patient recovering in ICU."
+            }
+          }
+        },
+        {
+          "id": "steroid_typhoid",
+          "name": "IV Dexamethasone",
+          "fullName": "Inj. Dexamethasone 3 mg/kg IV loading then 1 mg/kg 6-hourly (for severe typhoid with toxaemia — Davidson's, limited role)",
+          "cost": 200,
+          "type": "partial",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "Steroids not indicated in uncomplicated enteric fever. Reserved only for severe toxaemia with altered consciousness — not applicable here.",
+              "penalty": 6
+            },
+            "intestinal_phase": {
+              "note": "Steroids contraindicated in intestinal phase — increase risk of intestinal perforation and secondary infection.",
+              "penalty": 12
+            },
+            "haemodynamic_compromise": {
+              "partial": true,
+              "note": "Dexamethasone has a very limited role in severe enteric fever with shock per Davidson's — but is only adjunctive. Surgery and antibiotics take priority. Modest benefit if used correctly.",
+              "delayProgression": 1
+            }
+          }
+        }
+      ],
+      "malaria": [
+        {
+          "id": "artesunate_iv_malaria",
+          "name": "IV Artesunate",
+          "fullName": "Inj. Artesunate 2.4 mg/kg IV at 0, 12, 24 hours (severe P. falciparum — WHO protocol)",
+          "cost": 800,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "MP smear and RDT both negative — treating wrong diagnosis. No benefit. Enteric fever untreated and progressing.",
+              "penalty": 15
+            },
+            "intestinal_phase": {
+              "note": "Wrong drug for wrong disease. Expensive and ineffective.",
+              "penalty": 20
+            },
+            "haemodynamic_compromise": {
+              "note": "Wrong treatment during haemodynamic compromise. Fatal delay.",
+              "penalty": 28
+            }
+          }
+        },
+        {
+          "id": "al_oral_malaria",
+          "name": "Artemether-Lumefantrine",
+          "fullName": "Tab. Artemether-Lumefantrine 80/480 mg BD x 3 days (P. falciparum ACT)",
+          "cost": 300,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "Malaria excluded on smear and RDT. ACT has no effect on Salmonella typhi.",
+              "penalty": 12
+            },
+            "intestinal_phase": {
+              "note": "Wrong diagnosis. Enteric fever progressing.",
+              "penalty": 15
+            },
+            "haemodynamic_compromise": {
+              "note": "Wrong treatment. No benefit.",
+              "penalty": 20
+            }
+          }
+        },
+        {
+          "id": "chloroquine_vivax_malaria",
+          "name": "Chloroquine",
+          "fullName": "Tab. Chloroquine 10 mg base/kg Day 1 + 5 mg/kg Day 2–3 (P. vivax)",
+          "cost": 120,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "No malaria — chloroquine has no effect on enteric fever.",
+              "penalty": 8
+            },
+            "intestinal_phase": {
+              "note": "Wrong diagnosis and wrong drug.",
+              "penalty": 10
+            },
+            "haemodynamic_compromise": {
+              "note": "Wrong treatment.",
+              "penalty": 12
+            }
+          }
+        },
+        {
+          "id": "obs_malaria",
+          "name": "Observe Only",
+          "fullName": "Watchful Waiting Without Active Treatment",
+          "cost": 0,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": { "note": "BLUNDER — enteric fever requires antibiotic treatment. Observation alone allows progression.", "penalty": 20 },
+            "intestinal_phase": { "note": "BLUNDER — progression to perforation.", "penalty": 35 },
+            "haemodynamic_compromise": { "note": "FATAL.", "penalty": 50, "endGame": true, "outcome": "death" }
+          }
+        },
+        {
+          "id": "primaquine_malaria",
+          "name": "Primaquine",
+          "fullName": "Tab. Primaquine 0.25 mg/kg OD x 14 days (radical cure — P. vivax hypnozoites)",
+          "cost": 100,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "BLUNDER — primaquine risks haemolysis in G6PD-deficient patients. G6PD status unknown. No malaria confirmed. Dangerous and unnecessary.",
+              "penalty": 15
+            },
+            "intestinal_phase": {
+              "note": "DANGEROUS — drug-induced haemolytic anaemia worsens existing anaemia.",
+              "penalty": 20
+            },
+            "haemodynamic_compromise": {
+              "note": "Haemolysis in a shocked patient is catastrophic.",
+              "penalty": 28
+            }
+          }
+        }
+      ],
+      "dengue": [
+        {
+          "id": "dengue_protocol",
+          "name": "Dengue Protocol",
+          "fullName": "WHO Dengue Management — Haematocrit-Guided IV Fluid Resuscitation + Daily CBC Monitoring",
+          "cost": 250,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "Dengue NS1 and IgM are both negative. This is not dengue. Dengue protocol misses the required antibiotic treatment for enteric fever.",
+              "penalty": 12
+            },
+            "intestinal_phase": {
+              "note": "Wrong diagnosis. Enteric fever advancing without antibiotics.",
+              "penalty": 18
+            },
+            "haemodynamic_compromise": {
+              "note": "Wrong management for intestinal perforation.",
+              "penalty": 25
+            }
+          }
+        },
+        {
+          "id": "platelet_transfusion_dengue",
+          "name": "Platelet Transfusion",
+          "fullName": "Single Donor Platelet Transfusion (SDP) — for dengue thrombocytopenia",
+          "cost": 1200,
+          "type": "unnecessary",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "Dengue excluded. Platelet transfusion for enteric fever thrombocytopenia is not indicated at this count (140,000/μL). Extremely expensive."
+            },
+            "intestinal_phase": {
+              "note": "Platelets: 98,000/μL — not low enough to warrant transfusion (no active bleeding). Expensive and not indicated."
+            },
+            "haemodynamic_compromise": {
+              "note": "Platelet transfusion does not address the source of haemodynamic compromise (intestinal perforation). Surgery is required."
+            }
+          }
+        },
+        {
+          "id": "antiviral_dengue",
+          "name": "Antiviral Therapy",
+          "fullName": "Experimental Antiviral (Ribavirin / Sofosbuvir — no approved dengue antiviral)",
+          "cost": 600,
+          "type": "unnecessary",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "No approved antiviral for dengue exists. Dengue is also excluded on serology. Expensive, ineffective, and delays correct diagnosis.",
+              "penalty": 5
+            },
+            "intestinal_phase": { "note": "Wrong diagnosis and wrong drug.", "penalty": 5 },
+            "haemodynamic_compromise": { "note": "Not relevant.", "penalty": 5 }
+          }
+        },
+        {
+          "id": "obs_dengue",
+          "name": "Observe Only",
+          "fullName": "Watchful Waiting Without Active Treatment",
+          "cost": 0,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": { "note": "BLUNDER — untreated enteric fever progresses.", "penalty": 20 },
+            "intestinal_phase": { "note": "BLUNDER.", "penalty": 35 },
+            "haemodynamic_compromise": { "note": "FATAL.", "penalty": 50, "endGame": true, "outcome": "death" }
+          }
+        }
+      ],
+      "viral_hepatitis": [
+        {
+          "id": "rest_hepatitis",
+          "name": "Rest and Supportive Care",
+          "fullName": "Bed Rest + Low-fat Diet + ORS (Viral Hepatitis supportive management)",
+          "cost": 80,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "Hepatitis A/E management is supportive — but this is not viral hepatitis. No jaundice, ALP is normal, and bilirubin is only mildly elevated in an AST>ALT pattern. Enteric fever untreated.",
+              "penalty": 8
+            },
+            "intestinal_phase": {
+              "note": "Supportive care alone inadequate. Antibiotics not started.",
+              "penalty": 14
+            },
+            "haemodynamic_compromise": {
+              "note": "Wrong diagnosis. Surgical emergency missed.",
+              "penalty": 20
+            }
+          }
+        },
+        {
+          "id": "hep_a_e_serology",
+          "name": "Hep A/E Serology",
+          "fullName": "Hepatitis A IgM + Hepatitis E IgM ELISA",
+          "cost": 600,
+          "type": "unnecessary",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "No jaundice, no cholestatic picture, no elevated ALP. Hepatitis A/E is unlikely as the primary diagnosis. Low prior probability — expensive and unhelpful."
+            },
+            "intestinal_phase": { "note": "Not indicated. Enteric fever is the primary diagnosis." },
+            "haemodynamic_compromise": { "note": "Not relevant." }
+          }
+        },
+        {
+          "id": "ribavirin_hep",
+          "name": "Ribavirin",
+          "fullName": "Ribavirin 400 mg BD x 14 days (chronic Hepatitis E — immunocompromised only)",
+          "cost": 700,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "BLUNDER — Ribavirin is only for chronic Hep E in immunocompromised patients. Not indicated for acute hepatitis E, and this diagnosis is wrong entirely. Haemolytic anaemia risk.",
+              "penalty": 15
+            },
+            "intestinal_phase": {
+              "note": "Drug-induced haemolytic anaemia worsening existing anaemia.",
+              "penalty": 20
+            },
+            "haemodynamic_compromise": {
+              "note": "Haemolysis in shocked patient — catastrophic.",
+              "penalty": 28
+            }
+          }
+        },
+        {
+          "id": "obs_hepatitis",
+          "name": "Observe Only",
+          "fullName": "Watchful Waiting",
+          "cost": 0,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": { "note": "BLUNDER.", "penalty": 20 },
+            "intestinal_phase": { "note": "BLUNDER.", "penalty": 35 },
+            "haemodynamic_compromise": { "note": "FATAL.", "penalty": 50, "endGame": true, "outcome": "death" }
+          }
+        }
+      ],
+      "uti": [
+        {
+          "id": "nitrofurantoin_uti",
+          "name": "Oral Nitrofurantoin",
+          "fullName": "Tab. Nitrofurantoin 100 mg BD x 5 days (uncomplicated UTI)",
+          "cost": 150,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "Urine is non-specifically abnormal — no WBC casts, no bacteria, no dysuria. UTI diagnosis is incorrect. Nitrofurantoin has no activity against Salmonella and does not treat systemic infection.",
+              "penalty": 8
+            },
+            "intestinal_phase": { "note": "Wrong diagnosis. Enteric fever advancing.", "penalty": 12 },
+            "haemodynamic_compromise": { "note": "Inadequate for septic shock from enteric fever.", "penalty": 18 }
+          }
+        },
+        {
+          "id": "trimethoprim_uti",
+          "name": "Cotrimoxazole",
+          "fullName": "Tab. Cotrimoxazole 960 mg BD x 5 days (UTI treatment)",
+          "cost": 80,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "No evidence of UTI. Cotrimoxazole resistance is also high in S. typhi. Wrong diagnosis and insufficient even if partially applicable.",
+              "penalty": 6
+            },
+            "intestinal_phase": { "note": "Wrong drug, wrong disease.", "penalty": 8 },
+            "haemodynamic_compromise": { "note": "Wrong treatment.", "penalty": 10 }
+          }
+        },
+        {
+          "id": "urine_culture_uti",
+          "name": "Urine Culture",
+          "fullName": "Midstream Urine Culture and Sensitivity",
+          "cost": 250,
+          "type": "unnecessary",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "Urine R/E shows only trace abnormalities with no bacteria. Prior probability of UTI is very low in this clinical picture. Urine culture has a 72-hour turnaround — will not guide acute management."
+            },
+            "intestinal_phase": { "note": "Not indicated. Enteric fever is the primary diagnosis." },
+            "haemodynamic_compromise": { "note": "Not relevant to the acute emergency." }
+          }
+        },
+        {
+          "id": "obs_uti",
+          "name": "Observe Only",
+          "fullName": "Watchful Waiting Without Treatment",
+          "cost": 0,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": { "note": "BLUNDER.", "penalty": 20 },
+            "intestinal_phase": { "note": "BLUNDER.", "penalty": 35 },
+            "haemodynamic_compromise": { "note": "FATAL.", "penalty": 50, "endGame": true, "outcome": "death" }
+          }
+        }
+      ],
+      "tb": [
+        {
+          "id": "att_tb",
+          "name": "Antitubercular Therapy",
+          "fullName": "HRZE Regimen — Isoniazid + Rifampicin + Pyrazinamide + Ethambutol (standard ATT)",
+          "cost": 400,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "TB presents with months of symptoms, weight loss, night sweats, and cough. This patient has an acute 10-day illness with rose spots and relative bradycardia — not TB. Starting ATT unnecessarily has hepatotoxicity risk and delays correct treatment.",
+              "penalty": 12
+            },
+            "intestinal_phase": {
+              "note": "Wrong diagnosis. Rifampicin hepatotoxicity can worsen existing transaminitis from enteric fever.",
+              "penalty": 16
+            },
+            "haemodynamic_compromise": {
+              "note": "Drug-induced hepatotoxicity in a jaundiced septic patient.",
+              "penalty": 22
+            }
+          }
+        },
+        {
+          "id": "mantoux_tb",
+          "name": "Mantoux Test",
+          "fullName": "Mantoux (Tuberculin Skin Test) — 5 TU PPD intradermal",
+          "cost": 200,
+          "type": "unnecessary",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "Mantoux takes 48–72 hours to read and indicates only prior TB exposure — not active disease. Not useful in acute febrile illness management."
+            },
+            "intestinal_phase": { "note": "Slow test, not indicated in acute illness." },
+            "haemodynamic_compromise": { "note": "Not relevant to emergency." }
+          }
+        },
+        {
+          "id": "sputum_afb_tb",
+          "name": "Sputum AFB Smear",
+          "fullName": "Sputum AFB Smear x3 (Ziehl-Neelsen stain)",
+          "cost": 250,
+          "type": "unnecessary",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "Dry non-productive cough is present but CXR is clear with no pulmonary infiltrates. TB sputum smear is low-yield in this presentation and does not address the acute febrile illness."
+            },
+            "intestinal_phase": { "note": "Not indicated. Enteric fever confirmed." },
+            "haemodynamic_compromise": { "note": "Not relevant." }
+          }
+        },
+        {
+          "id": "obs_tb",
+          "name": "Observe Only",
+          "fullName": "Watchful Waiting Without Active Treatment",
+          "cost": 0,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": { "note": "BLUNDER.", "penalty": 20 },
+            "intestinal_phase": { "note": "BLUNDER.", "penalty": 35 },
+            "haemodynamic_compromise": { "note": "FATAL.", "penalty": 50, "endGame": true, "outcome": "death" }
+          }
+        }
+      ],
+      "leptospirosis": [
+        {
+          "id": "penicillin_lepto",
+          "name": "IV Benzylpenicillin",
+          "fullName": "Inj. Benzylpenicillin 1.5 MU QID IV x 7 days (leptospirosis treatment — Harrison's)",
+          "cost": 300,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "No conjunctival suffusion, no jaundice with renal failure, no calf tenderness — classic Weil's disease triad absent. Leptospirosis is unlikely. Penicillin has no effect on Salmonella.",
+              "penalty": 8
+            },
+            "intestinal_phase": { "note": "Wrong diagnosis. Enteric fever advancing.", "penalty": 12 },
+            "haemodynamic_compromise": { "note": "Wrong treatment. No benefit.", "penalty": 15 }
+          }
+        },
+        {
+          "id": "doxycycline_lepto",
+          "name": "Doxycycline",
+          "fullName": "Tab. Doxycycline 100 mg BD x 7 days (mild leptospirosis)",
+          "cost": 150,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "Incorrect diagnosis. No leptospirosis features confirmed. Doxycycline has limited activity against Salmonella typhi.",
+              "penalty": 6
+            },
+            "intestinal_phase": { "note": "Wrong drug.", "penalty": 8 },
+            "haemodynamic_compromise": { "note": "Ineffective.", "penalty": 10 }
+          }
+        },
+        {
+          "id": "lepto_mat",
+          "name": "Leptospira MAT",
+          "fullName": "Leptospira Microscopic Agglutination Test (gold standard)",
+          "cost": 800,
+          "type": "unnecessary",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "MAT is not indicated without classic leptospirosis features (jaundice + AKI + bleeding). Expensive, reference-lab only, slow. Dengue and enteric fever are more likely."
+            },
+            "intestinal_phase": { "note": "Not indicated. Expensive delay." },
+            "haemodynamic_compromise": { "note": "Too late. Patient in critical condition." }
+          }
+        },
+        {
+          "id": "obs_lepto",
+          "name": "Observe Only",
+          "fullName": "Watchful Waiting",
+          "cost": 0,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": { "note": "BLUNDER.", "penalty": 20 },
+            "intestinal_phase": { "note": "BLUNDER.", "penalty": 35 },
+            "haemodynamic_compromise": { "note": "FATAL.", "penalty": 50, "endGame": true, "outcome": "death" }
+          }
+        }
+      ],
+      "inf_mono": [
+        {
+          "id": "acyclovir_eim",
+          "name": "Acyclovir",
+          "fullName": "Tab. Acyclovir 800 mg 5x/day x 7 days (EBV — not standard of care)",
+          "cost": 400,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "Acyclovir is not recommended for EBV per current guidelines. More importantly, this is not EBV — no tonsillar exudate, no posterior cervical lymphadenopathy, no atypical lymphocytes. Wrong diagnosis entirely.",
+              "penalty": 8
+            },
+            "intestinal_phase": { "note": "Wrong drug, wrong disease.", "penalty": 10 },
+            "haemodynamic_compromise": { "note": "Ineffective.", "penalty": 12 }
+          }
+        },
+        {
+          "id": "steroid_eim",
+          "name": "Prednisolone (EBV)",
+          "fullName": "Tab. Prednisolone 1 mg/kg OD (for severe EBV with thrombocytopenia)",
+          "cost": 100,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "BLUNDER — steroids in enteric fever increase the risk of intestinal perforation. Also wrong diagnosis. Immunosuppression in a bacteraemic patient is dangerous.",
+              "penalty": 18
+            },
+            "intestinal_phase": {
+              "note": "DANGEROUS — steroids in the intestinal phase significantly increase perforation risk.",
+              "penalty": 25
+            },
+            "haemodynamic_compromise": {
+              "note": "Immunosuppression in septic shock — catastrophic.",
+              "penalty": 32
+            }
+          }
+        },
+        {
+          "id": "ampicillin_eim",
+          "name": "Ampicillin",
+          "fullName": "Tab. Ampicillin 500 mg QID x 7 days",
+          "cost": 120,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "BLUNDER — ampicillin causes a florid maculopapular rash in EBV (classic diagnostic trap). Also this is not EBV. Additionally, this S. typhi isolate is MDR and resistant to ampicillin — confirmed on blood culture.",
+              "penalty": 15
+            },
+            "intestinal_phase": { "note": "Drug rash and ineffective treatment.", "penalty": 18 },
+            "haemodynamic_compromise": { "note": "Ineffective against MDR Salmonella.", "penalty": 20 }
+          }
+        },
+        {
+          "id": "monospot_eim",
+          "name": "Monospot Test",
+          "fullName": "Monospot Test — Heterophile Antibody Test (Paul-Bunnell)",
+          "cost": 350,
+          "type": "unnecessary",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "No tonsillar exudate, no posterior cervical lymphadenopathy, no splenomegaly consistent with EBV pattern. Low prior probability. Blood culture already growing Salmonella. Wasteful."
+            },
+            "intestinal_phase": { "note": "Not indicated. Diagnosis confirmed." },
+            "haemodynamic_compromise": { "note": "Not relevant." }
+          }
+        },
+        {
+          "id": "obs_eim",
+          "name": "Observe Only",
+          "fullName": "Watchful Waiting",
+          "cost": 0,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": { "note": "BLUNDER.", "penalty": 20 },
+            "intestinal_phase": { "note": "BLUNDER.", "penalty": 35 },
+            "haemodynamic_compromise": { "note": "FATAL.", "penalty": 50, "endGame": true, "outcome": "death" }
+          }
+        }
+      ],
+      "brucellosis": [
+        {
+          "id": "doxycycline_rifampicin_brucella",
+          "name": "Doxycycline + Rifampicin",
+          "fullName": "Tab. Doxycycline 100 mg BD + Tab. Rifampicin 600 mg OD x 6 weeks (brucellosis — WHO/Harrison's)",
+          "cost": 500,
+          "type": "wrong",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "Brucellosis requires livestock/animal contact or unpasteurised dairy — none reported. No joint pain, no undulant fever pattern. Blood culture has grown Salmonella, not Brucella. Wrong diagnosis and ineffective treatment.",
+              "penalty": 10
+            },
+            "intestinal_phase": {
+              "note": "Rifampicin hepatotoxicity worsens existing transaminitis from enteric fever.",
+              "penalty": 14
+            },
+            "haemodynamic_compromise": {
+              "note": "Drug toxicity compounding septic shock.",
+              "penalty": 18
+            }
+          }
+        },
+        {
+          "id": "brucella_serology",
+          "name": "Brucella SAT",
+          "fullName": "Brucella Standard Agglutination Test (SAT)",
+          "cost": 400,
+          "type": "unnecessary",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "No animal exposure history, no occupation risk. Brucella SAT is a low-priority test given the clinical picture and positive blood culture for Salmonella."
+            },
+            "intestinal_phase": { "note": "Not indicated." },
+            "haemodynamic_compromise": { "note": "Not relevant." }
+          }
+        },
+        {
+          "id": "obs_brucella",
+          "name": "Observe Only",
+          "fullName": "Watchful Waiting",
+          "cost": 0,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": { "note": "BLUNDER.", "penalty": 20 },
+            "intestinal_phase": { "note": "BLUNDER.", "penalty": 35 },
+            "haemodynamic_compromise": { "note": "FATAL.", "penalty": 50, "endGame": true, "outcome": "death" }
+          }
+        }
+      ],
+      "lymphoma": [
+        {
+          "id": "steroids_lymphoma",
+          "name": "Empirical Steroids",
+          "fullName": "Inj. Prednisolone 60 mg OD (empirical for lymphoma-related fever)",
+          "cost": 150,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "BLUNDER — steroids in undiagnosed bacteraemia mask fever and signs, and dramatically increase intestinal perforation risk in enteric fever. No lymphoma features: no painless lymphadenopathy, no mediastinal mass, no night sweats pattern typical of lymphoma.",
+              "penalty": 20
+            },
+            "intestinal_phase": {
+              "note": "DANGEROUS — steroids in intestinal phase cause perforation.",
+              "penalty": 30
+            },
+            "haemodynamic_compromise": {
+              "note": "Immunosuppression in septic shock — fatal.",
+              "penalty": 40
+            }
+          }
+        },
+        {
+          "id": "excision_biopsy_lymphoma",
+          "name": "Lymph Node Biopsy",
+          "fullName": "Excision Biopsy of Lymph Node (for lymphoma diagnosis)",
+          "cost": 1500,
+          "type": "unnecessary",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "No peripheral lymphadenopathy present on examination. Lymph node biopsy cannot be performed. Acute onset 10-day illness is not consistent with lymphoma timeline. Expensive and misdirected."
+            },
+            "intestinal_phase": {
+              "note": "Dangerous delay while enteric fever progresses to intestinal complications.",
+              "penalty": 8
+            },
+            "haemodynamic_compromise": { "note": "Not relevant to emergency.", "penalty": 8 }
+          }
+        },
+        {
+          "id": "ct_neck_chest_lymphoma",
+          "name": "CT Neck/Chest/Abdomen",
+          "fullName": "CT Neck + Chest + Abdomen + Pelvis with contrast (lymphoma staging)",
+          "cost": 4000,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": {
+              "note": "BLUNDER — CT staging for lymphoma requires a tissue diagnosis first. No lymphadenopathy found on examination. Catastrophic budget overrun. Dangerous delay in starting antibiotics for bacteraemia.",
+              "penalty": 25
+            },
+            "intestinal_phase": {
+              "note": "Budget destroyed. Enteric fever advancing without treatment.",
+              "penalty": 35
+            },
+            "haemodynamic_compromise": { "note": "Not relevant.", "penalty": 35 }
+          }
+        },
+        {
+          "id": "obs_lymphoma",
+          "name": "Observe Only",
+          "fullName": "Watchful Waiting Without Active Treatment",
+          "cost": 0,
+          "type": "blunder",
+          "repeatable": false,
+          "stageEffect": {
+            "early_febrile": { "note": "BLUNDER.", "penalty": 20 },
+            "intestinal_phase": { "note": "BLUNDER.", "penalty": 35 },
+            "haemodynamic_compromise": { "note": "FATAL.", "penalty": 50, "endGame": true, "outcome": "death" }
           }
         }
       ]
     }
   },
 
-  "correctManagement": ["iv_fluids","paracetamol","monitoring","ceftriaxone"],
+  "correctManagement": [
+    "iv_fluids",
+    "paracetamol",
+    "monitoring",
+    "ceftriaxone"
+  ],
 
   "scoringRubric": {
-    "correctDiagnosis": 25, "timelyCure": 30, "costEfficiency": 15,
-    "correctTests": 15, "correctManagement": 15, "penaltyPerPoint": -1
+    "correctDiagnosis": 25,
+    "timelyCure": 30,
+    "costEfficiency": 15,
+    "correctTests": 15,
+    "correctManagement": 15,
+    "penaltyPerPoint": -1
   },
 
   "endMessages": {
-    "perfect":  "Excellent! You identified enteric fever early, ordered targeted investigations, and started first-line antibiotics promptly. Textbook management.",
-    "good":     "Good clinical reasoning. Patient recovered. Minor suboptimal choices — perhaps unnecessary tests or slight treatment delay.",
-    "average":  "Patient survived but management had errors. Delayed antibiotics, wrong empirical treatment, or excess investigations.",
-    "poor":     "Patient developed serious complications. Typhoid is treatable — it carries significant mortality only when missed or mismanaged. Review this case."
+    "perfect":  "Excellent! You identified enteric fever from the clinical triad, ordered targeted investigations including blood culture, and started first-line antibiotics promptly. Textbook management.",
+    "good":     "Good clinical reasoning. Patient recovered. Minor suboptimal choices — perhaps unnecessary tests or slight treatment delay. Review Widal limitations and blood culture timing.",
+    "average":  "Patient survived but management had errors. Delayed antibiotics, wrong empirical treatment, or excess investigations added avoidable risk. Review enteric fever management guidelines.",
+    "poor":     "Patient developed serious complications. Enteric fever carries significant mortality only when missed or mismanaged — it is entirely treatable. Review this case carefully."
   }
 }
