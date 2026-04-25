@@ -241,34 +241,86 @@ class ClinicalUI {
   }
 
   // ── Results tab ───────────────────────────────────────────────────────────
-  _refreshResults() {
-    const done = this.engine.state.completedTests;
-    const pend = this.engine.state.pendingResults;
-    const badge = document.getElementById('results-badge');
-    if (badge) badge.textContent = done.length;
-    const panel = document.getElementById('tab-results');
-    if (!panel) return;
-    if (!done.length && !pend.length) { panel.innerHTML=`<br><div class="disease-mgmt-label">TEST REPORTS :</strong></div><div class="empty-state">No investigations ordered yet.</div>`; return; }
-    let html = '<br><div class="disease-mgmt-label">TEST REPORTS :</strong></div>';
-    if (pend.length) {
-      html += `<div class="results-section-label">⏳ Awaiting Results</div>`;
-      html += pend.map(r => {
-        const t = this.case.tests.find(x=>x.id===r.testId);
-        const eta = Math.max(0, r.readyAt - this.engine.state.time);
-        return `<div class="result-card pending"><div class="result-name">${t?.name||r.testId}</div><div class="result-eta">ETA: ~${this.engine._fmtDur(eta)}</div></div>`;
-      }).join('');
-    }
-    if (done.length) {
-      html += `<div class="results-section-label">✅ Results Available</div>`;
-      html += done.slice().reverse().map(r=>`
-        <div class="result-card done">
-          <div class="result-header"><span class="result-name">${r.name}</span><span class="result-time">${r.timeLabel}</span></div>
-          <div class="result-text">${r.result}</div>
-          ${r.interpretation?`<div class="result-interp">💡 ${r.interpretation}</div>`:''}
-        </div>`).join('');
-    }
-    panel.innerHTML = `<div class="results-container">${html}</div>`;
+_refreshResults() {
+  const done = this.engine.state.completedTests;
+  const pend = this.engine.state.pendingResults;
+
+  const badge = document.getElementById('results-badge');
+  if (badge) badge.textContent = done.length;
+
+  const panel = document.getElementById('tab-results');
+  if (!panel) return;
+
+  // ── KEY: detect structural change (not time change) ──
+  const stateKey = JSON.stringify({
+    d: done.map(x => x.name),
+    p: pend.map(x => x.testId)
+  });
+
+  // If structure SAME → only update ETA text, no re-render
+  if (panel.dataset.lastKey === stateKey) {
+    pend.forEach(r => {
+      const etaEl = panel.querySelector(`[data-eta="${r.testId}"]`);
+      if (!etaEl) return;
+
+      const eta = Math.max(0, r.readyAt - this.engine.state.time);
+      etaEl.textContent = `ETA: ~${this.engine._fmtDur(eta)}`;
+    });
+    return;
   }
+
+  // Save new structure key
+  panel.dataset.lastKey = stateKey;
+
+  // ── FULL RENDER ONLY WHEN NEEDED ──
+  if (!done.length && !pend.length) {
+    panel.innerHTML = `
+      <br>
+      <div class="disease-mgmt-label">TEST REPORTS :</div>
+      <div class="empty-state">No investigations ordered yet.</div>
+    `;
+    return;
+  }
+
+  let html = '<br><div class="disease-mgmt-label">TEST REPORTS :</div>';
+
+  // ── Pending (dynamic ETA targets) ──
+  if (pend.length) {
+    html += `<div class="results-section-label">⏳ Awaiting Results (Clink on the clock at the top to skip time)</div>`;
+
+    html += pend.map(r => {
+      const t = this.case.tests.find(x => x.id === r.testId);
+      const eta = Math.max(0, r.readyAt - this.engine.state.time);
+
+      return `
+        <div class="result-card pending">
+          <div class="result-name">${t?.name || r.testId}</div>
+          <div class="result-eta" data-eta="${r.testId}">
+            ETA: ~${this.engine._fmtDur(eta)}
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  // ── Done (STATIC → will NOT re-render every second) ──
+  if (done.length) {
+    html += `<div class="results-section-label">✅ Results Available</div>`;
+
+    html += done.slice().reverse().map(r => `
+      <div class="result-card done">
+        <div class="result-header">
+          <span class="result-name">${r.name}</span>
+          <span class="result-time">${r.timeLabel}</span>
+        </div>
+        <div class="result-text">${r.result}</div>
+        ${r.interpretation ? `<div class="result-interp">💡 ${r.interpretation}</div>` : ''}
+      </div>
+    `).join('');
+  }
+
+  panel.innerHTML = `<div class="results-container">${html}</div>`;
+}
+  
 
   // ── General management tab ────────────────────────────────────────────────
   _renderGeneralTab() {
@@ -347,18 +399,18 @@ class ClinicalUI {
         const eff       = m.stageEffect?.[stage] || {};
         const isBlocked = eff.blocked;
         const cls = [isGiven?'mgmt-given':'', m.type==='curative'?'mgmt-curative':'', m.type==='wrong'?'mgmt-wrong':'', m.type==='blunder'?'mgmt-blunder':'', isBlocked?'mgmt-blocked':''].join(' ');
-        return `<div class="mgmt-card ${cls}">
+        return `<!--<div class="mgmt-card ${cls}">--><div class="mgmt-card">
           <div class="mgmt-name">${m.name}</div>
           <div class="mgmt-fullname">${m.fullName}</div>
           <div class="mgmt-meta">
             <span>🪙${m.cost}</span>
-            ${m.type==='curative'?'<span class="badge-curative">DEFINITIVE</span>':''}
+            <!--${m.type==='curative'?'<span class="badge-curative">DEFINITIVE</span>':''}
             ${m.type==='blunder'?'<span class="badge-blunder">🚨 RISKY</span>':''}
-            ${m.type==='wrong'?'<span class="badge-wrong">⚠️</span>':''}
+            ${m.type==='wrong'?'<span class="badge-wrong">⚠️</span>':''}-->
           </div>
           ${isGiven?'<div class="mgmt-done">✅ Administered</div>'
             :isBlocked?`<div class="mgmt-blocked-msg">🚫 ${eff.note||'Not applicable now'}</div>`
-            :`<button class="btn-give btn-give-dis ${m.type==='curative'?'btn-curative':''}" data-mid="${m.id}" data-did="${diagId}">${m.type==='curative'?'⚡ Perform':'Administer'}</button>`}
+            :`<!--<button class="btn-give btn-give-dis ${m.type==='curative'?'btn-curative':''}" data-mid="${m.id}" data-did="${diagId}">${m.type==='curative'?'⚡ Perform':'Administer'}</button>--><button class="btn-give btn-give-dis" data-mid="${m.id}" data-did="${diagId}">Administer</button>`}
         </div>`;
       }).join('') + `</div></div>`;
 

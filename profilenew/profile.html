@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile — MedSim Nepal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-deep:#070b0f;--bg-base:#0b1017;--bg-panel:#0f1720;--bg-card:#141d28;--bg-hover:#192433;--bg-up:#1c2a3a;
+  --border:#1a2b3c;--border-lo:#213345;
+  --text-hi:#dde8f2;--text-mid:#6e90ad;--text-lo:#364e65;--text-dim:#243549;
+  --green:#0dbd8b;--green2:#06d4a0;--amber:#f5a623;--red:#e84058;--blue:#3da8f5;--purple:#a78bfa;--orange:#fb923c;
+  --mono:'IBM Plex Mono',monospace;--display:'Newsreader',Georgia,serif;--body:'DM Sans',system-ui,sans-serif;
+  --r2:8px;--r3:14px;--r4:20px;
+}
+html{font-size:14px;scroll-behavior:smooth}
+body{font-family:var(--body);background:var(--bg-deep);color:var(--text-hi);min-height:100vh;-webkit-font-smoothing:antialiased}
+a{color:var(--green);text-decoration:none}
+input,button,textarea{font-family:inherit}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg-base)}::-webkit-scrollbar-thumb{background:var(--border-lo);border-radius:99px}
+
+/* nav */
+.nav{display:flex;align-items:center;gap:14px;padding:12px 28px;background:var(--bg-base);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text-hi)}
+.logo-icon{width:30px;height:30px;background:linear-gradient(135deg,var(--green),#089e72);border-radius:var(--r2);display:flex;align-items:center;justify-content:center;font-size:15px}
+.logo-text{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.04em}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.nav-link{font-family:var(--mono);font-size:10px;color:var(--text-mid);text-decoration:none;transition:color .15s}
+.nav-link:hover{color:var(--text-hi)}
+.nav-user-pill{display:flex;align-items:center;gap:7px;padding:4px 11px;background:var(--bg-card);border:1px solid var(--border);border-radius:99px}
+.nav-user-dot{width:6px;height:6px;border-radius:50%;background:var(--green)}
+.nav-user-name{font-family:var(--mono);font-size:10px;color:var(--text-mid)}
+.btn-nav-signout{font-family:var(--mono);font-size:10px;padding:4px 10px;background:none;border:1px solid var(--border);border-radius:var(--r2);color:var(--text-lo);cursor:pointer;transition:all .15s}
+.btn-nav-signout:hover{color:var(--red);border-color:rgba(232,64,88,.4)}
+
+/* page */
+.page{max-width:900px;margin:0 auto;padding:36px 24px 80px}
+
+/* skeleton */
+.skeleton{background:var(--bg-card);border-radius:var(--r2);animation:skelPulse 1.4s ease infinite alternate}
+@keyframes skelPulse{from{opacity:.4}to{opacity:.8}}
+
+/* profile header */
+.profile-header{background:var(--bg-panel);border:1px solid var(--border-lo);border-radius:var(--r4);padding:28px;margin-bottom:18px;position:relative}
+.profile-header-top{display:flex;align-items:flex-start;gap:20px}
+.profile-avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,rgba(13,189,139,.25),rgba(61,168,245,.2));border:2px solid rgba(13,189,139,.3);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:1.6rem;font-weight:700;color:var(--green)}
+.profile-main{flex:1;min-width:0}
+.profile-displayname{font-family:var(--display);font-size:1.5rem;font-weight:500;line-height:1.2;margin-bottom:3px}
+.profile-username{font-family:var(--mono);font-size:11px;color:var(--green);letter-spacing:.06em;margin-bottom:8px}
+.profile-bio{font-size:.84rem;color:var(--text-mid);line-height:1.6;margin-bottom:10px}
+.profile-join{font-family:var(--mono);font-size:9px;color:var(--text-dim);letter-spacing:.08em}
+.profile-actions{position:absolute;top:24px;right:24px;display:flex;gap:8px}
+.btn-edit{font-family:var(--mono);font-size:10px;font-weight:600;padding:6px 14px;background:var(--bg-up);border:1px solid var(--border-lo);border-radius:var(--r2);color:var(--text-mid);cursor:pointer;transition:all .15s}
+.btn-edit:hover{color:var(--text-hi);border-color:var(--border)}
+.btn-share{font-family:var(--mono);font-size:10px;font-weight:600;padding:6px 14px;background:rgba(13,189,139,.08);border:1px solid rgba(13,189,139,.22);border-radius:var(--r2);color:var(--green);cursor:pointer;transition:all .15s}
+.btn-share:hover{background:rgba(13,189,139,.16)}
+
+/* tags */
+.profile-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.profile-tag{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:3px 9px;border-radius:99px;border:1px solid}
+.tag-developer{color:var(--purple);border-color:rgba(167,139,250,.3);background:rgba(167,139,250,.08)}
+.tag-case_maker{color:var(--amber);border-color:rgba(245,166,35,.3);background:rgba(245,166,35,.08)}
+.tag-professor{color:var(--blue);border-color:rgba(61,168,245,.3);background:rgba(61,168,245,.08)}
+.tag-supervisor{color:var(--orange);border-color:rgba(251,146,60,.3);background:rgba(251,146,60,.08)}
+.tag-top_scorer{color:var(--green);border-color:rgba(13,189,139,.3);background:rgba(13,189,139,.08)}
+.tag-veteran{color:var(--text-mid);border-color:var(--border-lo);background:var(--bg-up)}
+
+/* stats strip */
+.stats-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--r3);overflow:hidden;margin-bottom:18px}
+.stat-box{background:var(--bg-card);padding:14px 12px;text-align:center}
+.stat-box-value{font-family:var(--mono);font-size:1.25rem;font-weight:700;color:var(--green);display:block}
+.stat-box-label{font-family:var(--mono);font-size:8px;color:var(--text-lo);text-transform:uppercase;letter-spacing:.1em;margin-top:2px;display:block}
+
+/* section headers */
+.section-head{display:flex;align-items:center;gap:12px;margin-bottom:14px;margin-top:4px}
+.section-head-title{font-family:var(--display);font-size:1.05rem;font-weight:500}
+.section-head-line{flex:1;height:1px;background:var(--border)}
+.section-count{font-family:var(--mono);font-size:9px;color:var(--text-lo);padding:2px 8px;background:var(--bg-up);border-radius:99px}
+
+/* badges */
+.badges-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:9px;margin-bottom:22px}
+.badge-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r2);padding:12px;display:flex;align-items:flex-start;gap:10px;transition:all .15s}
+.badge-card:hover{border-color:var(--border-lo);background:var(--bg-hover)}
+.badge-card.locked{opacity:.32;filter:grayscale(.7)}
+.badge-icon{font-size:1.4rem;flex-shrink:0}
+.badge-info{flex:1;min-width:0}
+.badge-name{font-size:.8rem;font-weight:600;color:var(--text-hi);margin-bottom:2px}
+.badge-desc{font-size:.7rem;color:var(--text-lo);line-height:1.4}
+
+/* score log */
+.score-log{display:flex;flex-direction:column;gap:7px;margin-bottom:22px}
+.score-entry{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r2);padding:13px 15px;display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;transition:all .15s}
+.score-entry:hover{border-color:var(--border-lo);background:var(--bg-hover)}
+.se-left{display:flex;flex-direction:column;gap:3px}
+.se-case{font-size:.85rem;font-weight:600;color:var(--text-hi)}
+.se-meta{display:flex;gap:10px;flex-wrap:wrap}
+.se-meta-item{font-family:var(--mono);font-size:9px;color:var(--text-lo)}
+.se-dx{font-family:var(--mono);font-size:9px}
+.se-dx.correct{color:var(--green)}
+.se-dx.wrong{color:var(--red)}
+.se-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.se-grade{font-family:var(--display);font-size:1.6rem;font-weight:500;line-height:1}
+.grade-A-plus{color:var(--green)}
+.grade-A{color:var(--green)}
+.grade-B{color:var(--amber)}
+.grade-C{color:var(--orange)}
+.grade-F{color:var(--red)}
+.se-score{font-family:var(--mono);font-size:10px;color:var(--text-mid)}
+.se-outcome{font-family:var(--mono);font-size:8px;padding:2px 7px;border-radius:99px;border:1px solid}
+.outcome-cured{color:var(--green);border-color:rgba(13,189,139,.3);background:rgba(13,189,139,.07)}
+.outcome-death{color:var(--red);border-color:rgba(232,64,88,.3);background:rgba(232,64,88,.07)}
+.outcome-transfer{color:var(--amber);border-color:rgba(245,166,35,.3);background:rgba(245,166,35,.07)}
+
+/* empty state */
+.empty-box{font-family:var(--mono);font-size:11px;color:var(--text-dim);text-align:center;padding:36px 20px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r2)}
+
+/* edit modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px;animation:fadeIn .2s ease}
+.modal-overlay.hidden{display:none}
+.modal{background:var(--bg-panel);border:1px solid var(--border-lo);border-radius:var(--r4);padding:26px;max-width:420px;width:100%;box-shadow:0 8px 36px rgba(0,0,0,.65)}
+.modal-title{font-family:var(--display);font-size:1.1rem;font-weight:500;margin-bottom:4px}
+.modal-sub{font-size:.8rem;color:var(--text-mid);margin-bottom:18px;line-height:1.5}
+.form-group{display:flex;flex-direction:column;gap:5px;margin-bottom:13px}
+.form-label{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-lo)}
+.form-input{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r2);padding:9px 12px;font-size:.88rem;color:var(--text-hi);outline:none;transition:all .15s;width:100%}
+.form-input:focus{border-color:rgba(13,189,139,.45);box-shadow:0 0 0 2px rgba(13,189,139,.1)}
+.form-input::placeholder{color:var(--text-dim)}
+.form-hint{font-family:var(--mono);font-size:9px;color:var(--text-dim);margin-top:2px}
+.modal-actions{display:flex;gap:9px;margin-top:4px}
+.btn-save{flex:1;padding:10px;background:var(--green);color:#040d09;border:none;border-radius:var(--r2);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;cursor:pointer;transition:all .15s}
+.btn-save:hover{background:var(--green2)}
+.btn-save:disabled{opacity:.5;cursor:not-allowed}
+.btn-cancel{padding:10px 16px;background:none;border:1px solid var(--border);border-radius:var(--r2);color:var(--text-lo);font-family:var(--mono);font-size:10px;cursor:pointer;transition:all .15s}
+.btn-cancel:hover{color:var(--text-mid);border-color:var(--border-lo)}
+.modal-error{background:rgba(232,64,88,.07);border:1px solid rgba(232,64,88,.25);border-radius:var(--r2);padding:8px 12px;font-family:var(--mono);font-size:10px;color:var(--red);margin-bottom:12px;display:none}
+.modal-error.show{display:block}
+
+/* not found / not logged in state */
+.not-found{text-align:center;padding:80px 20px}
+.nf-icon{font-size:3rem;margin-bottom:12px}
+.nf-title{font-family:var(--display);font-size:1.3rem;margin-bottom:8px}
+.nf-sub{font-size:.84rem;color:var(--text-mid)}
+
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+@media(max-width:600px){
+  .page{padding:20px 14px 60px}
+  .stats-strip{grid-template-columns:1fr 1fr}
+  .profile-actions{position:static;margin-top:14px}
+  .profile-header-top{flex-direction:column}
+  .badges-grid{grid-template-columns:1fr 1fr}
+  .score-entry{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <div class="logo-icon">⚕</div>
+    <div class="logo-text">MedSim Nepal</div>
+  </a>
+  <div class="nav-right">
+    <a href="index.html" class="nav-link">Cases</a>
+    <div class="nav-user-pill hidden" id="nav-user-pill">
+      <div class="nav-user-dot"></div>
+      <span class="nav-user-name" id="nav-username-label">—</span>
+    </div>
+    <button class="btn-nav-signout hidden" id="btn-signout">Sign Out</button>
+    <a href="login.html" class="nav-link hidden" id="nav-signin-link">Sign In</a>
+  </div>
+</nav>
+
+<div class="page" id="page-content">
+  <div style="display:flex;flex-direction:column;gap:16px;padding-top:20px">
+    <div class="skeleton" style="height:140px;border-radius:var(--r4)"></div>
+    <div class="skeleton" style="height:70px;border-radius:var(--r3)"></div>
+    <div class="skeleton" style="height:200px;border-radius:var(--r3)"></div>
+  </div>
+</div>
+
+<!-- Edit Profile Modal -->
+<div class="modal-overlay hidden" id="edit-modal">
+  <div class="modal">
+    <div class="modal-title">Edit Profile</div>
+    <div class="modal-sub">Update your display name and bio. Username cannot be changed.</div>
+    <div class="modal-error" id="edit-error"></div>
+    <div class="form-group">
+      <label class="form-label" for="edit-name">Display Name</label>
+      <input class="form-input" type="text" id="edit-name" maxlength="50" placeholder="Dr. Priya Sharma">
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="edit-bio">Bio</label>
+      <input class="form-input" type="text" id="edit-bio" maxlength="120" placeholder="MBBS Student · BPKIHS · Pokhara">
+      <span class="form-hint">Max 120 characters.</span>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-save" id="btn-save-edit">Save Changes</button>
+      <button class="btn-cancel" id="btn-cancel-edit">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import MedSim from './firebase.js';
+
+// ── Badge definitions (must mirror firebase.js) ───────────────────────────
+const BADGES = [
+  { id:'first_blood',    name:'First Diagnosis',      icon:'🩺', desc:'Completed your first case.' },
+  { id:'perfect_score',  name:'Textbook Clinician',   icon:'⭐', desc:'Scored 95%+ on any case.' },
+  { id:'speed_clinician',name:'Speed Clinician',      icon:'⚡', desc:'Completed a case under 10 min.' },
+  { id:'budget_master',  name:'Budget Master',        icon:'💰', desc:'Cured patient under 40% budget.' },
+  { id:'no_blunders',    name:'First, Do No Harm',    icon:'🛡️', desc:'Completed a case with zero blunders.' },
+  { id:'diagnostician',  name:'Senior Diagnostician', icon:'🔬', desc:'Correctly diagnosed 10 cases.' },
+  { id:'veteran',        name:'Veteran',              icon:'🎖️', desc:'Played 25+ cases.' },
+  { id:'resident_grade', name:'Resident Level',       icon:'📋', desc:'Average 75+ score over 5 cases.' },
+];
+
+// ── Determine whose profile to load ──────────────────────────────────────
+// URL: /profile.html         → own profile (must be logged in)
+// URL: /profile.html?u=someusername → public profile for that username
+const urlParams    = new URLSearchParams(window.location.search);
+const targetUsername = urlParams.get('u'); // null = own profile
+
+let viewedProfile = null;
+let isOwnProfile  = false;
+let currentUser   = null;
+
+// ── Auth state ────────────────────────────────────────────────────────────
+MedSim.onAuthChange(async user => {
+  currentUser = user;
+
+  if (user) {
+    // Update nav bar
+    const myProfile = await MedSim.getUserProfile(user.uid);
+    document.getElementById('nav-user-pill').classList.remove('hidden');
+    document.getElementById('btn-signout').classList.remove('hidden');
+    document.getElementById('nav-signin-link').classList.add('hidden');
+    document.getElementById('nav-username-label').textContent =
+      myProfile?.username || user.email?.split('@')[0] || '—';
+  } else {
+    document.getElementById('nav-user-pill').classList.add('hidden');
+    document.getElementById('btn-signout').classList.add('hidden');
+    document.getElementById('nav-signin-link').classList.remove('hidden');
+  }
+
+  await loadProfile();
+});
+
+document.getElementById('btn-signout').addEventListener('click', async () => {
+  await MedSim.logOut();
+  window.location.href = 'index.html';
+});
+
+// ── Load profile ──────────────────────────────────────────────────────────
+async function loadProfile() {
+  const page = document.getElementById('page-content');
+
+  try {
+    if (targetUsername) {
+      // ── Public profile view: exact username from URL ──
+      // Anyone can view this — no login required
+      viewedProfile = await MedSim.getProfileByUsername(targetUsername);
+      if (!viewedProfile) {
+        page.innerHTML = renderNotFound(targetUsername);
+        return;
+      }
+      isOwnProfile = currentUser ? (viewedProfile.uid === currentUser.uid) : false;
+
+    } else {
+      // ── Own profile view ──
+      // Must be logged in. If not, redirect to login.
+      if (!currentUser) {
+        window.location.href = `login.html?redirect=${encodeURIComponent(window.location.pathname)}`;
+        return;
+      }
+      viewedProfile = await MedSim.getUserProfile(currentUser.uid);
+      if (!viewedProfile) {
+        // Logged in but no profile — send back to login to complete setup
+        window.location.href = 'login.html';
+        return;
+      }
+      isOwnProfile = true;
+    }
+
+    // Load score history
+    const scoreLog = await MedSim.getUserScoreLog(viewedProfile.uid, 30);
+
+    document.title = `${viewedProfile.displayName || viewedProfile.username} — MedSim Nepal`;
+    page.innerHTML = renderProfile(viewedProfile, scoreLog, isOwnProfile);
+    bindProfileEvents(viewedProfile);
+
+  } catch (e) {
+    page.innerHTML = `<div class="not-found">
+      <div class="nf-icon">⚠️</div>
+      <div class="nf-title">Error loading profile</div>
+      <div class="nf-sub" style="font-family:var(--mono);font-size:10px;color:var(--text-lo);margin-top:8px">${esc(e.message)}</div>
+    </div>`;
+  }
+}
+
+// ── Render profile ────────────────────────────────────────────────────────
+function renderProfile(p, scoreLog, isOwn) {
+  const initials  = (p.displayName || p.username || '?').charAt(0).toUpperCase();
+  const joinDate  = p.joinedAt?.toDate?.()
+    ? p.joinedAt.toDate().toLocaleDateString('en-GB', { month:'short', year:'numeric' })
+    : '—';
+  const avgScore  = p.averageScore ? p.averageScore.toFixed(1) : '—';
+  const totalTime = formatPlayTime(p.totalTimePlayed || 0);
+
+  const tagsHTML = (p.tags || []).map(t =>
+    `<span class="profile-tag tag-${esc(t)}">${esc(t.replace(/_/g,' '))}</span>`
+  ).join('');
+
+  const actionBtns = isOwn
+    ? `<div class="profile-actions">
+         <button class="btn-edit" id="btn-open-edit">Edit Profile</button>
+         <button class="btn-share" id="btn-share">Share</button>
+       </div>`
+    : `<div class="profile-actions">
+         <button class="btn-share" id="btn-share">Share Profile</button>
+       </div>`;
+
+  return `
+    <div class="profile-header">
+      ${actionBtns}
+      <div class="profile-header-top">
+        <div class="profile-avatar">${initials}</div>
+        <div class="profile-main">
+          <div class="profile-displayname">${esc(p.displayName || p.username)}</div>
+          <div class="profile-username">@${esc(p.username)}</div>
+          ${p.bio ? `<div class="profile-bio">${esc(p.bio)}</div>` : ''}
+          <div class="profile-join">Joined ${joinDate}</div>
+          ${tagsHTML ? `<div class="profile-tags">${tagsHTML}</div>` : ''}
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-strip">
+      <div class="stat-box">
+        <span class="stat-box-value">${p.totalCasesPlayed || 0}</span>
+        <span class="stat-box-label">Cases Played</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-box-value">${p.totalCasesSolved || 0}</span>
+        <span class="stat-box-label">Cases Solved</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-box-value">${avgScore}</span>
+        <span class="stat-box-label">Avg Score</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-box-value">${totalTime}</span>
+        <span class="stat-box-label">Time Played</span>
+      </div>
+    </div>
+
+    <div class="section-head">
+      <div class="section-head-title">Badges</div>
+      <div class="section-head-line"></div>
+      <div class="section-count">${(p.badges || []).length} / ${BADGES.length}</div>
+    </div>
+    <div class="badges-grid">
+      ${BADGES.map(b => {
+        const earned = (p.badges || []).includes(b.id);
+        return `<div class="badge-card ${earned ? '' : 'locked'}">
+          <div class="badge-icon">${b.icon}</div>
+          <div class="badge-info">
+            <div class="badge-name">${b.name}</div>
+            <div class="badge-desc">${b.desc}</div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+
+    <div class="section-head">
+      <div class="section-head-title">Case History</div>
+      <div class="section-head-line"></div>
+      <div class="section-count">${scoreLog.length} entries</div>
+    </div>
+    ${scoreLog.length
+      ? `<div class="score-log">${scoreLog.map(renderScoreEntry).join('')}</div>`
+      : `<div class="empty-box">No cases played yet.</div>`
+    }
+  `;
+}
+
+function renderScoreEntry(s) {
+  const gradeKey   = (s.grade || 'F').replace('+', '-plus');
+  const outcomeClass = s.outcome === 'cured' ? 'outcome-cured'
+                     : s.outcome === 'death' ? 'outcome-death' : 'outcome-transfer';
+  const outcomeLabel = s.outcome === 'cured' ? '✓ Cured'
+                     : s.outcome === 'death' ? '✕ Died' : '→ Transferred';
+  const dateStr    = s.playedAt?.toDate
+    ? s.playedAt.toDate().toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' })
+    : '—';
+  const timeStr    = s.timeElapsed ? formatDuration(s.timeElapsed) : '—';
+  const budgetPct  = s.budgetTotal ? Math.round((s.budgetUsed / s.budgetTotal) * 100) + '%' : '—';
+
+  return `<div class="score-entry">
+    <div class="se-left">
+      <div class="se-case">${esc(s.caseTitle || s.caseId)}</div>
+      <div class="se-meta">
+        <span class="se-meta-item">🕐 ${timeStr}</span>
+        <span class="se-meta-item">🪙 ${budgetPct} budget</span>
+        <span class="se-meta-item">${dateStr}</span>
+      </div>
+      <div class="se-meta" style="margin-top:3px">
+        <span class="se-dx ${s.diagnosisCorrect ? 'correct' : 'wrong'}">${s.diagnosisCorrect ? '✓ Correct Dx' : '✕ Wrong Dx'}</span>
+        <span class="se-outcome ${outcomeClass}">${outcomeLabel}</span>
+      </div>
+    </div>
+    <div class="se-right">
+      <div class="se-grade grade-${gradeKey}">${s.grade || '—'}</div>
+      <div class="se-score">${s.score ?? '—'}/100</div>
+    </div>
+  </div>`;
+}
+
+function renderNotFound(username) {
+  return `<div class="not-found">
+    <div class="nf-icon">🔍</div>
+    <div class="nf-title">Profile not found</div>
+    <div class="nf-sub">No user with username <strong style="color:var(--text-hi)">@${esc(username)}</strong> exists.</div>
+  </div>`;
+}
+
+// ── Profile event bindings ────────────────────────────────────────────────
+function bindProfileEvents(p) {
+  document.getElementById('btn-open-edit')?.addEventListener('click', () => {
+    document.getElementById('edit-name').value = p.displayName || '';
+    document.getElementById('edit-bio').value  = p.bio || '';
+    document.getElementById('edit-modal').classList.remove('hidden');
+  });
+
+  document.getElementById('btn-share')?.addEventListener('click', () => {
+    const url = `${window.location.origin}/profile.html?u=${encodeURIComponent(p.username)}`;
+    if (navigator.share) {
+      navigator.share({ title: `${p.displayName} — MedSim Nepal`, url });
+    } else {
+      navigator.clipboard.writeText(url).then(() => showToast('Profile URL copied to clipboard'));
+    }
+  });
+}
+
+// ── Edit modal ────────────────────────────────────────────────────────────
+document.getElementById('btn-cancel-edit').addEventListener('click', () => {
+  document.getElementById('edit-modal').classList.add('hidden');
+});
+
+document.getElementById('edit-modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('edit-modal'))
+    document.getElementById('edit-modal').classList.add('hidden');
+});
+
+document.getElementById('btn-save-edit').addEventListener('click', async () => {
+  const btn  = document.getElementById('btn-save-edit');
+  const name = document.getElementById('edit-name').value.trim();
+  const bio  = document.getElementById('edit-bio').value.trim();
+  const err  = document.getElementById('edit-error');
+  err.classList.remove('show');
+
+  if (!name) {
+    err.textContent = 'Display name cannot be empty.';
+    err.classList.add('show');
+    return;
+  }
+
+  btn.disabled = true;
+  try {
+    await MedSim.updateUserProfile(viewedProfile.uid, { displayName: name, bio });
+    document.getElementById('edit-modal').classList.add('hidden');
+    showToast('Profile updated');
+    setTimeout(() => window.location.reload(), 800);
+  } catch (e) {
+    err.textContent = e.message || 'Failed to save. Please try again.';
+    err.classList.add('show');
+    btn.disabled = false;
+  }
+});
+
+// ── Helpers ───────────────────────────────────────────────────────────────
+function esc(str) {
+  return String(str || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function formatPlayTime(seconds) {
+  if (!seconds || seconds < 60) return '<1m';
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  return h > 0 ? `${h}h ${m}m` : `${m}m`;
+}
+
+function formatDuration(seconds) {
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${m}:${String(s).padStart(2, '0')}`;
+}
+
+function showToast(msg) {
+  let container = document.getElementById('toast-container');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'toast-container';
+    container.style.cssText = 'position:fixed;bottom:16px;right:16px;display:flex;flex-direction:column;gap:6px;z-index:300';
+    document.body.appendChild(container);
+  }
+  const t = document.createElement('div');
+  t.style.cssText = 'font-family:var(--mono);font-size:10px;padding:9px 14px;border-radius:var(--r2);background:rgba(13,189,139,.2);border:1px solid rgba(13,189,139,.5);color:var(--text-hi);transform:translateX(110%);transition:transform .3s ease;box-shadow:0 4px 18px rgba(0,0,0,.55)';
+  t.textContent = msg;
+  container.appendChild(t);
+  requestAnimationFrame(() => { t.style.transform = 'translateX(0)'; });
+  setTimeout(() => { t.style.transform = 'translateX(110%)'; setTimeout(() => t.remove(), 300); }, 3000);
+}
+</script>
+
+</body>
+</html>

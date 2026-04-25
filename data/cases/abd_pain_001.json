@@ -703,30 +703,6 @@
           }
         },
         {
-          "id": "obs_wait",
-          "name": "Observe and Wait",
-          "fullName": "Watchful Waiting — No Active Intervention",
-          "cost": 0,
-          "type": "blunder",
-          "repeatable": false,
-          "stageEffect": {
-            "early": {
-              "note": "BLUNDER — active observation without treatment in confirmed appendicitis directly accelerates perforation risk. No clinical or guideline basis for pure observation in a fit young patient with classic features.",
-              "penalty": 20
-            },
-            "localized": {
-              "note": "BLUNDER — waiting with established localised peritonitis. Patient deteriorating rapidly toward perforation.",
-              "penalty": 35
-            },
-            "perforation": {
-              "note": "FATAL BLUNDER — no surgery in perforated appendicitis with peritonitis leads directly to septic shock and death.",
-              "penalty": 50,
-              "endGame": true,
-              "outcome": "death"
-            }
-          }
-        },
-        {
           "id": "drain_only",
           "name": "Percutaneous Drain Only",
           "fullName": "USG-Guided Percutaneous Drain Insertion (without appendectomy)",
@@ -932,30 +908,6 @@
               "penalty": 5
             }
           }
-        },
-        {
-          "id": "obs_renal",
-          "name": "Observe for Stone Passage",
-          "fullName": "Observation for Spontaneous Stone Passage with Fluids and Analgesics",
-          "cost": 0,
-          "type": "blunder",
-          "repeatable": false,
-          "stageEffect": {
-            "early": {
-              "note": "BLUNDER — treating appendicitis as 'stone passage' observation. Positive Rovsing's sign and McBurney's tenderness with leucocytosis are NOT renal colic features. Fatal misdiagnosis.",
-              "penalty": 25
-            },
-            "localized": {
-              "note": "BLUNDER — peritonitis developing.",
-              "penalty": 35
-            },
-            "perforation": {
-              "note": "FATAL.",
-              "penalty": 50,
-              "endGame": true,
-              "outcome": "death"
-            }
-          }
         }
       ],
       "mesenteric_ad": [
@@ -1074,19 +1026,6 @@
               "penalty": 40
             }
           }
-        },
-        {
-          "id": "obs_meckels",
-          "name": "Observe Only",
-          "fullName": "Watchful Waiting Without Intervention",
-          "cost": 0,
-          "type": "blunder",
-          "repeatable": false,
-          "stageEffect": {
-            "early": { "note": "BLUNDER — appendicitis worsening.", "penalty": 20 },
-            "localized": { "note": "BLUNDER — peritonitis developing.", "penalty": 35 },
-            "perforation": { "note": "FATAL.", "penalty": 50, "endGame": true, "outcome": "death" }
-          }
         }
       ],
       "ibd": [
@@ -1155,19 +1094,6 @@
               "penalty": 40
             }
           }
-        },
-        {
-          "id": "obs_ibd",
-          "name": "Observe Only",
-          "fullName": "Observation Without Active Intervention",
-          "cost": 0,
-          "type": "blunder",
-          "repeatable": false,
-          "stageEffect": {
-            "early": { "note": "BLUNDER.", "penalty": 20 },
-            "localized": { "note": "BLUNDER — peritonitis worsening.", "penalty": 35 },
-            "perforation": { "note": "FATAL.", "penalty": 50, "endGame": true, "outcome": "death" }
-          }
         }
       ],
       "hernia": [
@@ -1213,19 +1139,6 @@
               "note": "Wrong surgery in perforated appendicitis.",
               "penalty": 35
             }
-          }
-        },
-        {
-          "id": "obs_hernia",
-          "name": "Observe Only",
-          "fullName": "Watchful Waiting",
-          "cost": 0,
-          "type": "blunder",
-          "repeatable": false,
-          "stageEffect": {
-            "early": { "note": "BLUNDER.", "penalty": 20 },
-            "localized": { "note": "BLUNDER.", "penalty": 35 },
-            "perforation": { "note": "FATAL.", "penalty": 50, "endGame": true, "outcome": "death" }
           }
         }
       ],
@@ -1273,19 +1186,6 @@
               "penalty": 30
             }
           }
-        },
-        {
-          "id": "obs_psoas",
-          "name": "Observe Only",
-          "fullName": "Watchful Waiting Without Intervention",
-          "cost": 0,
-          "type": "blunder",
-          "repeatable": false,
-          "stageEffect": {
-            "early": { "note": "BLUNDER.", "penalty": 20 },
-            "localized": { "note": "BLUNDER.", "penalty": 35 },
-            "perforation": { "note": "FATAL.", "penalty": 50, "endGame": true, "outcome": "death" }
-          }
         }
       ],
       "right_colitis": [
@@ -1330,19 +1230,6 @@
               "note": "Not relevant.",
               "penalty": 5
             }
-          }
-        },
-        {
-          "id": "obs_colitis",
-          "name": "Observe Only",
-          "fullName": "Watchful Waiting Without Active Intervention",
-          "cost": 0,
-          "type": "blunder",
-          "repeatable": false,
-          "stageEffect": {
-            "early": { "note": "BLUNDER.", "penalty": 20 },
-            "localized": { "note": "BLUNDER.", "penalty": 35 },
-            "perforation": { "note": "FATAL.", "penalty": 50, "endGame": true, "outcome": "death" }
           }
         }
       ],
@@ -1389,19 +1276,6 @@
               "note": "FATAL — wrong surgery. Perforated appendix unaddressed.",
               "penalty": 40
             }
-          }
-        },
-        {
-          "id": "obs_testicular",
-          "name": "Observe Only",
-          "fullName": "Watchful Waiting Without Intervention",
-          "cost": 0,
-          "type": "blunder",
-          "repeatable": false,
-          "stageEffect": {
-            "early": { "note": "BLUNDER.", "penalty": 20 },
-            "localized": { "note": "BLUNDER.", "penalty": 35 },
-            "perforation": { "note": "FATAL.", "penalty": 50, "endGame": true, "outcome": "death" }
           }
         }
       ]
