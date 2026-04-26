@@ -6,20 +6,23 @@
   <title>Play Case · Clinical Simulation</title>
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/styleplus.css" />
-  <!-- Optional: your global styles -->
 </head>
 <body>
 
-  <!-- Game mounts here -->
   <div id="app"></div>
 
-
-
-
-
+  <!-- 1. Data loader first -->
   <script src="components/caseLoader.js"></script>
-  <script src="js/play.js"></script>
+
+  <!-- 2. Engine and UI classes before play.js uses them -->
   <script src="js/engine.js"></script>
   <script src="js/ui.js"></script>
+
+  <!-- 3. Firebase as a module — sets window.MedSim for ui.js to use -->
+  <script type="module" src="js/firebase.js"></script>
+
+  <!-- 4. Entry point last, after everything it depends on is ready -->
+  <script src="js/play.js"></script>
+
 </body>
 </html>

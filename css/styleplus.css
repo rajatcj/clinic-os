@@ -197,3 +197,85 @@
 @media(max-width:420px){
   .cases-grid-page { grid-template-columns:1fr; }
 }
+
+
+/* Pre-game stats */
+.pregame-stats-wrap {
+  padding: 0 26px 4px;
+}
+.pregame-stats-loading {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r2);
+  padding: 14px;
+  min-height: 60px;
+}
+.pgstat-spinner {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: .08em;
+  text-align: center;
+  padding: 10px 0;
+}
+.pgstat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.pgstat-item {
+  text-align: center;
+  background: var(--bg-up);
+  border-radius: var(--r1);
+  padding: 8px 4px;
+}
+.pgstat-val {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--green);
+}
+.pgstat-label {
+  font-family: var(--mono);
+  font-size: 8px;
+  color: var(--text-lo);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+.pgstat-lb {
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+}
+.pgstat-lb-title {
+  font-family: var(--mono);
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--text-lo);
+  margin-bottom: 6px;
+}
+.pgstat-lb-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  border-radius: var(--r1);
+  background: var(--bg-up);
+  margin-bottom: 4px;
+  font-family: var(--mono);
+  font-size: 10px;
+}
+.pgstat-rank  { color: var(--text-lo); min-width: 20px; }
+.pgstat-user  { color: var(--text-hi); flex: 1; }
+.pgstat-score { color: var(--green); font-weight: 700; }
+.pgstat-time  { color: var(--text-mid); }
+.pgstat-empty {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-dim);
+  text-align: center;
+  padding: 8px 0;
+}

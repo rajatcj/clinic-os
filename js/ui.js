@@ -17,9 +17,42 @@ class ClinicalUI {
       .on('stageChanged',    d   => { this._updateHUD(); this._flashStage(d); })
       .on('testResult',      r   => { this._showToast(`📋 Result ready: ${r.name}`, 'info'); this._refreshResults(); })
       .on('log',             e   => this._appendLog(e))
-      .on('cured',           ()  => { this._updateHUD(); this._showToast('✅ Patient cured!', 'success'); this._pulseGlow('green'); document.getElementById('btn-end')?.classList.add('btn-end-ready'); })
+      .on('cured',           ()  => {
+        this._updateHUD();
+        this._showToast('✅ Patient cured!', 'success');
+        this._pulseGlow('green');
+        document.getElementById('btn-end')?.classList.add('btn-end-ready');
+        this._onCureSubmit();
+      })
       .on('gameOver',        d   => this._handleGameOver(d))
       .on('diagnosisChanged',d   => { this._renderDiagnosisTab(); this._renderDiseaseTab(); this._showToast(`🩺 Dx: ${d.label}`, 'info'); });
+  }
+
+  // ── Score submission on cure ──────────────────────────────────────────────
+  // ── Score submission on cure ──────────────────────────────────────────────
+  async _onCureSubmit() {
+    const MS = window.MedSim;
+    if (!MS) return;
+
+    try {
+      // Wait for Firebase Auth session to fully restore before any Firestore write
+      const user = await new Promise(resolve => {
+        const current = MS.currentUser();
+        if (current !== null && current !== undefined) { resolve(current); return; }
+        const unsub = MS.onAuthChange(u => { unsub(); resolve(u); });
+      });
+      if (!user) return;
+
+      const result = await MS.submitGameResult(
+        this.case.id,
+        this.engine.getState(),
+        this.engine.calculateScore(),
+        this.engine.log
+      );
+      if (result.written) this._showToast('\ud83c\udfc6 New best score saved!', 'success');
+    } catch (e) {
+      console.warn('Score submit failed:', e.code, e.message);
+    }
   }
 
   // ── Render game ───────────────────────────────────────────────────────────
@@ -48,7 +81,6 @@ class ClinicalUI {
         <div class="header-right">
           <div class="hud-stats">
             <div class="hud-stat btn-jump" id="btn-jump"><span class="hud-label">TIME</span><span class="hud-value mono" id="stat-time">00h 00m</span></div>
-            <!--<div class="hud-stat"><span class="hud-label">STAGE</span><span class="hud-value mono" id="stat-stage">—</span></div>-->
             <div class="hud-stat"><span class="hud-label">COINS</span><span class="hud-value mono" id="stat-budget">🪙—</span></div>
           </div>
           <div class="hud-actions">
@@ -67,21 +99,17 @@ class ClinicalUI {
           <div class="patient-complaint">"${c.clinicalPresentation.chiefComplaint}"</div>
         </div>
         <div class="stage-glow-wrap">
-        
-        <div class="hud-vitals" id="hud-vitals"></div>
+          <div class="hud-vitals" id="hud-vitals"></div>
           <div class="stage-glow glow-yellow" id="stage-glow"></div>
           <div class="patient-stage-badge stage-badge-yellow" id="stage-badge"><span id="stage-badge-text">—</span></div>
         </div>
       </div>
-      
-
 
       <div class="game-body">
         <div class="tab-bar">
           <button class="tab-btn active" data-tab="history">CASE</button>
           <button class="tab-btn" data-tab="tests">TESTS<span class="badge" id="results-badge">0</span></button>
-          <!--<button class="tab-btn" data-tab="results">RESULTS<span class="badge" id="results-badge">0</span></button>-->
-          <button class="tab-btn" data-tab="general">MANAGEMENET</button>
+          <button class="tab-btn" data-tab="general">MANAGEMENT</button>
           <button class="tab-btn" data-tab="diagnosis">DIAGNOSIS</button>
         </div>
         <div class="tab-content">
@@ -92,7 +120,7 @@ class ClinicalUI {
           </div>
           <div class="tab-panel" id="tab-general"></div>
           <div class="tab-panel" id="tab-diagnosis">
-            <div id="tab-diagnosiss"></div><br> <br>
+            <div id="tab-diagnosiss"></div><br><br>
             <div id="tab-disease"></div>
           </div>
         </div>
@@ -107,7 +135,7 @@ class ClinicalUI {
     <div class="modal-overlay hidden" id="modal-jump">
       <div class="modal">
         <div class="modal-title">⏩ Skip Time</div>
-        <p class="modal-desc">Advance simulation time. Pending results arrive if due, disease evolve.</p>
+        <p class="modal-desc">Advance simulation time. Pending results arrive if due, disease evolves.</p>
         <div class="jump-options">
           <button class="jump-btn" data-h="0.5">+30 min</button>
           <button class="jump-btn" data-h="1">+1 hour</button>
@@ -172,7 +200,7 @@ class ClinicalUI {
         <div class="info-card full-width clue-card">
           <div class="card-label">SPONSORED SEGMENT</div>
           <h2>SPONSORED ADS SPACE (3/3)</h2>
-          A free service still take resources to operate for the database, server and domain! The cases of this website will always be free of cost availabe for everyone powered by our sponsors.
+          A free service still take resources to operate for the database, server and domain! The cases of this website will always be free of cost available for everyone powered by our sponsors.
         </div>
         <div class="info-card full-width">
           <div class="card-label">Examination</div>
@@ -211,7 +239,7 @@ class ClinicalUI {
   _renderTestsTab() {
     const cats = [...new Set(this.case.tests.map(t=>t.category))];
     const stage = this.engine.state.stage;
-    document.getElementById('tab-testss').innerHTML = `<br><div class="disease-mgmt-label">SELECT YOUR TESTS :</strong></div><div class="tests-container">` +
+    document.getElementById('tab-testss').innerHTML = `<br><div class="disease-mgmt-label">SELECT YOUR TESTS:</div><div class="tests-container">` +
       cats.map(cat => {
         const tests = this.case.tests.filter(t=>t.category===cat);
         return `<div class="test-category"><div class="category-label">${cat}</div><div class="test-grid">
@@ -241,96 +269,84 @@ class ClinicalUI {
   }
 
   // ── Results tab ───────────────────────────────────────────────────────────
-_refreshResults() {
-  const done = this.engine.state.completedTests;
-  const pend = this.engine.state.pendingResults;
+  _refreshResults() {
+    const done = this.engine.state.completedTests;
+    const pend = this.engine.state.pendingResults;
 
-  const badge = document.getElementById('results-badge');
-  if (badge) badge.textContent = done.length;
+    const badge = document.getElementById('results-badge');
+    if (badge) badge.textContent = done.length;
 
-  const panel = document.getElementById('tab-results');
-  if (!panel) return;
+    const panel = document.getElementById('tab-results');
+    if (!panel) return;
 
-  // ── KEY: detect structural change (not time change) ──
-  const stateKey = JSON.stringify({
-    d: done.map(x => x.name),
-    p: pend.map(x => x.testId)
-  });
-
-  // If structure SAME → only update ETA text, no re-render
-  if (panel.dataset.lastKey === stateKey) {
-    pend.forEach(r => {
-      const etaEl = panel.querySelector(`[data-eta="${r.testId}"]`);
-      if (!etaEl) return;
-
-      const eta = Math.max(0, r.readyAt - this.engine.state.time);
-      etaEl.textContent = `ETA: ~${this.engine._fmtDur(eta)}`;
+    const stateKey = JSON.stringify({
+      d: done.map(x => x.name),
+      p: pend.map(x => x.testId)
     });
-    return;
-  }
 
-  // Save new structure key
-  panel.dataset.lastKey = stateKey;
+    if (panel.dataset.lastKey === stateKey) {
+      pend.forEach(r => {
+        const etaEl = panel.querySelector(`[data-eta="${r.testId}"]`);
+        if (!etaEl) return;
+        const eta = Math.max(0, r.readyAt - this.engine.state.time);
+        etaEl.textContent = `ETA: ~${this.engine._fmtDur(eta)}`;
+      });
+      return;
+    }
 
-  // ── FULL RENDER ONLY WHEN NEEDED ──
-  if (!done.length && !pend.length) {
-    panel.innerHTML = `
-      <br>
-      <div class="disease-mgmt-label">TEST REPORTS :</div>
-      <div class="empty-state">No investigations ordered yet.</div>
-    `;
-    return;
-  }
+    panel.dataset.lastKey = stateKey;
 
-  let html = '<br><div class="disease-mgmt-label">TEST REPORTS :</div>';
+    if (!done.length && !pend.length) {
+      panel.innerHTML = `
+        <br>
+        <div class="disease-mgmt-label">TEST REPORTS:</div>
+        <div class="empty-state">No investigations ordered yet.</div>
+      `;
+      return;
+    }
 
-  // ── Pending (dynamic ETA targets) ──
-  if (pend.length) {
-    html += `<div class="results-section-label">⏳ Awaiting Results (Clink on the clock at the top to skip time)</div>`;
+    let html = '<br><div class="disease-mgmt-label">TEST REPORTS:</div>';
 
-    html += pend.map(r => {
-      const t = this.case.tests.find(x => x.id === r.testId);
-      const eta = Math.max(0, r.readyAt - this.engine.state.time);
+    if (pend.length) {
+      html += `<div class="results-section-label">⏳ Awaiting Results (Click on the clock at the top to skip time)</div>`;
+      html += pend.map(r => {
+        const t = this.case.tests.find(x => x.id === r.testId);
+        const eta = Math.max(0, r.readyAt - this.engine.state.time);
+        return `
+          <div class="result-card pending">
+            <div class="result-name">${t?.name || r.testId}</div>
+            <div class="result-eta" data-eta="${r.testId}">
+              ETA: ~${this.engine._fmtDur(eta)}
+            </div>
+          </div>`;
+      }).join('');
+    }
 
-      return `
-        <div class="result-card pending">
-          <div class="result-name">${t?.name || r.testId}</div>
-          <div class="result-eta" data-eta="${r.testId}">
-            ETA: ~${this.engine._fmtDur(eta)}
+    if (done.length) {
+      html += `<div class="results-section-label">✅ Results Available</div>`;
+      html += done.slice().reverse().map(r => `
+        <div class="result-card done">
+          <div class="result-header">
+            <span class="result-name">${r.name}</span>
+            <span class="result-time">${r.timeLabel}</span>
           </div>
-        </div>`;
-    }).join('');
-  }
-
-  // ── Done (STATIC → will NOT re-render every second) ──
-  if (done.length) {
-    html += `<div class="results-section-label">✅ Results Available</div>`;
-
-    html += done.slice().reverse().map(r => `
-      <div class="result-card done">
-        <div class="result-header">
-          <span class="result-name">${r.name}</span>
-          <span class="result-time">${r.timeLabel}</span>
+          <div class="result-text">${r.result}</div>
+          ${r.interpretation ? `<div class="result-interp">💡 ${r.interpretation}</div>` : ''}
         </div>
-        <div class="result-text">${r.result}</div>
-        ${r.interpretation ? `<div class="result-interp">💡 ${r.interpretation}</div>` : ''}
-      </div>
-    `).join('');
-  }
+      `).join('');
+    }
 
-  panel.innerHTML = `<div class="results-container">${html}</div>`;
-}
-  
+    panel.innerHTML = `<div class="results-container">${html}</div>`;
+  }
 
   // ── General management tab ────────────────────────────────────────────────
   _renderGeneralTab() {
     const given = this.engine.state.givenManagement.map(g=>g.id);
     const opts  = this.case.managementOptions.general || [];
     document.getElementById('tab-general').innerHTML = `
-            <br><div class="disease-mgmt-label">GENERAL MANAGEMENT :</strong></div><br><div class="mgmt-container" style="width:100%"><div class="mgmt-grid">` +
+      <br><div class="disease-mgmt-label">GENERAL MANAGEMENT:</div><br><div class="mgmt-container" style="width:100%"><div class="mgmt-grid">` +
       opts.map(m => {
         const isGiven = given.includes(m.id);
-        const eff = m.stageEffect?.[this.engine.state.stage] || {};
         const isBad = m.type==='wrong'||m.type==='dummy';
         return `<div class="mgmt-card ${isGiven?'mgmt-given':''} ${isBad?'mgmt-wrong':''}">
           <div class="mgmt-name">${m.name}</div>
@@ -353,8 +369,8 @@ _refreshResults() {
     const opts = this.case.diagnosisOptions;
     document.getElementById('tab-diagnosiss').innerHTML = `
       <div class="diagnosis-container">
-        <br><div class="disease-mgmt-label">SELECT YOUR DIAGNOSIS :</strong></div>
-        <div class="diagnosis-info-box">🔒 The <strong>Treatment</strong> tab unlocks after you select a diagnosis. You can change it at any time, the final selection at case end is scored.</div>
+        <br><div class="disease-mgmt-label">SELECT YOUR DIAGNOSIS:</div>
+        <div class="diagnosis-info-box">🔒 The <strong>Treatment</strong> tab unlocks after you select a diagnosis. You can change it at any time — the final selection at case end is scored.</div>
         <div class="diagnosis-options">
           ${opts.map(o=>`<div class="diagnosis-option ${cur===o.id?'selected':''}" data-did="${o.id}">
             <div class="diag-radio ${cur===o.id?'filled':''}"></div>
@@ -389,7 +405,7 @@ _refreshResults() {
     const stage = this.engine.state.stage;
 
     panel.innerHTML = `<div class="mgmt-container">
-            <div class="disease-mgmt-label">DIAGNOSIS MANAGEMENT :</strong></div>
+      <div class="disease-mgmt-label">DIAGNOSIS MANAGEMENT:</div>
       <div class="disease-mgmt-header">
         <div class="disease-mgmt-warning">⚠️ Wrong treatments and blunders incur score penalties. Blunders may end the case.</div>
       </div>
@@ -399,18 +415,15 @@ _refreshResults() {
         const eff       = m.stageEffect?.[stage] || {};
         const isBlocked = eff.blocked;
         const cls = [isGiven?'mgmt-given':'', m.type==='curative'?'mgmt-curative':'', m.type==='wrong'?'mgmt-wrong':'', m.type==='blunder'?'mgmt-blunder':'', isBlocked?'mgmt-blocked':''].join(' ');
-        return `<!--<div class="mgmt-card ${cls}">--><div class="mgmt-card">
+        return `<div class="mgmt-card">
           <div class="mgmt-name">${m.name}</div>
           <div class="mgmt-fullname">${m.fullName}</div>
           <div class="mgmt-meta">
             <span>🪙${m.cost}</span>
-            <!--${m.type==='curative'?'<span class="badge-curative">DEFINITIVE</span>':''}
-            ${m.type==='blunder'?'<span class="badge-blunder">🚨 RISKY</span>':''}
-            ${m.type==='wrong'?'<span class="badge-wrong">⚠️</span>':''}-->
           </div>
           ${isGiven?'<div class="mgmt-done">✅ Administered</div>'
             :isBlocked?`<div class="mgmt-blocked-msg">🚫 ${eff.note||'Not applicable now'}</div>`
-            :`<!--<button class="btn-give btn-give-dis ${m.type==='curative'?'btn-curative':''}" data-mid="${m.id}" data-did="${diagId}">${m.type==='curative'?'⚡ Perform':'Administer'}</button>--><button class="btn-give btn-give-dis" data-mid="${m.id}" data-did="${diagId}">Administer</button>`}
+            :`<button class="btn-give btn-give-dis" data-mid="${m.id}" data-did="${diagId}">Administer</button>`}
         </div>`;
       }).join('') + `</div></div>`;
 
@@ -459,7 +472,6 @@ _refreshResults() {
 
     this._updateSymptoms();
     this._refreshResults();
-    // Refresh test card statuses without full re-render
     this.case.tests.forEach(t => {
       const card = document.getElementById(`tc-${t.id}`);
       if (!card) return;
@@ -573,7 +585,7 @@ _refreshResults() {
       </div>`;
     modal.classList.remove('hidden');
     document.getElementById('score-home')?.addEventListener('click', () => document.referrer ? history.back() : window.location.href = '/');
-    }
+  }
 
   // ── UI event bindings ─────────────────────────────────────────────────────
   _bindUIEvents() {
@@ -594,8 +606,6 @@ _refreshResults() {
     document.getElementById('btn-back')?.addEventListener('click', ()=>{
       if (confirm('Exit case? Progress will be lost.')) { this.engine.stop(); document.referrer ? history.back() : window.location.href = '/'; }
     });
-
-  
 
     // Jump modal
     document.getElementById('btn-jump')?.addEventListener('click', ()=>document.getElementById('modal-jump')?.classList.remove('hidden'));

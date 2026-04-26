@@ -31,8 +31,6 @@
       </div>
     </nav>
 
- 
-
   <!-- Hero -->
   <div class="cases-hero">
     <div class="cases-hero-title">All Cases</div>
@@ -87,10 +85,12 @@
 <script src="components/caseLoader.js"></script>
 <script src="js/engine.js"></script>
 <script src="js/ui.js"></script>
+<script src="js/pregameStats.js"></script>
+
+<script type="module" src="js/firebase.js"></script>
 
 <script type="module" src="./components/footerLoader.js"></script>
-
-  <script type="module" src="./components/profilebtn.js"></script>
+<script type="module" src="./components/profilebtn.js"></script>
 
 <script>
 /* ══════════════════════════════════════════════════════════════
@@ -106,7 +106,7 @@ const MedSimAvail = typeof MedSim !== 'undefined';
 // Difficulty sort order
 const DIFF_ORDER = { 'Intern': 1, 'MO': 2, 'Resident': 3 };
 
-// ── Dot colours per difficulty ─────────────────────────────────────────────
+// Dot colours per difficulty
 const DIFF_DOTS = { 'Intern':'var(--green)', 'MO':'var(--amber)', 'Resident':'var(--red)', 'default':'var(--text-mid)' };
 
 /* ── Boot ─────────────────────────────────────────────────────────────────── */
@@ -115,16 +115,6 @@ const DIFF_DOTS = { 'Intern':'var(--green)', 'MO':'var(--amber)', 'Resident':'va
 
   try {
     _allCases = await _casesLoader.loadIndex('./data/caseIndex.json');
-
-    // Enrich with Firebase data
-    if (MedSimAvail) {
-      await Promise.all(_allCases.map(async c => {
-        try {
-          const m = await MedSim.getCaseMeta(c.id);
-          if (m) { c._playCount=m.totalPlays||0; c._uniquePlayers=m.totalUniquePlayers||0; c._avgScore=m.averageScore?m.averageScore.toFixed(1):null; }
-        } catch(_){}
-      }));
-    }
 
     buildSidebar();
     buildMobileFilters();
@@ -198,14 +188,13 @@ function buildSidebar() {
       _activeFilter = btn.dataset.filter;
       sidebar.querySelectorAll('.sb-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      // Sync mobile
       document.querySelectorAll('.mfb-btn').forEach(b => b.classList.toggle('active', b.dataset.filter===_activeFilter));
       applyAndRender();
     });
   });
 }
 
-/* ── Mobile filters build (horizontal top bar) ───────────────────────────── */
+/* ── Mobile filters build ────────────────────────────────────────────────── */
 function buildMobileFilters() {
   const bar = document.getElementById('mobile-filter-bar');
   if (!bar) return;
@@ -227,7 +216,6 @@ function buildMobileFilters() {
       _activeFilter = btn.dataset.filter;
       bar.querySelectorAll('.mfb-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      // Sync sidebar
       document.querySelectorAll('.sb-btn').forEach(b => b.classList.toggle('active', b.dataset.filter===_activeFilter));
       applyAndRender();
     });
@@ -236,7 +224,6 @@ function buildMobileFilters() {
 
 /* ── Filter + sort + render ──────────────────────────────────────────────── */
 function applyAndRender() {
-  // Filter
   let filtered = _allCases.filter(c => {
     if (_activeFilter === 'all') return true;
     if (_activeFilter.startsWith('diff:')) return c.difficulty === _activeFilter.slice(5);
@@ -245,17 +232,13 @@ function applyAndRender() {
     return true;
   });
 
-  // Sort
   const sortVal = document.getElementById('ct-sort')?.value || 'date-desc';
   filtered = sortCases(filtered, sortVal);
-
   _displayed = filtered;
 
-  // Count label
   const ct = document.getElementById('ct-count');
   if (ct) ct.textContent = `${filtered.length} case${filtered.length!==1?'s':''}`;
 
-  // Render
   const grid = document.getElementById('cases-grid');
   if (!grid) return;
   if (!filtered.length) {
@@ -282,14 +265,11 @@ function sortCases(arr, sortVal) {
   }
 }
 
-/* ── Card HTML (mirrors app.js) ──────────────────────────────────────────── */
+/* ── Card HTML ───────────────────────────────────────────────────────────── */
 function caseCardHTML(c) {
   const diffClass = `diff-${c.difficulty}`;
   const dateStr   = c.createdAt ? _fmtDate(c.createdAt) : '1 Jan 2026';
   const author    = c.author || 'Original';
-  const plays     = c._playCount ?? c.playCount ?? 0;
-  const uniqueP   = c._uniquePlayers ?? 0;
-  const avgScore  = c._avgScore ?? null;
   return `
 <div class="case-card" data-case-id="${c.id}" data-diff="${c.difficulty}" data-sys="${c.system}" tabindex="0" role="button">
   <div class="card-top">
@@ -302,9 +282,6 @@ function caseCardHTML(c) {
   <div class="card-desc">${_esc(c.description)}</div>
   <div class="card-tags">${(c.tags||[]).map(t=>`<span class="card-tag">${_esc(t)}</span>`).join('')}</div>
   <div class="card-stats-row">
-    <span class="cs-stat">${plays>0?`▶ ${plays.toLocaleString()} plays`:'▶ New'}</span>
-    ${uniqueP>0?`<span class="cs-stat">👤 ${uniqueP.toLocaleString()}</span>`:''}
-    ${avgScore?`<span class="cs-stat">⭐ ${avgScore} avg</span>`:''}
     <span class="cs-stat cs-author">by ${_esc(author)}</span>
   </div>
   <div class="card-footer">
@@ -333,11 +310,28 @@ function bindCardEvents() {
 async function openCasePreGame(caseId) {
   const meta = _allCases.find(c => c.id === caseId);
   if (!meta) return;
-  if (MedSimAvail) MedSim.recordCaseStart(caseId).catch(()=>{});
+
+  // Record play start (fire and forget)
+  if (MedSimAvail) MedSim.recordCaseStart(caseId).catch(() => {});
 
   const overlay = document.createElement('div');
   overlay.className = 'pregame-overlay';
-  overlay.innerHTML = `
+  overlay.innerHTML = buildPreGameModal(meta);
+  document.body.appendChild(overlay);
+
+  document.getElementById('btn-cancel-case').addEventListener('click', () => overlay.remove());
+  overlay.addEventListener('click', e => { if(e.target===overlay) overlay.remove(); });
+  document.getElementById('btn-start-case').addEventListener('click', async () => {
+    overlay.remove();
+    await launchCaseGame(caseId);
+  });
+
+  // Load stats after modal is visible — non-blocking
+  loadPreGameStats(caseId);
+}
+
+function buildPreGameModal(meta) {
+  return `
 <div class="pregame-modal">
   <div class="pregame-head">
     <div class="pregame-case-label">${_esc(meta.category)} · ${_esc(meta.difficulty)}</div>
@@ -349,6 +343,13 @@ async function openCasePreGame(caseId) {
       <div class="pregame-patient-item"><strong>${meta.stages} stages</strong><small>Progression</small></div>
     </div>
   </div>
+
+  <div class="pregame-stats-wrap">
+    <div id="pregame-stats" class="pregame-stats-loading">
+      <div class="pgstat-spinner">Loading stats…</div>
+    </div>
+  </div>
+
   <div class="pregame-rules">
     <div class="rules-title">Simulation Rules</div>
     <div class="rule-item"><div class="rule-icon">⏱️</div><div class="rule-text"><strong>1 real second = 1 sim minute.</strong> Disease progresses automatically. Skip with ⏩.</div></div>
@@ -357,51 +358,85 @@ async function openCasePreGame(caseId) {
     <div class="rule-item"><div class="rule-icon">💊</div><div class="rule-text"><strong>Wrong treatments</strong> incur score penalties. Blunders can end the case.</div></div>
     <div class="rule-item"><div class="rule-icon">🪙</div><div class="rule-text"><strong>Budget: ${meta.budget?.toLocaleString()} coins.</strong> Overspending penalises final score.</div></div>
   </div>
+
   <div class="pregame-meta">
     <div class="meta-item"><div class="meta-label">Time</div><div class="meta-value">${meta.estimatedTime}</div></div>
     <div class="meta-item"><div class="meta-label">Difficulty</div><div class="meta-value">${meta.difficulty}</div></div>
     <div class="meta-item"><div class="meta-label">Budget</div><div class="meta-value coins">🪙 ${meta.budget?.toLocaleString()}</div></div>
     <div class="meta-item"><div class="meta-label">Stages</div><div class="meta-value">${meta.stages} stages</div></div>
   </div>
+
   <div class="pregame-actions">
     <button class="btn-start" id="btn-start-case">Start Simulation →</button>
     <button class="btn-cancel" id="btn-cancel-case">Cancel</button>
   </div>
 </div>`;
-
-  document.body.appendChild(overlay);
-  document.getElementById('btn-cancel-case').addEventListener('click', ()=>overlay.remove());
-  overlay.addEventListener('click', e=>{ if(e.target===overlay) overlay.remove(); });
-  document.getElementById('btn-start-case').addEventListener('click', async()=>{
-    overlay.remove();
-    await launchCaseGame(caseId);
-  });
 }
+
+// async function loadPreGameStats(caseId) {
+//   const statsEl = document.getElementById('pregame-stats');
+//   if (!statsEl) return;
+
+//   if (!MedSimAvail) {
+//     statsEl.innerHTML = '<div class="pgstat-empty">Stats unavailable</div>';
+//     return;
+//   }
+
+//   try {
+//     const [caseMeta, leaderboard] = await Promise.all([
+//       MedSim.getCaseMeta(caseId).catch(() => null),
+//       MedSim.getCaseLeaderboard(caseId, 3).catch(() => [])
+//     ]);
+
+//     const plays  = caseMeta?.totalPlays         ?? 0;
+//     const unique = caseMeta?.totalUniquePlayers  ?? 0;
+//     const avg    = caseMeta?.averageScore        ? caseMeta.averageScore.toFixed(1) : '—';
+//     const compl  = caseMeta?.totalCompletions    ?? 0;
+
+//     statsEl.innerHTML = `
+//       <div class="pgstat-grid">
+//         <div class="pgstat-item"><div class="pgstat-val">${plays.toLocaleString()}</div><div class="pgstat-label">Total Plays</div></div>
+//         <div class="pgstat-item"><div class="pgstat-val">${unique.toLocaleString()}</div><div class="pgstat-label">Unique Players</div></div>
+//         <div class="pgstat-item"><div class="pgstat-val">${compl.toLocaleString()}</div><div class="pgstat-label">Completions</div></div>
+//         <div class="pgstat-item"><div class="pgstat-val">${avg}</div><div class="pgstat-label">Avg Score</div></div>
+//       </div>
+//       ${leaderboard.length ? `
+//       <div class="pgstat-lb">
+//         <div class="pgstat-lb-title">Top Scores</div>
+//         ${leaderboard.map((e, i) => `
+//           <div class="pgstat-lb-row">
+//             <span class="pgstat-rank">#${i + 1}</span>
+//             <span class="pgstat-user">${_esc(e.username)}</span>
+//             <span class="pgstat-score">${e.score}</span>
+//             <span class="pgstat-time">${_fmtSecs(e.timeElapsed)}</span>
+//           </div>`).join('')}
+//       </div>` : '<div class="pgstat-empty">No scores yet — be the first!</div>'}
+//     `;
+//   } catch (e) {
+//     statsEl.innerHTML = '<div class="pgstat-empty">Stats unavailable</div>';
+//   }
+// }
 
 async function launchCaseGame(caseId) {
   window.location.href = `/play.html?id=${caseId}`;
 }
 
-/* ── Footer message ──────────────────────────────────────────────────────── */
-document.getElementById('hf-send-btn')?.addEventListener('click', () => {
-  const inp  = document.getElementById('hf-msg-input');
-  const note = document.getElementById('hf-msg-note');
-  const msg  = inp?.value?.trim();
-  if (!msg) { if(note){note.textContent='Please type a message.';note.style.color='var(--amber)';} return; }
-  console.log('[Feedback]', msg);
-  if (inp) inp.value = '';
-  if (note) { note.textContent='✓ Sent — thank you!'; note.style.color='var(--green)'; setTimeout(()=>{ note.textContent=''; }, 4000); }
-});
-
 /* ── Helpers ─────────────────────────────────────────────────────────────── */
 function _fmtDate(ds) {
   try { return new Date(ds).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}); } catch(_){ return ds; }
 }
-function _esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function _fmtSecs(s) {
+  if (!s) return '—';
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  return h > 0 ? `${h}h ${m}m` : `${m}m`;
+}
+
+function _esc(s) {
+  return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
 </script>
-
-
-
 
 </body>
 </html>

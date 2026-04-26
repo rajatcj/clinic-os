@@ -25,71 +25,20 @@ async function init() {
 
 // ── Home render ───────────────────────────────────────────────────────────────
 function renderHome(cases) {
-  document.getElementById('app').innerHTML = homeHTML(cases);
+  document.getElementById('cases-grid').innerHTML = homeHTML(cases);
   bindHomeEvents();
 }
+
+
 
 function homeHTML(cases) {
   const systems = [...new Set(cases.map(c => c.system))];
   const diffs   = [...new Set(cases.map(c => c.difficulty))];
-
+  document.getElementById('total-cases-available').innerHTML = cases.length;
   return `  
-  <div class="home-screen">
-    <nav class="home-topbar">
-      <div class="topbar-logo">
-        <div class="logo-icon">🩺</div>
-        <div>
-          <div class="logo-text">Clinical Simulation</div>
-          <div class="logo-sub">Medical Decision Engine</div>
-        </div>
-      </div>
-      <div class="topbar-right">
-        <div id="nav-auth-area">
-            <div id="nav-auth-area">
-            <a id="nav-signin-profile" class="nav-user-pill">Loading...</a>
-        </div>
-        </div>
-      </div>
-    </nav>
-
-
-    <section class="home-hero">
-      <div class="hero-eyebrow">MBBS Clinical Training Platform</div>
-      <h1 class="hero-title">Make decisions.<br/><em>Watch consequences unfold.</em></h1>
-      <p class="hero-sub">Realtime patient simulation. Order investigations, prescribe treatment, and race against disease progression, every decision has consequences.</p>
-    </section>
-
-    <div class="home-stats">
-      <div class="home-stat"><div class="home-stat-value">${cases.length}</div><div class="home-stat-label">Cases Available</div></div>
-      <div class="home-stat"><div class="home-stat-value">5</div><div class="home-stat-label">New Cases / Week</div></div>
-      <div class="home-stat"><div class="home-stat-value">xxx</div><div class="home-stat-label">Total Visitors</div></div>
-    </div><br>
-
-    <div class="home-stats">
-      <div class="home-stat"><div class="home-stat-value">Sponsored Ads Section (1/3)</div><div class="home-stat-label">A free service still take resources to operate for the database, server and domain! The cases of this website will always be free of cost availabe for everyone powered by our sponsors.</div></div>
-    </div><br>
-
-    <section class="home-cases-section">
-      <div class="section-header">
-        <div class="section-title">Active Cases</div>
-        <div class="section-line"></div>
-      </div>
-      <div class="cases-grid" id="cases-grid">
+ 
 ${cases.slice(0, 4).map(c => caseCardHTML(c)).join('')}
-      </div>
-
-      <div class="home-mid-cta">
-  <a href="/cases.html" class="home-cta-btn">
-    Explore All Cases →
-  </a>
-</div>
-    </section>
-
-
-<section class="home-hero">
-      <h1 class="hero-title"><br/><em>SPONSORED ADS SECTION (2/3)</em></h1>
-      <p class="hero-sub">A free service still take resources to operate for the database, server and domain! The cases of this website will always be free of cost availabe for everyone powered by our sponsors.</p>
-      </section>
+      
 
 `;
 }

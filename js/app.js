@@ -6,6 +6,7 @@
 const loader = new CaseLoader();
 let allCases  = [];
 let activeFilter = 'all';
+const MedSimAvail = typeof MedSim !== 'undefined';
 
 // ── Boot ──────────────────────────────────────────────────────────────────────
 async function init() {
@@ -29,17 +30,10 @@ function renderHome(cases) {
   bindHomeEvents();
 }
 
-
-
 function homeHTML(cases) {
-  const systems = [...new Set(cases.map(c => c.system))];
-  const diffs   = [...new Set(cases.map(c => c.difficulty))];
   document.getElementById('total-cases-available').innerHTML = cases.length;
-  return `  
- 
+  return `
 ${cases.slice(0, 4).map(c => caseCardHTML(c)).join('')}
-      
-
 `;
 }
 
@@ -75,7 +69,6 @@ function lockedCardsHTML() {
       <div class="card-top"><span class="card-difficulty diff-Resident">.</span><span class="card-id">---</span></div>
       <div class="card-patient"><div class="patient-dot" style="background:var(--text-dim)"></div>.</div>
       <div class="card-title">More Cases Coming Soon</div>
-      
     </div>
     <div class="case-card locked">
       <div class="card-top"><span class="card-difficulty diff-MO">.</span><span class="card-id">---</span></div>
@@ -88,13 +81,11 @@ function lockedCardsHTML() {
 
 // ── Bind home events ──────────────────────────────────────────────────────────
 function bindHomeEvents() {
-  // Case card click
   document.querySelectorAll('.case-card:not(.locked)').forEach(card => {
     card.addEventListener('click', () => openPreGame(card.dataset.caseId));
     card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') openPreGame(card.dataset.caseId); });
   });
 
-  // Filters
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -116,7 +107,7 @@ function applyFilter() {
   });
 }
 
-// ── Pre-game modal (rules) ────────────────────────────────────────────────────
+// ── Pre-game modal ────────────────────────────────────────────────────────────
 async function openPreGame(caseId) {
   const meta = allCases.find(c => c.id === caseId);
   if (!meta) return;
@@ -124,7 +115,22 @@ async function openPreGame(caseId) {
   const overlay = document.createElement('div');
   overlay.className = 'pregame-overlay';
   overlay.id = 'pregame-overlay';
-  overlay.innerHTML = `
+  overlay.innerHTML = buildPreGameModal(meta);
+  document.body.appendChild(overlay);
+
+  document.getElementById('btn-cancel-case').addEventListener('click', () => overlay.remove());
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
+  document.getElementById('btn-start-case').addEventListener('click', async () => {
+    overlay.remove();
+    await launchGame(caseId);
+  });
+
+  // Load stats after modal is visible — non-blocking
+  loadPreGameStats(caseId);
+}
+
+function buildPreGameModal(meta) {
+  return `
     <div class="pregame-modal">
       <div class="pregame-head">
         <div class="pregame-case-label">${meta.category} · ${meta.difficulty}</div>
@@ -137,12 +143,18 @@ async function openPreGame(caseId) {
         </div>
       </div>
 
+      <div class="pregame-stats-wrap">
+        <div id="pregame-stats" class="pregame-stats-loading">
+          <div class="pgstat-spinner">Loading stats…</div>
+        </div>
+      </div>
+
       <div class="pregame-rules">
         <div class="rules-title">How This Simulation Works</div>
         <div class="rule-item"><div class="rule-icon">⏱️</div><div class="rule-text"><strong>1 real second = 1 sim minute.</strong> Disease progresses automatically. Skip with ⏩.</div></div>
         <div class="rule-item"><div class="rule-icon">🔬</div><div class="rule-text"><strong>Investigations</strong> cost coins and take time. Results vary by disease stage.</div></div>
         <div class="rule-item"><div class="rule-icon">🩺</div><div class="rule-text"><strong>Set a working diagnosis</strong> to unlock disease-specific treatment. Change anytime.</div></div>
-        <div class="rule-item"><div class="rule-icon">💊</div><div class="rule-text"><strong>Wrong management </strong> incur score penalties. Blunders can end the case.</div></div>
+        <div class="rule-item"><div class="rule-icon">💊</div><div class="rule-text"><strong>Wrong management</strong> incurs score penalties. Blunders can end the case.</div></div>
         <div class="rule-item"><div class="rule-icon">🪙</div><div class="rule-text"><strong>Budget: ${meta.budget?.toLocaleString()} coins.</strong> Overspending penalises final score.</div></div>
       </div>
 
@@ -158,20 +170,67 @@ async function openPreGame(caseId) {
         <button class="btn-cancel" id="btn-cancel-case">Cancel</button>
       </div>
     </div>`;
-
-  document.body.appendChild(overlay);
-
-  document.getElementById('btn-cancel-case').addEventListener('click', () => overlay.remove());
-  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
-  document.getElementById('btn-start-case').addEventListener('click', async () => {
-    overlay.remove();
-    await launchGame(caseId);
-  });
 }
+
+// async function loadPreGameStats(caseId) {
+//   const statsEl = document.getElementById('pregame-stats');
+//   if (!statsEl) return;
+
+//   if (!MedSimAvail) {
+//     statsEl.innerHTML = '<div class="pgstat-empty">Stats unavailable</div>';
+//     return;
+//   }
+
+//   try {
+//     const [caseMeta, leaderboard] = await Promise.all([
+//       MedSim.getCaseMeta(caseId).catch(() => null),
+//       MedSim.getCaseLeaderboard(caseId, 3).catch(() => [])
+//     ]);
+
+//     const plays  = caseMeta?.totalPlays         ?? 0;
+//     const unique = caseMeta?.totalUniquePlayers  ?? 0;
+//     const avg    = caseMeta?.averageScore        ? caseMeta.averageScore.toFixed(1) : '—';
+//     const compl  = caseMeta?.totalCompletions    ?? 0;
+
+//     statsEl.innerHTML = `
+//       <div class="pgstat-grid">
+//         <div class="pgstat-item"><div class="pgstat-val">${plays.toLocaleString()}</div><div class="pgstat-label">Total Plays</div></div>
+//         <div class="pgstat-item"><div class="pgstat-val">${unique.toLocaleString()}</div><div class="pgstat-label">Unique Players</div></div>
+//         <div class="pgstat-item"><div class="pgstat-val">${compl.toLocaleString()}</div><div class="pgstat-label">Completions</div></div>
+//         <div class="pgstat-item"><div class="pgstat-val">${avg}</div><div class="pgstat-label">Avg Score</div></div>
+//       </div>
+//       ${leaderboard.length ? `
+//       <div class="pgstat-lb">
+//         <div class="pgstat-lb-title">Top Scores</div>
+//         ${leaderboard.map((e, i) => `
+//           <div class="pgstat-lb-row">
+//             <span class="pgstat-rank">#${i + 1}</span>
+//             <span class="pgstat-user">${_esc(e.username)}</span>
+//             <span class="pgstat-score">${e.score}</span>
+//             <span class="pgstat-time">${_fmtSecs(e.timeElapsed)}</span>
+//           </div>`).join('')}
+//       </div>` : '<div class="pgstat-empty">No scores yet — be the first!</div>'}
+//     `;
+//   } catch (e) {
+//     statsEl.innerHTML = '<div class="pgstat-empty">Stats unavailable</div>';
+//   }
+// }
 
 // ── Launch game ───────────────────────────────────────────────────────────────
 async function launchGame(caseId) {
-    window.location.href = `/play.html?id=${caseId}`;
+  window.location.href = `/play.html?id=${caseId}`;
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function _fmtSecs(s) {
+  if (!s) return '—';
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  return h > 0 ? `${h}h ${m}m` : `${m}m`;
+}
+
+function _esc(s) {
+  return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 // ── Boot ──────────────────────────────────────────────────────────────────────
