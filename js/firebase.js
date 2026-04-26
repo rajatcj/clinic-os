@@ -1,5 +1,5 @@
 /**
- * MedSim Nepal — Firebase Integration Module
+ * Clinical Simulation — Firebase Integration Module
  * ─────────────────────────────────────────────────────────────────────────
  * Handles: Auth, Firestore reads/writes, score submission, visitor counters,
  *          leaderboard, badge awards, username uniqueness checks.

@@ -6,7 +6,7 @@ const footerHTML = `
       <div class="hf-brand">
         <div class="hf-logo">⚕</div>
         <div>
-          <div class="hf-name">Clinical Simulation OS</div>
+          <div class="hf-name">Clinical Simulation</div>
           <div class="hf-tagline">Free medical education for everyone</div>
         </div>
       </div>
@@ -39,7 +39,7 @@ const footerHTML = `
 
 
       <div class="hf-bottom">
-        <span>© 2026 Clinical Simulation OS · By <a href="https://rajatcj.com" target="_blank" class="hf-link-inline">Rajat CJ</a></span>
+        <span>© 2026 Clinical Simulation · By <a href="https://rajatcj.com" target="_blank" class="hf-link-inline">Rajat CJ</a></span>
         <span>Educational use only</span>
       </div>
   </div>

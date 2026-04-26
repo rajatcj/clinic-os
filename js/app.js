@@ -1,6 +1,6 @@
 /**
  * app.js — Home screen, pre-game modal, case launch
- * Entry point for Clinical Simulation OS
+ * Entry point for Clinical Simulation
  */
 
 const loader = new CaseLoader();

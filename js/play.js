@@ -28,10 +28,9 @@ async function init() {
   const app = document.getElementById('app');
 
   // Show loading state
-  app.innerHTML = `<div style="height:100vh;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#364e65;letter-spacing:.12em;flex-direction:column;gap:12px">
-    <div style="font-size:1.5rem">🏥</div>
-    <div>LOADING CASE…</div>
-  </div>`;
+  app.innerHTML = `<div style="height:100vh;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#243549;letter-spacing:.14em;">
+      Retriving Case Data...
+    </div>`;
 
   const caseData = await loader.loadCase(caseId);
   if (!caseData) {

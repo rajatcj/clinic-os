@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Profile — MedSim Nepal</title>
+<title>Profile — Clinical Simulation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css"/>
@@ -177,7 +177,7 @@ input,button,textarea{font-family:inherit}
 <nav class="nav">
   <a href="index.html" class="nav-logo">
     <div class="logo-icon">⚕</div>
-    <div class="logo-text">MedSim Nepal</div>
+    <div class="logo-text">Clinical Simulation</div>
   </a>
   <div class="nav-right">
     <a href="index.html" class="nav-link">← Home</a>
@@ -299,7 +299,7 @@ async function loadProfile() {
     const scoreLog = await MedSim.getUserScoreLog(viewedProfile.uid, 30);
 
     // Update page title
-    document.title = `${viewedProfile.displayName || viewedProfile.username} — MedSim Nepal`;
+    document.title = `${viewedProfile.displayName || viewedProfile.username} — Clinical Simulation`;
 
     page.innerHTML = renderProfile(viewedProfile, scoreLog, isOwnProfile);
     bindProfileEvents(viewedProfile);
@@ -456,7 +456,7 @@ function bindProfileEvents(p) {
   document.getElementById('btn-share')?.addEventListener('click', () => {
     const url = `${window.location.origin}/profile.html?u=${p.username}`;
     if (navigator.share) {
-      navigator.share({ title: `${p.displayName} on MedSim Nepal`, url });
+      navigator.share({ title: `${p.displayName} on Clinical Simulation`, url });
     } else {
       navigator.clipboard.writeText(url).then(() => showToast('Profile URL copied to clipboard'));
     }
