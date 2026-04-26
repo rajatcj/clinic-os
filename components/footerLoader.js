@@ -7,9 +7,12 @@ const footerHTML = `
         <div class="hf-logo">⚕</div>
         <div>
           <div class="hf-name">Clinical Simulation</div>
-          <div class="hf-tagline">Free medical education for everyone</div>
+          <div class="hf-tagline">MBBS Clinical Training Platform</div>
         </div>
+        
+      <div class="hf-msg-note" id="hf-msg-note"></div>
       </div>
+      
       <div class="hf-links">
         <div class="hf-col">
           <div class="hf-col-title">Navigate</div>
@@ -34,12 +37,12 @@ const footerHTML = `
         <input class="hf-input" id="hf-msg-input" type="text" placeholder="Feedback..." maxlength="300"/>
         <button class="hf-send" id="hf-send-btn">Send</button>
       </div>
-      <div class="hf-msg-note" id="hf-msg-note"></div>
+      <div class="hf-msg-note" id="hf-msg-note">‼️Not currently developed, for now email me at mail@rajatcj.com</div>
     </div>
 
 
       <div class="hf-bottom">
-        <span>© 2026 Clinical Simulation · By <a href="https://rajatcj.com" target="_blank" class="hf-link-inline">Rajat CJ</a></span>
+        <span>© 2026 Clinical Simulation · By <a href="https://rajatcj.com/?clicsimfooter" target="_blank" class="hf-link-inline">Rajat CJ</a></span>
         <span>Educational use only</span>
       </div>
   </div>
