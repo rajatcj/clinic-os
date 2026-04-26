@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Clinical Simulation · Medical Decision Engine</title>
-  <meta name="description" content="Time-based Clinical Simulation for MBBS students. Make real-time decisions, manage patients, master clinical reasoning." />
+  <title>Clinical Simulation</title>
+  <meta name="description" content="Time-based Clinical Case Solving Puzzle Game for MBBS students. Make real-time decisions, manage patients, master clinical reasoning." />
   <meta name="theme-color" content="#17b288" />
 
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-<meta name="keywords" content="medical simulation, MBBS cases, clinical reasoning, diagnosis practice, medical education, case-based learning, OSCE prep, Nepal MBBS, TU medicine" />
+<meta name="keywords" content="medical simulation, MBBS cases, clinical reasoning, diagnosis practice, medical education, case-based learning, OSCE prep, Nepal MBBS, game, TU medicine" />
 <meta name="author" content="Rajat CJ" />
 
 
@@ -22,8 +22,8 @@
 
 <!-- ── OPEN GRAPH (Facebook / WhatsApp / LinkedIn) ─────────── -->
 <meta property="og:type" content="website" />
-<meta property="og:title" content="Clinical Simulation | MBBS Case Platform" />
-<meta property="og:description" content="Time-based Clinical Case Simulation for MBBS students. Make real-time decisions, manage patients, master clinical reasoning with dynamic patient cases." />
+<meta property="og:title" content="Clinical Simulation" />
+<meta property="og:description" content="Time-based Clinical Case Solving Puzzle Game for MBBS students. Make real-time decisions, manage patients, master clinical reasoning." />
 <meta property="og:url" content="https://clinic.rajatcj.com/" />
 <meta property="og:image" content="https://clinic.rajatcj.com/assets/og-banner.png" />
 <meta property="og:site_name" content="Clinical Simulation" />
@@ -31,7 +31,7 @@
 <!-- ── TWITTER CARD ─────────────────────────────────────────── -->
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Clinical Simulation" />
-<meta name="twitter:description" content="Practice MBBS clinical reasoning through interactive patient simulation cases." />
+<meta name="twitter:description" content="Time-based Clinical Case Solving Puzzle Game for MBBS students. Make real-time decisions, manage patients, master clinical reasoning." />
 <meta name="twitter:image" content="https://clinic.rajatcj.com/assets/og-banner.png" />
 
 <!-- ── MOBILE / APP FEEL ───────────────────────────────────── -->
@@ -43,29 +43,121 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-<!-- ── PWA (optional but recommended) ───────────────────────── -->
-<link rel="manifest" href="/manifest.json" />
+<!-- ── PWA (optional but recommended) ───────────────────────── 
+<link rel="manifest" href="/manifest.json" />-->
 
 <!-- ── PREVENT INDEXING (REMOVE if you want SEO traffic) ───── -->
 <!-- <meta name="robots" content="noindex, nofollow" /> -->
 
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/styleplus.css" />
+
 </head>
 <body>
   <div id="app">
-    <div style="height:100vh;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#243549;letter-spacing:.14em;">
-      INITIALISING…
-    </div>
+    
+      <div class="home-screen">
+    <nav class="home-topbar">
+      <div class="topbar-logo">
+        <div class="logo-icon">🩺</div>
+        <div>
+          <div class="logo-text">Clinical Simulation</div>
+          <div class="logo-sub">Medical Reasoning Training</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <div id="nav-auth-area">
+            <div id="nav-auth-area">
+            <a id="nav-signin-profile" class="nav-user-pill">Loading...</a>
+        </div>
+        </div>
+      </div>
+    </nav>
+
+    <section class="home-hero">
+      <h1 class="hero-eyebrow">MBBS Clinical Training Platform</h1>
+      <p class="hero-title">Make decisions.<br/><em>Watch consequences unfold.</em></p>
+      <p class="hero-sub">Virtual patient simulation. Order investigations, prescribe treatment, and race against disease progression, every decision has consequences.</p>
+    </section>
+
+    <div class="home-stats">
+      <div class="home-stat"><div class="home-stat-value" id="total-cases-available"></div><div class="home-stat-label">Cases Available</div></div>
+      <div class="home-stat"><div class="home-stat-value">5</div><div class="home-stat-label">New Cases / Week</div></div>
+      <div class="home-stat"><div class="home-stat-value">xxx</div><div class="home-stat-label">Total Visitors</div></div>
+    </div><br>
+
+    
+
+    <section class="home-cases-section">
+      <div class="section-header">
+        <div class="section-title">Active Cases</div>
+        <div class="section-line"></div>
+      </div>
+      <div class="cases-grid" id="cases-grid"></div>
+
+      <div class="home-mid-cta">
+  <a href="/cases.html" class="home-cta-btn">
+    Explore All Cases →
+  </a>
+</div>
+    </section>
+
+
+
+      
+
   </div>
+  <footer class="hf" id="page-footer">
+  <div class="hf-inner">
+    <div class="hf-top">
+      <div class="hf-brand">
+        <div class="hf-logo">⚕</div>
+        <div>
+          <div class="hf-name">Clinical Simulation</div>
+          <div class="hf-tagline">MBBS Clinical Training Platform</div>
+        </div>
+        
+      <div class="hf-msg-note" id="hf-msg-note"></div>
+      </div>
+      
+      <div class="hf-links">
+        <div class="hf-col">
+          <div class="hf-col-title">Navigate</div>
+          <a href="/index.html" class="hf-link">Home</a>
+          <a href="/cases.html" class="hf-link">All Cases</a>
+          <a href="/profile.html" class="hf-link">Profile</a>
+          <a href="/help.html" class="hf-link">Help</a>
+        </div>
+        <div class="hf-col">
+          <div class="hf-col-title">About</div>
+          <a href="/about.html" class="hf-link">About Us</a>
+          <a href="/tos.html" class="hf-link">ToS</a>
+          <a href="mailto:mail@rajatcj.com" class="hf-link">Contact</a>
+          <a href="mailto:mail@rajatcj.com" class="hf-link">Submit a Case</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hf-msg-section">
+      <div class="hf-msg-title">Send a Message</div>
+      <div class="hf-msg-form">
+        <input class="hf-input" id="hf-msg-input" type="text" placeholder="Feedback..." maxlength="300"/>
+        <button class="hf-send" id="hf-send-btn">Send</button>
+      </div>
+      <div class="hf-msg-note" id="hf-msg-note">‼️Not currently developed, for now email me at mail@rajatcj.com</div>
+    </div>
+
+
+      <div class="hf-bottom">
+        <span>© 2026 Clinical Simulation · By <a href="https://rajatcj.com/?clicsimfooter" target="_blank" class="hf-link-inline">Rajat CJ</a></span>
+        <span>Educational use only</span>
+      </div>
+  </div>
+</footer>
   <script src="components/caseLoader.js"></script>
   <script src="js/engine.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/app.js"></script>
   <script type="module" src="./components/profilebtn.js"></script>
-  <script type="module" src="./components/footerLoader.js"></script>
 </body>
 </html>
