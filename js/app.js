@@ -39,7 +39,7 @@ function homeHTML(cases) {
       <div class="topbar-logo">
         <div class="logo-icon">🩺</div>
         <div>
-          <div class="logo-text">Clinical Simulation Engine</div>
+          <div class="logo-text">Clinical Simulation</div>
           <div class="logo-sub">Medical Decision Engine</div>
         </div>
       </div>
@@ -63,7 +63,10 @@ function homeHTML(cases) {
       <div class="home-stat"><div class="home-stat-value">${cases.length}</div><div class="home-stat-label">Cases Available</div></div>
       <div class="home-stat"><div class="home-stat-value">5</div><div class="home-stat-label">New Cases / Week</div></div>
       <div class="home-stat"><div class="home-stat-value">xxx</div><div class="home-stat-label">Total Visitors</div></div>
-      <div class="home-stat"><div class="home-stat-value">xxx</div><div class="home-stat-label">Cases Played</div></div>
+    </div><br>
+
+    <div class="home-stats">
+      <div class="home-stat"><div class="home-stat-value">Sponsored Ads Section (1/3)</div><div class="home-stat-label">A free service still take resources to operate for the database, server and domain! The cases of this website will always be free of cost availabe for everyone powered by our sponsors.</div></div>
     </div><br>
 
     <section class="home-cases-section">
@@ -84,8 +87,8 @@ ${cases.slice(0, 4).map(c => caseCardHTML(c)).join('')}
 
 
 <section class="home-hero">
-      <h1 class="hero-title"><br/><em>SPONSORED ADS SECTION</em></h1>
-      <p class="hero-sub">A free service still take resources to operate! The cases of this website will always be free of cost availabe for everyone powered by out sponsors.</p>
+      <h1 class="hero-title"><br/><em>SPONSORED ADS SECTION (2/3)</em></h1>
+      <p class="hero-sub">A free service still take resources to operate for the database, server and domain! The cases of this website will always be free of cost availabe for everyone powered by our sponsors.</p>
       </section>
 
 `;

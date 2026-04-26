@@ -170,9 +170,9 @@ class ClinicalUI {
           </div>
         </div>
         <div class="info-card full-width clue-card">
-          <div class="card-label">SPONSORED SEGMENT (NOT PART OF THE SIMULATION)</div>
-          <h2>SPONSORED ADS SPACE</h2>
-          A free service like this website takes resources to operate! The cases on this app will be available for free of cost to everyone powered by our sponsors.
+          <div class="card-label">SPONSORED SEGMENT</div>
+          <h2>SPONSORED ADS SPACE (3/3)</h2>
+          A free service still take resources to operate for the database, server and domain! The cases of this website will always be free of cost availabe for everyone powered by our sponsors.
         </div>
         <div class="info-card full-width">
           <div class="card-label">Examination</div>
