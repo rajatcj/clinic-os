@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<title>All Cases · Clinical Simulation OS</title>
+<meta name="theme-color" content="#070b0f"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="stylesheet" href="css/style.css"/>
+<link rel="stylesheet" href="css/styleplus.css" />
+</head>
+<body>
+
+<div class="cases-page" id="cases-page">
+
+  <!-- Nav -->
+    <nav class="home-topbar">
+      <div class="topbar-logo">
+        <div class="logo-icon">🩺</div>
+        <div>
+          <div class="logo-text">Clinical Simulation Engine</div>
+          <div class="logo-sub">Medical Decision Engine</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <a href="index.html" class="cpnav-back">← Home</a>
+        <div id="nav-auth-area">
+            <a id="nav-signin-profile" class="nav-user-pill">Loading...</a>
+        </div>
+      </div>
+    </nav>
+
+ 
+
+  <!-- Hero -->
+  <div class="cases-hero">
+    <div class="cases-hero-title">All Cases</div>
+    <div class="cases-hero-sub" id="hero-sub">Loading cases…</div>
+  </div>
+
+  <!-- Mobile filters (top, horizontal) -->
+  <div class="mobile-filter-bar" id="mobile-filter-bar">
+    <!-- Injected by JS -->
+  </div>
+
+  <!-- Sort toolbar -->
+  <div class="cases-toolbar">
+    <span class="ct-count" id="ct-count">—</span>
+    <span class="ct-sort-label">Sort:</span>
+    <select class="ct-sort" id="ct-sort">
+      <option value="date-desc">Newest first</option>
+      <option value="date-asc">Oldest first</option>
+      <option value="plays-desc">Most played</option>
+      <option value="plays-asc">Least played</option>
+      <option value="diff-asc">Difficulty ↑</option>
+      <option value="diff-desc">Difficulty ↓</option>
+      <option value="alpha-asc">A → Z</option>
+      <option value="alpha-desc">Z → A</option>
+    </select>
+  </div>
+
+  <!-- Body: sidebar + grid -->
+  <div class="cases-body">
+    <!-- Desktop sidebar filters -->
+    <aside class="cases-sidebar" id="cases-sidebar">
+      <!-- Injected by JS -->
+    </aside>
+
+    <!-- Main grid -->
+    <main class="cases-main">
+      <div class="cases-grid-page" id="cases-grid">
+        <!-- Skeleton loading -->
+        <div class="skel"></div>
+        <div class="skel"></div>
+        <div class="skel"></div>
+      </div>
+    </main>
+  </div>
+
+</div><!-- /cases-page -->
+
+<!-- Pre-game modal mount point -->
+<div id="app" style="display:none"></div>
+
+<!-- Scripts (same order as index.html) -->
+<script src="js/caseLoader.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/ui.js"></script>
+
+<script type="module" src="./components/footerLoader.js"></script>
+<script>
+/* ══════════════════════════════════════════════════════════════
+   cases.html inline script
+   ══════════════════════════════════════════════════════════════ */
+
+const _casesLoader = new CaseLoader();
+let _allCases  = [];
+let _displayed = [];
+let _activeFilter = 'all';
+const MedSimAvail = typeof MedSim !== 'undefined';
+
+// Difficulty sort order
+const DIFF_ORDER = { 'Intern': 1, 'MO': 2, 'Resident': 3 };
+
+// ── Dot colours per difficulty ─────────────────────────────────────────────
+const DIFF_DOTS = { 'Intern':'var(--green)', 'MO':'var(--amber)', 'Resident':'var(--red)', 'default':'var(--text-mid)' };
+
+/* ── Boot ─────────────────────────────────────────────────────────────────── */
+(async () => {
+  setupCasesAuthNav();
+
+  try {
+    _allCases = await _casesLoader.loadIndex('./data/caseIndex.json');
+
+    // Enrich with Firebase data
+    if (MedSimAvail) {
+      await Promise.all(_allCases.map(async c => {
+        try {
+          const m = await MedSim.getCaseMeta(c.id);
+          if (m) { c._playCount=m.totalPlays||0; c._uniquePlayers=m.totalUniquePlayers||0; c._avgScore=m.averageScore?m.averageScore.toFixed(1):null; }
+        } catch(_){}
+      }));
+    }
+
+    buildSidebar();
+    buildMobileFilters();
+    applyAndRender();
+    bindControls();
+
+    const sub = document.getElementById('hero-sub');
+    if (sub) sub.textContent = `${_allCases.length} case${_allCases.length!==1?'s':''} available`;
+  } catch(e) {
+    document.getElementById('cases-grid').innerHTML = `<div class="cases-empty">Failed to load cases. Please use a local server.</div>`;
+  }
+})();
+
+/* ── Auth nav ─────────────────────────────────────────────────────────────── */
+function setupCasesAuthNav() {
+  if (!MedSimAvail) return;
+  MedSim.onAuthChange(async user => {
+    const area = document.getElementById('nav-auth-area');
+    if (!area) return;
+    if (user) {
+      let uname = user.displayName || user.email?.split('@')[0] || 'User';
+      try { const p = await MedSim.getUserProfile(user.uid); if(p?.username) uname = p.username; } catch(_){}
+      area.innerHTML = `<a href="profile.html" class="nav-user-pill"><div class="nav-user-dot"></div><span>${_esc(uname)}</span></a>`;
+    } else {
+      area.innerHTML = `<a href="login.html" class="nav-signin-link">Sign In</a>`;
+    }
+  });
+}
+
+/* ── Sidebar build (desktop) ─────────────────────────────────────────────── */
+function buildSidebar() {
+  const sidebar = document.getElementById('cases-sidebar');
+  if (!sidebar) return;
+
+  const systems = [...new Set(_allCases.map(c => c.system))];
+  const cats    = [...new Set(_allCases.map(c => c.category))];
+  const diffs   = ['Intern','MO','Resident'].filter(d => _allCases.some(c => c.difficulty===d));
+
+  const countFor = (filter, val) => _allCases.filter(c => {
+    if (filter==='sys') return c.system===val;
+    if (filter==='cat') return c.category===val;
+    if (filter==='diff') return c.difficulty===val;
+    return true;
+  }).length;
+
+  sidebar.innerHTML = `
+    <div class="sb-title">All</div>
+    <button class="sb-btn active" data-filter="all">
+      <span class="sb-dot" style="background:var(--green)"></span>All Cases
+      <span class="sb-count">${_allCases.length}</span>
+    </button>
+    <div class="sb-title">Difficulty</div>
+    ${diffs.map(d=>`<button class="sb-btn" data-filter="diff:${d}">
+      <span class="sb-dot" style="background:${DIFF_DOTS[d]||DIFF_DOTS.default}"></span>${d}
+      <span class="sb-count">${countFor('diff',d)}</span>
+    </button>`).join('')}
+    <div class="sb-title">System</div>
+    ${systems.map(s=>`<button class="sb-btn" data-filter="sys:${s}">
+      <span class="sb-dot" style="background:var(--blue)"></span>${s}
+      <span class="sb-count">${countFor('sys',s)}</span>
+    </button>`).join('')}
+    <div class="sb-title">Department</div>
+    ${cats.map(c=>`<button class="sb-btn" data-filter="cat:${c}">
+      <span class="sb-dot" style="background:var(--purple)"></span>${c}
+      <span class="sb-count">${countFor('cat',c)}</span>
+    </button>`).join('')}
+  `;
+
+  sidebar.querySelectorAll('.sb-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      _activeFilter = btn.dataset.filter;
+      sidebar.querySelectorAll('.sb-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      // Sync mobile
+      document.querySelectorAll('.mfb-btn').forEach(b => b.classList.toggle('active', b.dataset.filter===_activeFilter));
+      applyAndRender();
+    });
+  });
+}
+
+/* ── Mobile filters build (horizontal top bar) ───────────────────────────── */
+function buildMobileFilters() {
+  const bar = document.getElementById('mobile-filter-bar');
+  if (!bar) return;
+
+  const systems = [...new Set(_allCases.map(c => c.system))];
+  const diffs   = ['Intern','MO','Resident'].filter(d => _allCases.some(c => c.difficulty===d));
+
+  bar.innerHTML = `
+    <span class="mfb-label">Filter</span>
+    <button class="mfb-btn active" data-filter="all">All</button>
+    <div class="mfb-sep"></div>
+    ${diffs.map(d=>`<button class="mfb-btn" data-filter="diff:${d}">${d}</button>`).join('')}
+    <div class="mfb-sep"></div>
+    ${systems.map(s=>`<button class="mfb-btn" data-filter="sys:${s}">${s}</button>`).join('')}
+  `;
+
+  bar.querySelectorAll('.mfb-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      _activeFilter = btn.dataset.filter;
+      bar.querySelectorAll('.mfb-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      // Sync sidebar
+      document.querySelectorAll('.sb-btn').forEach(b => b.classList.toggle('active', b.dataset.filter===_activeFilter));
+      applyAndRender();
+    });
+  });
+}
+
+/* ── Filter + sort + render ──────────────────────────────────────────────── */
+function applyAndRender() {
+  // Filter
+  let filtered = _allCases.filter(c => {
+    if (_activeFilter === 'all') return true;
+    if (_activeFilter.startsWith('diff:')) return c.difficulty === _activeFilter.slice(5);
+    if (_activeFilter.startsWith('sys:'))  return c.system    === _activeFilter.slice(4);
+    if (_activeFilter.startsWith('cat:'))  return c.category  === _activeFilter.slice(4);
+    return true;
+  });
+
+  // Sort
+  const sortVal = document.getElementById('ct-sort')?.value || 'date-desc';
+  filtered = sortCases(filtered, sortVal);
+
+  _displayed = filtered;
+
+  // Count label
+  const ct = document.getElementById('ct-count');
+  if (ct) ct.textContent = `${filtered.length} case${filtered.length!==1?'s':''}`;
+
+  // Render
+  const grid = document.getElementById('cases-grid');
+  if (!grid) return;
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="cases-empty">No cases match this filter.</div>`;
+    return;
+  }
+  grid.innerHTML = filtered.map(c => caseCardHTML(c)).join('');
+  bindCardEvents();
+}
+
+function sortCases(arr, sortVal) {
+  const copy = [...arr];
+  const defDate = new Date('2026-01-01');
+  switch (sortVal) {
+    case 'date-desc':  return copy.sort((a,b) => (b.createdAt?new Date(b.createdAt):defDate)-(a.createdAt?new Date(a.createdAt):defDate));
+    case 'date-asc':   return copy.sort((a,b) => (a.createdAt?new Date(a.createdAt):defDate)-(b.createdAt?new Date(b.createdAt):defDate));
+    case 'plays-desc': return copy.sort((a,b) => ((b._playCount||b.playCount||0)-(a._playCount||a.playCount||0)));
+    case 'plays-asc':  return copy.sort((a,b) => ((a._playCount||a.playCount||0)-(b._playCount||b.playCount||0)));
+    case 'diff-asc':   return copy.sort((a,b) => (DIFF_ORDER[a.difficulty]||9)-(DIFF_ORDER[b.difficulty]||9));
+    case 'diff-desc':  return copy.sort((a,b) => (DIFF_ORDER[b.difficulty]||9)-(DIFF_ORDER[a.difficulty]||9));
+    case 'alpha-asc':  return copy.sort((a,b) => a.title.localeCompare(b.title));
+    case 'alpha-desc': return copy.sort((a,b) => b.title.localeCompare(a.title));
+    default:           return copy;
+  }
+}
+
+/* ── Card HTML (mirrors app.js) ──────────────────────────────────────────── */
+function caseCardHTML(c) {
+  const diffClass = `diff-${c.difficulty}`;
+  const dateStr   = c.createdAt ? _fmtDate(c.createdAt) : '1 Jan 2026';
+  const author    = c.author || 'Original';
+  const plays     = c._playCount ?? c.playCount ?? 0;
+  const uniqueP   = c._uniquePlayers ?? 0;
+  const avgScore  = c._avgScore ?? null;
+  return `
+<div class="case-card" data-case-id="${c.id}" data-diff="${c.difficulty}" data-sys="${c.system}" tabindex="0" role="button">
+  <div class="card-top">
+    <span class="card-difficulty ${diffClass}">${c.difficulty}</span>
+    <span class="card-id">${dateStr}</span>
+  </div>
+  <div class="card-patient"><div class="patient-dot"></div>${c.patientAge}y ${c.patientSex} · ${_esc(c.patientOccupation||c.department)}</div>
+  <div class="card-title">${_esc(c.title)}</div>
+  <div class="card-subtitle">${_esc(c.subtitle)}</div>
+  <div class="card-desc">${_esc(c.description)}</div>
+  <div class="card-tags">${(c.tags||[]).map(t=>`<span class="card-tag">${_esc(t)}</span>`).join('')}</div>
+  <div class="card-stats-row">
+    <span class="cs-stat">${plays>0?`▶ ${plays.toLocaleString()} plays`:'▶ New'}</span>
+    ${uniqueP>0?`<span class="cs-stat">👤 ${uniqueP.toLocaleString()}</span>`:''}
+    ${avgScore?`<span class="cs-stat">⭐ ${avgScore} avg</span>`:''}
+    <span class="cs-stat cs-author">by ${_esc(author)}</span>
+  </div>
+  <div class="card-footer">
+    <div class="card-meta">
+      <span class="card-time">⏱ ${c.estimatedTime}</span>
+      <span class="card-coins">🪙 ${c.budget?.toLocaleString()}</span>
+    </div>
+    <span class="card-cta">Start →</span>
+  </div>
+</div>`;
+}
+
+/* ── Bind events ─────────────────────────────────────────────────────────── */
+function bindControls() {
+  document.getElementById('ct-sort')?.addEventListener('change', () => applyAndRender());
+}
+
+function bindCardEvents() {
+  document.querySelectorAll('.case-card').forEach(card => {
+    card.addEventListener('click', () => openCasePreGame(card.dataset.caseId));
+    card.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' ') openCasePreGame(card.dataset.caseId); });
+  });
+}
+
+/* ── Pre-game modal ──────────────────────────────────────────────────────── */
+async function openCasePreGame(caseId) {
+  const meta = _allCases.find(c => c.id === caseId);
+  if (!meta) return;
+  if (MedSimAvail) MedSim.recordCaseStart(caseId).catch(()=>{});
+
+  const overlay = document.createElement('div');
+  overlay.className = 'pregame-overlay';
+  overlay.innerHTML = `
+<div class="pregame-modal">
+  <div class="pregame-head">
+    <div class="pregame-case-label">${_esc(meta.category)} · ${_esc(meta.difficulty)}</div>
+    <div class="pregame-title">${_esc(meta.title)}</div>
+    <div class="pregame-patient">
+      <div class="pregame-patient-item"><strong>${meta.patientAge}y ${_esc(meta.patientSex)}</strong><small>Patient</small></div>
+      <div class="pregame-patient-item"><strong>${_esc(meta.patientOccupation||'—')}</strong><small>Occupation</small></div>
+      <div class="pregame-patient-item"><strong>${_esc(meta.department)}</strong><small>Department</small></div>
+      <div class="pregame-patient-item"><strong>${meta.stages} stages</strong><small>Progression</small></div>
+    </div>
+  </div>
+  <div class="pregame-rules">
+    <div class="rules-title">Simulation Rules</div>
+    <div class="rule-item"><div class="rule-icon">⏱️</div><div class="rule-text"><strong>1 real second = 1 sim minute.</strong> Disease progresses automatically. Skip with ⏩.</div></div>
+    <div class="rule-item"><div class="rule-icon">🔬</div><div class="rule-text"><strong>Investigations</strong> cost coins and take time. Results vary by disease stage.</div></div>
+    <div class="rule-item"><div class="rule-icon">🩺</div><div class="rule-text"><strong>Set a diagnosis</strong> to unlock disease-specific treatment. Change anytime.</div></div>
+    <div class="rule-item"><div class="rule-icon">💊</div><div class="rule-text"><strong>Wrong treatments</strong> incur score penalties. Blunders can end the case.</div></div>
+    <div class="rule-item"><div class="rule-icon">🪙</div><div class="rule-text"><strong>Budget: ${meta.budget?.toLocaleString()} coins.</strong> Overspending penalises final score.</div></div>
+  </div>
+  <div class="pregame-meta">
+    <div class="meta-item"><div class="meta-label">Time</div><div class="meta-value">${meta.estimatedTime}</div></div>
+    <div class="meta-item"><div class="meta-label">Difficulty</div><div class="meta-value">${meta.difficulty}</div></div>
+    <div class="meta-item"><div class="meta-label">Budget</div><div class="meta-value coins">🪙 ${meta.budget?.toLocaleString()}</div></div>
+    <div class="meta-item"><div class="meta-label">Stages</div><div class="meta-value">${meta.stages}</div></div>
+  </div>
+  <div class="pregame-actions">
+    <button class="btn-start" id="btn-start-case">Start Simulation →</button>
+    <button class="btn-cancel" id="btn-cancel-case">Cancel</button>
+  </div>
+</div>`;
+
+  document.body.appendChild(overlay);
+  document.getElementById('btn-cancel-case').addEventListener('click', ()=>overlay.remove());
+  overlay.addEventListener('click', e=>{ if(e.target===overlay) overlay.remove(); });
+  document.getElementById('btn-start-case').addEventListener('click', async()=>{
+    overlay.remove();
+    await launchCaseGame(caseId);
+  });
+}
+
+async function launchCaseGame(caseId) {
+  // Swap whole page to app shell, then launch engine
+  document.getElementById('cases-page').style.display = 'none';
+  const appDiv = document.getElementById('app');
+  appDiv.style.display = 'block';
+  appDiv.innerHTML = `<div style="height:100vh;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#364e65;letter-spacing:.12em;flex-direction:column;gap:12px"><div style="font-size:1.5rem">🏥</div><div>LOADING CASE…</div></div>`;
+
+  const caseData = await _casesLoader.loadCase(caseId);
+  if (!caseData) {
+    appDiv.innerHTML = `<div style="height:100vh;display:flex;align-items:center;justify-content:center;font-family:monospace;color:#e84058;text-align:center;padding:20px">Failed to load: ${_esc(caseId)}<br><br><a href="cases.html" style="color:var(--green)">← Back to Cases</a></div>`;
+    return;
+  }
+  appDiv.style.opacity = '0'; appDiv.style.transition = 'opacity 0.2s ease';
+  setTimeout(() => {
+    const engine = new ClinicalEngine(caseData);
+    const ui     = new ClinicalUI(engine, caseData);
+    ui.renderGame();
+    appDiv.style.opacity = '1';
+    setTimeout(() => engine.start(), 120);
+  }, 200);
+}
+
+/* ── Footer message ──────────────────────────────────────────────────────── */
+document.getElementById('hf-send-btn')?.addEventListener('click', () => {
+  const inp  = document.getElementById('hf-msg-input');
+  const note = document.getElementById('hf-msg-note');
+  const msg  = inp?.value?.trim();
+  if (!msg) { if(note){note.textContent='Please type a message.';note.style.color='var(--amber)';} return; }
+  console.log('[Feedback]', msg);
+  if (inp) inp.value = '';
+  if (note) { note.textContent='✓ Sent — thank you!'; note.style.color='var(--green)'; setTimeout(()=>{ note.textContent=''; }, 4000); }
+});
+
+/* ── Helpers ─────────────────────────────────────────────────────────────── */
+function _fmtDate(ds) {
+  try { return new Date(ds).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'}); } catch(_){ return ds; }
+}
+function _esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+</script>
+
+
+  <script type="module" src="./js/profilebtn.js"></script>
+
+
+</body>
+</html>

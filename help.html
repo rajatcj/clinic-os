@@ -6,6 +6,9 @@
 <title>How to Play — MedSim Nepal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"/>
+<link rel="stylesheet" href="css/styleplus.css" />
+
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -170,19 +173,18 @@ a:hover{text-decoration:underline}
 </head>
 <body>
 
-<nav class="nav">
-  <a href="index.html" class="nav-logo">
-    <div class="logo-icon">⚕</div>
-    <div class="logo-text">MedSim Nepal</div>
-  </a>
-  <div class="nav-links">
-    <a href="index.html" class="nav-link">Home</a>
-    <a href="about.html" class="nav-link">About</a>
-    <a href="how-to-play.html" class="nav-link active">How to Play</a>
-    <a href="changelog.html" class="nav-link">Changelog</a>
-  </div>
-  <a href="index.html" class="nav-cta">Play Now</a>
-</nav>
+    <nav class="home-topbar">
+      <div class="topbar-logo">
+        <div class="logo-icon">🩺</div>
+        <div>
+          <div class="logo-text">Clinical Simulation Engine</div>
+          <div class="logo-sub">Medical Decision Engine</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <a href="index.html" class="cpnav-back">← Home</a>
+      </div>
+    </nav>
 
 <div class="page-hero">
   <div class="hero-eyebrow">Game Reference</div>
@@ -703,15 +705,7 @@ a:hover{text-decoration:underline}
   </main>
 </div>
 
-<footer class="footer">
-  <div class="footer-left">© 2025 MedSim Nepal · Game Reference v1.0</div>
-  <div class="footer-links">
-    <a href="about.html" class="footer-link">About</a>
-    <a href="privacy.html" class="footer-link">Privacy</a>
-    <a href="tos.html" class="footer-link">Terms</a>
-    <a href="changelog.html" class="footer-link">Changelog</a>
-  </div>
-</footer>
-
 </body>
+
+<script type="module" src="./components/footerLoader.js"></script>
 </html>

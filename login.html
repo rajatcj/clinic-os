@@ -6,6 +6,7 @@
 <title>Sign In — MedSim Nepal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styleplus.css" />
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -265,7 +266,7 @@ Username setup modal — shown after first Google/signup if no username yet -->
 </footer>
 
 <script type="module">
-import MedSim from './firebase.js';
+import MedSim from './js/firebase.js';
 
 // ── Redirect if already logged in ────────────────────────────────────────
 MedSim.onAuthChange(async user => {
@@ -276,7 +277,7 @@ MedSim.onAuthChange(async user => {
     showUsernameOverlay();
   } else {
     // Redirect to profile or wherever they came from
-    const redirect = new URLSearchParams(window.location.search).get('redirect') || 'index.html';
+    const redirect = new URLSearchParams(window.location.search).get('redirect') || 'profile.html';
     window.location.href = redirect;
   }
 });

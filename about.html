@@ -6,6 +6,8 @@
 <title>About — MedSim Nepal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styleplus.css" />
+<link rel="stylesheet" href="css/style.css" />
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -119,21 +121,18 @@ a:hover{text-decoration:underline}
 </head>
 <body>
 
-<nav class="nav">
-  <a href="index.html" class="nav-logo">
-    <div class="logo-icon">⚕</div>
-    <div>
-      <div class="logo-text">MedSim Nepal</div>
-    </div>
-  </a>
-  <div class="nav-links">
-    <a href="index.html" class="nav-link">Home</a>
-    <a href="about.html" class="nav-link active">About</a>
-    <a href="how-to-play.html" class="nav-link">How to Play</a>
-    <a href="changelog.html" class="nav-link">Changelog</a>
-  </div>
-  <a href="index.html" class="nav-cta" style="margin-left:auto">Play Now</a>
-</nav>
+    <nav class="home-topbar">
+      <div class="topbar-logo">
+        <div class="logo-icon">🩺</div>
+        <div>
+          <div class="logo-text">Clinical Simulation Engine</div>
+          <div class="logo-sub">Medical Decision Engine</div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <a href="index.html" class="cpnav-back">← Home</a>
+      </div>
+    </nav>
 
 <section class="about-hero">
   <div class="hero-eyebrow">About the Project</div>
@@ -216,15 +215,14 @@ a:hover{text-decoration:underline}
     <div class="dev-card">
       <div class="dev-avatar">RJ</div>
       <div class="dev-info">
-        <div class="dev-name">Rajat</div>
-        <div class="dev-role">Developer &amp; Designer · Pokhara, Nepal</div>
+        <div class="dev-name">Rajat CJ</div>
+        <div class="dev-role">Medicine Studnet · Developer &amp; Designer</div>
         <div class="dev-bio">
-          A web developer from Pokhara with a deep interest in educational technology and the intersection of good design and clinical learning. MedSim Nepal was built as a personal project after observing how underserved interactive medical education is across South Asia — particularly for students who can't afford costly prep platforms.<br><br>
-          Built entirely in vanilla HTML, CSS, and JavaScript — no frameworks, no dependencies, no compromises on performance.
+          A 4th year MBBS student and a web developer from Pokhara with a deep interest in educational technology and the intersection of good design and clinical learning. MedSim Nepal was built as a personal project after observing how underserved interactive medical education is across South Asia, particularly for students who can't afford costly prep platforms.<br><br>
+          Built entirely in vanilla HTML, CSS, and JavaScript, no frameworks, no dependencies, no compromises on performance.
         </div>
         <div class="dev-links">
           <a href="https://rajatcj.com" class="dev-link" target="_blank" rel="noopener">rajatcj.com</a>
-          <a href="https://github.com" class="dev-link" target="_blank" rel="noopener">GitHub</a>
         </div>
       </div>
     </div>
@@ -293,16 +291,8 @@ a:hover{text-decoration:underline}
 
 </div>
 
-<footer class="footer">
-  <div class="footer-left">© 2025 MedSim Nepal · Built in Pokhara</div>
-  <div class="footer-links">
-    <a href="about.html" class="footer-link">About</a>
-    <a href="how-to-play.html" class="footer-link">How to Play</a>
-    <a href="privacy.html" class="footer-link">Privacy</a>
-    <a href="tos.html" class="footer-link">Terms</a>
-    <a href="changelog.html" class="footer-link">Changelog</a>
-  </div>
-</footer>
+
 
 </body>
+<script type="module" src="./components/footerLoader.js"></script>
 </html>

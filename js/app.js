@@ -44,9 +44,11 @@ function homeHTML(cases) {
         </div>
       </div>
       <div class="topbar-right">
-        <div class="topbar-badge" 
-          style="cursor:pointer;"
-          onclick="window.open('https://rajatcj.com?sim', '_blank')"> ● RAJATCJ.COM</div>
+        <div id="nav-auth-area">
+            <div id="nav-auth-area">
+            <a id="nav-signin-profile" class="nav-user-pill">Loading...</a>
+        </div>
+        </div>
       </div>
     </nav>
 
@@ -90,9 +92,7 @@ function homeHTML(cases) {
       <p class="hero-sub">A free service still take resources to operate! The cases of this website will always be free of cost availabe for everyone powered by out sponsors.</p>
       </section>
 
-
-    <footer class="home-footer">All Rights reserved @ 2026 · FOR EDUCATIONAL PURPOSES ONLY · NOT FOR CLINICAL USE · CLINICAL SIM OS v2.0 · By <a style="color:#555555; text-decoration: underline;" href="https://rajatcj.com">RAJAT CJ</a></footer>
-  </div>`;
+`;
 }
 
 function caseCardHTML(c) {

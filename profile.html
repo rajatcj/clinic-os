@@ -6,6 +6,9 @@
 <title>Profile — MedSim Nepal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css"/>
+<link rel="stylesheet" href="css/styleplus.css" />
+
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -118,6 +121,8 @@ input,button,textarea{font-family:inherit}
 /* empty state */
 .empty-box{font-family:var(--mono);font-size:11px;color:var(--text-dim);text-align:center;padding:36px 20px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r2)}
 
+.hidden{display:none}
+
 /* edit modal */
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px;animation:fadeIn .2s ease}
 .modal-overlay.hidden{display:none}
@@ -175,7 +180,7 @@ input,button,textarea{font-family:inherit}
     <div class="logo-text">MedSim Nepal</div>
   </a>
   <div class="nav-right">
-    <a href="index.html" class="nav-link">Cases</a>
+    <a href="index.html" class="nav-link">← Home</a>
     <!-- Shown when logged in -->
     <div class="nav-user-pill hidden" id="nav-user-pill">
       <div class="nav-user-dot"></div>
@@ -219,7 +224,7 @@ input,button,textarea{font-family:inherit}
 </div>
 
 <script type="module">
-import MedSim from './firebase.js';
+import MedSim from './js/firebase.js';
 
 // ── All badge definitions (mirrors firebase.js) ───────────────────────────
 const BADGES = [
@@ -527,5 +532,6 @@ function showToast(msg) {
 }
 </script>
 
+<script type="module" src="./components/footerLoader.js"></script>
 </body>
 </html>
