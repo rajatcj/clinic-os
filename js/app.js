@@ -190,12 +190,11 @@ async function openPreGame(caseId) {
 
       <div class="pregame-rules">
         <div class="rules-title">How This Simulation Works</div>
-        <div class="rule-item"><div class="rule-icon">⏱️</div><div class="rule-text"><strong>1 real second = 1 sim minute.</strong> The clock runs continuously. Disease progresses automatically if untreated. You can skip time using the ⏩ button.</div></div>
-        <div class="rule-item"><div class="rule-icon">🔬</div><div class="rule-text"><strong>Order investigations</strong> from the Investigations tab. Tests take time and cost coins. Results change based on disease stage. Unnecessary tests waste your budget.</div></div>
-        <div class="rule-item"><div class="rule-icon">🩺</div><div class="rule-text"><strong>Set a working diagnosis</strong> in the Diagnosis tab. This unlocks disease-specific treatment options. You can change your diagnosis at any time.</div></div>
-        <div class="rule-item"><div class="rule-icon">💊</div><div class="rule-text"><strong>Two management tracks:</strong> General Management (always available) and Disease-Specific Treatment (unlocks after diagnosis). Wrong treatments incur penalties. Blunders can end the case.</div></div>
-        <div class="rule-item"><div class="rule-icon">🪙</div><div class="rule-text"><strong>Budget: ${meta.budget?.toLocaleString()} coins.</strong> You can overspend — but the final score is penalised proportionally. Efficient workup scores higher.</div></div>
-        <div class="rule-item"><div class="rule-icon">📊</div><div class="rule-text"><strong>Scored on:</strong> correct diagnosis (25pts), timely cure (30pts), cost efficiency (15pts), relevant investigations (15pts), correct management (15pts), minus penalties.</div></div>
+        <div class="rule-item"><div class="rule-icon">⏱️</div><div class="rule-text"><strong>1 real second = 1 sim minute.</strong> Disease progresses automatically. Skip with ⏩.</div></div>
+        <div class="rule-item"><div class="rule-icon">🔬</div><div class="rule-text"><strong>Investigations</strong> cost coins and take time. Results vary by disease stage.</div></div>
+        <div class="rule-item"><div class="rule-icon">🩺</div><div class="rule-text"><strong>Set a working diagnosis</strong> to unlock disease-specific treatment. Change anytime.</div></div>
+        <div class="rule-item"><div class="rule-icon">💊</div><div class="rule-text"><strong>Wrong management </strong> incur score penalties. Blunders can end the case.</div></div>
+        <div class="rule-item"><div class="rule-icon">🪙</div><div class="rule-text"><strong>Budget: ${meta.budget?.toLocaleString()} coins.</strong> Overspending penalises final score.</div></div>
       </div>
 
       <div class="pregame-meta">
