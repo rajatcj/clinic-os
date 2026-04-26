@@ -530,7 +530,7 @@ _refreshResults() {
       modal.classList.add('hidden');
       this.showScoreModal(this.engine.calculateScore());
     });
-    document.getElementById('go-home2')?.addEventListener('click', ()=>window.location.reload());
+    document.getElementById('go-home2')?.addEventListener('click', () => document.referrer ? history.back() : window.location.href = '/');
   }
 
   // ── Score modal ───────────────────────────────────────────────────────────
@@ -572,8 +572,8 @@ _refreshResults() {
         <button class="btn-home" id="score-home">Back to Cases</button>
       </div>`;
     modal.classList.remove('hidden');
-    document.getElementById('score-home')?.addEventListener('click',()=>window.location.reload());
-  }
+    document.getElementById('score-home')?.addEventListener('click', () => document.referrer ? history.back() : window.location.href = '/');
+    }
 
   // ── UI event bindings ─────────────────────────────────────────────────────
   _bindUIEvents() {
@@ -592,8 +592,10 @@ _refreshResults() {
 
     // Back
     document.getElementById('btn-back')?.addEventListener('click', ()=>{
-      if (confirm('Exit case? Progress will be lost.')) { this.engine.stop(); window.location.reload(); }
+      if (confirm('Exit case? Progress will be lost.')) { this.engine.stop(); document.referrer ? history.back() : window.location.href = '/'; }
     });
+
+  
 
     // Jump modal
     document.getElementById('btn-jump')?.addEventListener('click', ()=>document.getElementById('modal-jump')?.classList.remove('hidden'));

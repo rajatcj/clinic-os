@@ -84,11 +84,14 @@
 <div id="app" style="display:none"></div>
 
 <!-- Scripts (same order as index.html) -->
-<script src="js/caseLoader.js"></script>
+<script src="./components/caseloader.js"></script>
 <script src="js/engine.js"></script>
 <script src="js/ui.js"></script>
 
 <script type="module" src="./components/footerLoader.js"></script>
+
+  <script type="module" src="./components/profilebtn.js"></script>
+
 <script>
 /* ══════════════════════════════════════════════════════════════
    cases.html inline script
@@ -376,25 +379,7 @@ async function openCasePreGame(caseId) {
 }
 
 async function launchCaseGame(caseId) {
-  // Swap whole page to app shell, then launch engine
-  document.getElementById('cases-page').style.display = 'none';
-  const appDiv = document.getElementById('app');
-  appDiv.style.display = 'block';
-  appDiv.innerHTML = `<div style="height:100vh;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#364e65;letter-spacing:.12em;flex-direction:column;gap:12px"><div style="font-size:1.5rem">🏥</div><div>LOADING CASE…</div></div>`;
-
-  const caseData = await _casesLoader.loadCase(caseId);
-  if (!caseData) {
-    appDiv.innerHTML = `<div style="height:100vh;display:flex;align-items:center;justify-content:center;font-family:monospace;color:#e84058;text-align:center;padding:20px">Failed to load: ${_esc(caseId)}<br><br><a href="cases.html" style="color:var(--green)">← Back to Cases</a></div>`;
-    return;
-  }
-  appDiv.style.opacity = '0'; appDiv.style.transition = 'opacity 0.2s ease';
-  setTimeout(() => {
-    const engine = new ClinicalEngine(caseData);
-    const ui     = new ClinicalUI(engine, caseData);
-    ui.renderGame();
-    appDiv.style.opacity = '1';
-    setTimeout(() => engine.start(), 120);
-  }, 200);
+  window.location.href = `/play.html?id=${caseId}`;
 }
 
 /* ── Footer message ──────────────────────────────────────────────────────── */
@@ -416,7 +401,6 @@ function _esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;
 </script>
 
 
-  <script type="module" src="./js/profilebtn.js"></script>
 
 
 </body>

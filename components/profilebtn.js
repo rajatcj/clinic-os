@@ -1,6 +1,6 @@
   
 let currentUser   = null;
-import MedSim from './firebase.js';
+import MedSim from '../js/firebase.js';
 
 // ── Auth state ────────────────────────────────────────────────────────────
 MedSim.onAuthChange(async user => {

@@ -66,24 +66,20 @@ function homeHTML(cases) {
       <div class="home-stat"><div class="home-stat-value">xxx</div><div class="home-stat-label">Cases Played</div></div>
     </div><br>
 
-    <div class="home-filters">
-      <span class="filter-label">Filter:</span>
-      <button class="filter-btn active" data-filter="all">All Cases</button>
-      <div class="filter-sep"></div>
-      ${diffs.map(d => `<button class="filter-btn" data-filter="diff:${d}">${d}</button>`).join('')}
-      <div class="filter-sep"></div>
-      ${systems.map(s => `<button class="filter-btn" data-filter="sys:${s}">${s}</button>`).join('')}
-    </div>
-
     <section class="home-cases-section">
       <div class="section-header">
         <div class="section-title">Active Cases</div>
         <div class="section-line"></div>
       </div>
       <div class="cases-grid" id="cases-grid">
-        ${cases.map(c => caseCardHTML(c)).join('')}
-        ${lockedCardsHTML()}
+${cases.slice(0, 4).map(c => caseCardHTML(c)).join('')}
       </div>
+
+      <div class="home-mid-cta">
+  <a href="/cases.html" class="home-cta-btn">
+    Explore All Cases →
+  </a>
+</div>
     </section>
 
 
@@ -224,34 +220,7 @@ async function openPreGame(caseId) {
 
 // ── Launch game ───────────────────────────────────────────────────────────────
 async function launchGame(caseId) {
-  const app = document.getElementById('app');
-
-  // Show loading state
-  app.innerHTML = `<div style="height:100vh;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:12px;color:#364e65;letter-spacing:.12em;flex-direction:column;gap:12px">
-    <div style="font-size:1.5rem">🏥</div>
-    <div>LOADING CASE…</div>
-  </div>`;
-
-  const caseData = await loader.loadCase(caseId);
-  if (!caseData) {
-    app.innerHTML = `<div style="height:100vh;display:flex;align-items:center;justify-content:center;font-family:monospace;color:#e84058;text-align:center;padding:20px">
-      Failed to load case: ${caseId}<br><small style="color:#364e65;display:block;margin-top:8px">Check data/cases/${caseId}.json exists.</small>
-    </div>`;
-    return;
-  }
-
-  // Fade out
-  app.style.opacity = '0';
-  app.style.transition = 'opacity 0.2s ease';
-
-  setTimeout(() => {
-    const engine = new ClinicalEngine(caseData);
-    const ui     = new ClinicalUI(engine, caseData);
-    ui.renderGame();
-    app.style.opacity = '1';
-    // Start engine after DOM settles
-    setTimeout(() => engine.start(), 120);
-  }, 200);
+    window.location.href = `/play.html?id=${caseId}`;
 }
 
 // ── Boot ──────────────────────────────────────────────────────────────────────
