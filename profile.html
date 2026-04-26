@@ -334,7 +334,7 @@ function renderProfile(p, scoreLog, isOwn) {
     <div class="profile-header">
       ${editBtns}
       <div class="profile-header-top">
-        <div class="profile-avatar">${initials}</div>
+        <div class="profile-avatar"><img class="profile-avatar" src="https://api.dicebear.com/9.x/bottts-neutral/svg?seed=id_${p.username}"></div>
         <div class="profile-main">
           <div class="profile-displayname">${esc(p.displayName || p.username)}</div>
           <div class="profile-username">@${esc(p.username)}</div>
