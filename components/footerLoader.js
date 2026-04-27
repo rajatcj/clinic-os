@@ -25,8 +25,8 @@ const footerHTML = `
           <div class="hf-col-title">About</div>
           <a href="/about.html" class="hf-link">About Us</a>
           <a href="/tos.html" class="hf-link">ToS</a>
+          <a href="/privacy.html" class="hf-link">Privacy Policy</a>
           <a href="mailto:mail@rajatcj.com" class="hf-link">Contact</a>
-          <a href="mailto:mail@rajatcj.com" class="hf-link">Submit a Case</a>
         </div>
       </div>
     </div>
@@ -43,7 +43,7 @@ const footerHTML = `
 
       <div class="hf-bottom">
         <span>© 2026 Clinical Simulation · By <a href="https://rajatcj.com/?clicsimfooter" target="_blank" class="hf-link-inline">Rajat CJ</a></span>
-        <span>Educational use only</span>
+        <span>All rights reserved.</span>
       </div>
   </div>
 </footer>

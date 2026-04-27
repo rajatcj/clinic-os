@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy — Clinical Simulation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styleplus.css" />
+<link rel="stylesheet" href="css/style.css" />
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-deep:#070b0f;--bg-base:#0b1017;--bg-panel:#0f1720;--bg-card:#141d28;--bg-up:#1c2a3a;
+  --border:#1a2b3c;--border-lo:#213345;
+  --text-hi:#dde8f2;--text-mid:#6e90ad;--text-lo:#364e65;--text-dim:#243549;
+  --green:#0dbd8b;--amber:#f5a623;--red:#e84058;--blue:#3da8f5;
+  --mono:'IBM Plex Mono',monospace;--display:'Newsreader',Georgia,serif;--body:'DM Sans',system-ui,sans-serif;
+  --r2:8px;--r3:14px;--r4:20px;
+}
+html{font-size:14px;scroll-behavior:smooth}
+body{font-family:var(--body);background:var(--bg-deep);color:var(--text-hi);min-height:100vh;-webkit-font-smoothing:antialiased}
+a{color:var(--green)}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg-base)}::-webkit-scrollbar-thumb{background:var(--border-lo);border-radius:99px}
+
+/* Nav — matches TOS home-topbar pattern */
+.home-topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:var(--bg-base);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20}
+.topbar-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text-hi)}
+.logo-icon{width:32px;height:32px;background:linear-gradient(135deg,var(--green),#089e72);border-radius:var(--r2);display:flex;align-items:center;justify-content:center;font-size:16px}
+.logo-text{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.04em;color:var(--text-hi)}
+.logo-sub{font-family:var(--mono);font-size:9px;color:var(--text-lo);letter-spacing:.05em;margin-top:1px}
+.topbar-right{display:flex;gap:14px;align-items:center}
+.cpnav-back{font-family:var(--mono);font-size:10px;letter-spacing:.05em;color:var(--text-mid);text-decoration:none;transition:color .15s}
+.cpnav-back:hover{color:var(--text-hi)}
+
+.page-hero{padding:52px 28px 40px;border-bottom:1px solid var(--border);background:var(--bg-base)}
+.hero-eyebrow{font-family:var(--mono);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-lo);margin-bottom:10px}
+.hero-title{font-family:var(--display);font-size:2rem;font-weight:500;margin-bottom:10px}
+.hero-meta{font-family:var(--mono);font-size:10px;color:var(--text-lo);letter-spacing:.06em}
+
+.layout{display:flex;gap:0;max-width:1060px;margin:0 auto}
+
+/* sidebar toc */
+.toc{width:220px;flex-shrink:0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;padding:28px 20px;border-right:1px solid var(--border)}
+.toc-label{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--text-dim);margin-bottom:12px}
+.toc-list{list-style:none;display:flex;flex-direction:column;gap:2px}
+.toc-item a{font-family:var(--mono);font-size:10px;color:var(--text-lo);text-decoration:none;padding:4px 8px;border-radius:4px;display:block;transition:all .15s;line-height:1.4}
+.toc-item a:hover{color:var(--text-mid);background:var(--bg-card)}
+.toc-item a.active{color:var(--green);background:rgba(13,189,139,.07)}
+
+/* doc content */
+.doc{flex:1;padding:40px 36px 80px;min-width:0}
+
+.doc-section{margin-bottom:42px;scroll-margin-top:80px}
+.sec-num{font-family:var(--mono);font-size:9px;color:var(--text-lo);letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px}
+.sec-title{font-family:var(--display);font-size:1.3rem;font-weight:500;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.prose{font-size:.88rem;color:var(--text-mid);line-height:1.8}
+.prose p{margin-bottom:12px}
+.prose p:last-child{margin-bottom:0}
+.prose strong{color:var(--text-hi)}
+.prose ul{padding-left:18px;margin-bottom:12px;display:flex;flex-direction:column;gap:5px}
+.prose ul li{color:var(--text-mid);font-size:.85rem;line-height:1.55}
+.prose ol{padding-left:18px;margin-bottom:12px;display:flex;flex-direction:column;gap:5px}
+.prose ol li{color:var(--text-mid);font-size:.85rem;line-height:1.55}
+
+.notice{padding:12px 16px;border-radius:var(--r2);margin:14px 0;font-size:.82rem;line-height:1.6}
+.notice-warn{background:rgba(245,166,35,.06);border:1px solid rgba(245,166,35,.22);border-left:3px solid var(--amber);color:var(--text-mid)}
+.notice-warn strong{color:var(--amber)}
+.notice-info{background:rgba(61,168,245,.05);border:1px solid rgba(61,168,245,.18);border-left:3px solid var(--blue);color:var(--text-mid)}
+.notice-info strong{color:var(--blue)}
+.notice-green{background:rgba(13,189,139,.05);border:1px solid rgba(13,189,139,.18);border-left:3px solid var(--green);color:var(--text-mid)}
+.notice-green strong{color:var(--green)}
+.notice-danger{background:rgba(232,64,88,.05);border:1px solid rgba(232,64,88,.18);border-left:3px solid var(--red);color:var(--text-mid)}
+.notice-danger strong{color:var(--red)}
+
+/* data table */
+.data-table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.82rem}
+.data-table th{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-lo);text-align:left;padding:8px 12px;border-bottom:1px solid var(--border);background:var(--bg-panel)}
+.data-table td{padding:9px 12px;border-bottom:1px solid var(--border);color:var(--text-mid);line-height:1.5;vertical-align:top}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tr:hover td{background:var(--bg-card)}
+
+.contact-box{background:var(--bg-card);border:1px solid var(--border-lo);border-radius:var(--r3);padding:18px 20px;margin-top:18px}
+.contact-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--text-lo);margin-bottom:8px}
+.contact-email{font-family:var(--mono);font-size:12px;color:var(--green)}
+
+@media(max-width:720px){
+  .toc{display:none}
+  .doc{padding:24px 16px 60px}
+  .page-hero{padding:36px 16px 28px}
+}
+</style>
+</head>
+<body>
+
+<nav class="home-topbar">
+  <div class="topbar-logo">
+    <div class="logo-icon">🩺</div>
+    <div>
+      <div class="logo-text">Clinical Simulation</div>
+      <div class="logo-sub">Medical Decision Engine</div>
+    </div>
+  </div>
+  <div class="topbar-right">
+    <a href="index.html" class="cpnav-back">← Home</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="hero-eyebrow">Legal</div>
+  <h1 class="hero-title">Privacy Policy</h1>
+  <div class="hero-meta">Last updated: 28 April 2026 &nbsp;·&nbsp; Effective immediately</div>
+</div>
+
+<div class="layout">
+  <aside class="toc">
+    <div class="toc-label">Contents</div>
+    <ul class="toc-list">
+      <li class="toc-item"><a href="#overview">1. Overview</a></li>
+      <li class="toc-item"><a href="#data-collected">2. Data We Collect</a></li>
+      <li class="toc-item"><a href="#how-used">3. How Data Is Used</a></li>
+      <li class="toc-item"><a href="#third-party">4. Third-Party Services</a></li>
+      <li class="toc-item"><a href="#cookies">5. Cookies & Storage</a></li>
+      <li class="toc-item"><a href="#retention">6. Data Retention</a></li>
+      <li class="toc-item"><a href="#rights">7. Your Rights</a></li>
+      <li class="toc-item"><a href="#children">8. Minors</a></li>
+      <li class="toc-item"><a href="#security">9. Security</a></li>
+      <li class="toc-item"><a href="#changes">10. Changes to Policy</a></li>
+      <li class="toc-item"><a href="#contact">11. Contact</a></li>
+    </ul>
+  </aside>
+
+  <main class="doc">
+<div class="notice notice-green">
+  <strong>Short version:</strong> Clinical Simulation collects minimal data. We do not store personal health information. The platform may display ads to support free access. This page explains exactly what we collect and why.
+</div>
+
+    <div class="doc-section" id="overview">
+      <div class="sec-num">Section 01</div>
+      <h2 class="sec-title">Overview</h2>
+      <div class="prose">
+        <p>Clinical Simulation ("the Platform", "we", "us", or "our") is committed to protecting your privacy. This Privacy Policy describes how we handle information when you access or use our platform at <strong>clinic.rajatcj.com</strong> (or any associated subdomain).</p>
+        <p>Clinical Simulation is a free, solo-developed educational platform. We operate with a minimal data footprint by design — we do not require user accounts, do not collect names or email addresses during normal use, and do not monetise user data in any way.</p>
+        <p>This policy applies to all users of the Platform regardless of location.</p>
+      </div>
+    </div>
+
+    <div class="doc-section" id="data-collected">
+      <div class="sec-num">Section 02</div>
+      <h2 class="sec-title">Data We Collect</h2>
+      <div class="prose">
+        <p>We collect only the data necessary to operate, improve, and secure the Platform. This falls into two categories:</p>
+        <p><strong>Automatically collected data</strong></p>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Data type</th>
+            <th>Examples</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Usage analytics</td>
+            <td>Pages visited, case started/completed, time on page</td>
+            <td>Understand how the Platform is used; improve case design</td>
+          </tr>
+          <tr>
+            <td>Device & browser info</td>
+            <td>Browser type, operating system, screen resolution</td>
+            <td>Ensure compatibility; diagnose rendering issues</td>
+          </tr>
+          <tr>
+            <td>Account data</td>
+            <td>Email address, display name, account creation date</td>
+            <td>User authentication and account management via Firebase</td>
+            </tr>
+          <tr>
+            <td>Referrer data</td>
+            <td>The URL that linked you to the Platform</td>
+            <td>Understand traffic sources</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="prose">
+        <p><strong>Data you provide voluntarily</strong></p>
+        <p>If you contact us via email (e.g., to report a case error), we will receive your email address and any information you include in your message. This data is used solely to respond to your query and is not added to any mailing list or shared with third parties.</p>
+        <p>We do <strong>not</strong> collect:</p>
+        <ul>
+            <li>Personal health information or medical history</li>
+            <li>Payment information (the Platform is free)</li>
+            <li>Precise GPS location data</li>
+            <li>Sensitive personal data as defined under GDPR or equivalent regulations</li>
+            </ul>
+      </div>
+    </div>
+
+    <div class="doc-section" id="how-used">
+      <div class="sec-num">Section 03</div>
+      <h2 class="sec-title">How Data Is Used</h2>
+      <div class="prose">
+        <p>Any data we collect is used exclusively for the following purposes:</p>
+        <ul>
+          <li><strong>Platform operation:</strong> Ensuring the Platform functions correctly across devices and browsers.</li>
+          <li><strong>Educational improvement:</strong> Understanding which cases are most used, where learners struggle, and how to improve clinical content.</li>
+          <li><strong>Security and abuse prevention:</strong> Detecting and blocking unusual or abusive access patterns.</li>
+          <li><strong>Aggregate reporting:</strong> Generating anonymised, aggregate statistics about Platform usage (e.g., "X cases completed this month"). These reports do not identify individuals.</li>
+        </ul>
+        <p>We do <strong>not</strong> use your data for profiling, automated decision-making, or any commercial purpose beyond serving contextual advertisements through Google AdSense.</p>
+    </div>
+    </div>
+
+    <div class="doc-section" id="third-party">
+      <div class="sec-num">Section 04</div>
+      <h2 class="sec-title">Third-Party Services</h2>
+      <div class="prose">
+        <p>To operate the Platform, we use a small number of third-party services. Each has its own privacy policy and data handling practices:</p>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Service</th>
+            <th>Purpose</th>
+            <th>Data shared</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Hosting provider<br><span style="font-size:.78rem;color:var(--text-dim)">(e.g. GitHub Pages / Vercel)</span></td>
+            <td>Serving the Platform files</td>
+            <td>IP address, request logs (standard server logs)</td>
+          </tr>
+          <tr>
+  <td>Google Analytics<br><span style="font-size:.78rem;color:var(--text-dim)">(Google)</span></td>
+  <td>Usage analytics and platform improvement</td>
+  <td>Page views, session duration, device info, approximate location. Subject to <a href="https://policies.google.com/privacy" target="_blank">Google's Privacy Policy</a>.</td>
+</tr>
+          <tr>
+            <td>Google Fonts</td>
+            <td>Serving typefaces used in the UI</td>
+            <td>IP address sent to Google on font load; see Google's privacy policy</td>
+          </tr>
+          <tr>
+  <td>Firebase &amp; Firestore<br><span style="font-size:.78rem;color:var(--text-dim)">(Google)</span></td>
+  <td>User authentication and database</td>
+  <td>Email address, user ID, session tokens, and gameplay/score data stored in Firestore. Subject to <a href="https://policies.google.com/privacy" target="_blank">Google's Privacy Policy</a>.</td>
+</tr>
+<tr>
+  <td>Google AdSense<br><span style="font-size:.78rem;color:var(--text-dim)">(Google)</span></td>
+  <td>Displaying advertisements to support the free platform</td>
+  <td>Google may use cookies and device identifiers to serve personalised ads. Subject to <a href="https://policies.google.com/privacy" target="_blank">Google's Privacy Policy</a> and <a href="https://policies.google.com/technologies/ads" target="_blank">Google's Ads Policy</a>.</td>
+</tr>
+        </tbody>
+      </table>
+      <div class="prose">
+        <p>We do not sell, rent, or share personally identifiable information with any third party for commercial purposes.</p>
+      </div>
+    </div>
+
+    <div class="doc-section" id="cookies">
+      <div class="sec-num">Section 05</div>
+      <h2 class="sec-title">Cookies &amp; Local Storage</h2>
+<div class="prose">
+  <p>Clinical Simulation uses <strong>local browser storage</strong> (localStorage / sessionStorage) and <strong>cookies</strong> to improve performance and reduce unnecessary server calls. Specifically:</p>
+  <ul>
+    <li><strong>Session caching:</strong> User profile data, scores, and case progress may be cached locally to avoid repeated Firestore reads and speed up page loads.</li>
+    <li><strong>Authentication state:</strong> Firebase sets cookies and localStorage entries to persist your login session across page reloads.</li>
+    <li><strong>Preferences:</strong> UI preferences and settings are saved locally on your device.</li>
+  </ul>
+  <p>This locally stored data:</p>
+  <ul>
+    <li>Is never shared with advertising networks or third parties beyond what Firebase requires for authentication</li>
+    <li>Can be cleared at any time through your browser settings — note that clearing storage will log you out and reset any locally cached progress</li>
+  </ul>
+  <p>We do not use tracking cookies or advertising cookies. Firebase may set its own cookies as part of authentication; these are governed by <a href="https://policies.google.com/privacy" target="_blank">Google's Privacy Policy</a>.</p>
+</div>
+    </div>
+
+    <div class="doc-section" id="retention">
+      <div class="sec-num">Section 06</div>
+      <h2 class="sec-title">Data Retention</h2>
+      <div class="prose">
+        <p>We retain data only for as long as necessary for the purposes described in this policy:</p>
+        <ul>
+          <li><strong>Analytics data</strong> is retained in aggregate, anonymised form. Individual-level analytics (if any) are retained for no longer than 12 months.</li>
+          <li><strong>Server access logs</strong> are retained for a short operational period (typically 30–90 days) and then discarded.</li>
+          <li><strong>Your local progress data</strong> is stored only in your own browser and is under your full control.</li>
+          <li><strong>Account data</strong> (email, display name, scores) is retained until you delete your account. Upon deletion, all associated Firestore data is permanently removed within 30 days.</li>
+        </ul>
+        <p>You may request deletion of any data we hold about you at any time by contacting us at the address below.</p>
+      </div>
+    </div>
+
+    <div class="doc-section" id="rights">
+      <div class="sec-num">Section 07</div>
+      <h2 class="sec-title">Your Rights</h2>
+      <div class="prose">
+        <p>Depending on your jurisdiction, you may have rights regarding your personal data. Regardless of where you are located, we will honour the following requests:</p>
+        <ul>
+          <li><strong>Access:</strong> Request a summary of any personal data we hold about you.</li>
+          <li><strong>Deletion:</strong> Request that any personal data we hold about you be deleted.</li>
+          <li><strong>Correction:</strong> Request correction of any inaccurate personal data we hold.</li>
+          <li><strong>Objection:</strong> Object to how we are processing your data.</li>
+          <li><strong>Portability:</strong> Receive a copy of your data in a portable format.</li>
+        </ul>
+        <p>To exercise any of these rights, including accessing, correcting, or deleting your account data, contact us using the details in Section 11.</p><p>We will respond to all valid requests within <strong>30 days</strong>.</p>
+      </div>
+    </div>
+
+    <div class="doc-section" id="children">
+      <div class="sec-num">Section 08</div>
+      <h2 class="sec-title">Minors</h2>
+      <div class="prose">
+        <p>Clinical Simulation is intended for users aged 16 and above, as stated in our Terms of Service. We do not knowingly collect personal data from individuals under the age of 16.</p>
+        <p>If you are a parent or guardian and believe that a child under 16 has provided us with personal information, please contact us immediately and we will take steps to delete that information.</p>
+        <p>The Platform does not contain content targeted at children, and we do not use any data practices specifically directed at minors.</p>
+      </div>
+    </div>
+
+    <div class="doc-section" id="security">
+      <div class="sec-num">Section 09</div>
+      <h2 class="sec-title">Security</h2>
+      <div class="prose">
+        <p>We take reasonable technical and organisational measures to protect any data we hold from unauthorised access, loss, or disclosure. These include:</p>
+        <ul>
+          <li>HTTPS encryption for all Platform traffic</li>
+          <li>Minimal data collection by design, reducing exposure risk</li>
+          <li>Access to any stored data restricted to the developer only</li>
+        </ul>
+        <p>However, no system is perfectly secure. We cannot guarantee absolute security, and we encourage you to avoid sharing sensitive personal information over any web platform.</p>
+        <p>In the unlikely event of a data breach affecting personal information, we will notify affected users and relevant authorities as required by applicable law.</p>
+      </div>
+    </div>
+
+    <div class="doc-section" id="changes">
+      <div class="sec-num">Section 10</div>
+      <h2 class="sec-title">Changes to This Policy</h2>
+      <div class="prose">
+        <p>We may update this Privacy Policy from time to time. When changes are made, the "Last updated" date at the top of this page will be revised.</p>
+        <p>Continued use of the Platform after any changes constitutes your acknowledgement of the revised policy. We encourage you to review this page periodically.</p>
+        <p>Material changes — particularly those affecting how your data is used or shared — will be noted prominently on the Platform's homepage.</p>
+      </div>
+    </div>
+
+    <div class="doc-section" id="contact">
+      <div class="sec-num">Section 11</div>
+      <h2 class="sec-title">Contact</h2>
+      <div class="prose">
+        <p>To request deletion of your account and all associated data, email us with the subject line <strong>"Account Deletion Request"</strong> and include the email address linked to your account. We will process deletions within 30 days.</p>
+    </div>
+      <div class="contact-box">
+        <div class="contact-label">Email</div>
+        <div class="contact-email">hello@rajatcj.com</div>
+      </div>
+      <div class="prose" style="margin-top:12px">
+        <p>Please include "Privacy Request" in your subject line and describe your request or concern clearly. We aim to respond within 14 days, and will always respond within 30 days as required.</p>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  // Active TOC highlighting on scroll
+  const sections = document.querySelectorAll('.doc-section');
+  const tocLinks = document.querySelectorAll('.toc-item a');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        tocLinks.forEach(link => {
+          link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+
+<script type="module" src="./components/footerLoader.js"></script>
+
+</html>
