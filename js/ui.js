@@ -44,13 +44,18 @@ class ClinicalUI {
       if (!user) return;
 
       const result = await MS.submitGameResult(
-        this.case.id,
-        this.engine.getState(),
-        this.engine.calculateScore(),
-        this.engine.log
-      );
-      if (result.written) this._showToast('\ud83c\udfc6 New best score saved!', 'success');
-    } catch (e) {
+  this.case.id,
+  this.engine.getState(),
+  this.engine.calculateScore(),
+  this.engine.log
+);
+if (result.written) {
+  this._showToast('🏆 First attempt score saved!', 'success');
+} else if (result.alreadyPlayed) {
+  this._showToast('📋 Score recorded — first attempt stands.', 'info');
+}
+
+} catch (e) {
       console.warn('Score submit failed:', e.code, e.message);
     }
   }

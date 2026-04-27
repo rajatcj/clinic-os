@@ -179,41 +179,27 @@ async function submitGameResult(caseId, gameState, scoreResult, eventLog) {
   const user = currentUser();
   if (!user) throw new Error('Must be logged in to submit scores.');
 
-  const uid         = user.uid;
-  const profile     = await getUserProfile(uid);
-  const username    = profile?.username || user.displayName || uid;
+  const uid      = user.uid;
+  const profile  = await getUserProfile(uid);
+  const username = profile?.username || user.displayName || uid;
   const newScore    = scoreResult.score;
   const timeElapsed = Math.round(gameState.time * 3600);
 
-  // ── Fix: older user docs may not have bestScores field at all.
-  // Firestore dot-notation updates (bestScores.caseId) silently fail
-  // if the parent field doesn't exist. Patch it first.
-  if (!profile?.bestScores) {
-    await setDoc(doc(db, 'users', uid), { bestScores: {} }, { merge: true });
-  }
-
-  // ── 1. Check existing leaderboard entry ──────────────────────────────────
+  // ── Only record the FIRST attempt — if leaderboard entry exists, skip ──
   const lbRef  = doc(db, 'leaderboard', caseId, 'entries', uid);
   const lbSnap = await getDoc(lbRef);
-  const existingBest      = lbSnap.exists() ? lbSnap.data().score : null;
-  const isFirstTimePlayer = existingBest === null;
-  const alreadyBest       = existingBest !== null && existingBest >= newScore;
-
-  if (alreadyBest) {
-    await _writeScoreLog(uid, username, caseId, gameState, scoreResult, timeElapsed, false);
+  if (lbSnap.exists()) {
+    // Already have a score for this case — update stats only, don't overwrite
     await _updateUserStats(uid, newScore, gameState);
     await _updateCaseStats(caseId, newScore, timeElapsed, false);
-    return { written: false, alreadyBest: true, newBest: existingBest };
+    return { written: false, alreadyPlayed: true, firstScore: lbSnap.data().score };
   }
 
-  // ── 2. New best — batch write ─────────────────────────────────────────────
-  const batch  = writeBatch(db);
+  // ── First time playing this case — write everything ──
   const logRef = doc(collection(db, 'scoreLog'));
 
-  batch.set(logRef, {
-    uid,
-    username,
-    caseId,
+  await setDoc(logRef, {
+    uid, username, caseId,
     score:             newScore,
     grade:             scoreResult.grade,
     diagnosisCorrect:  gameState.diagnosisCorrect,
@@ -231,28 +217,30 @@ async function submitGameResult(caseId, gameState, scoreResult, eventLog) {
     playedAt:          serverTimestamp(),
   });
 
-  batch.set(lbRef, {
-    uid,
-    username,
-    score:             newScore,
-    grade:             scoreResult.grade,
+  await setDoc(lbRef, {
+    uid, username,
+    score:            newScore,
+    grade:            scoreResult.grade,
     timeElapsed,
-    budgetUsed:        gameState.cost,
-    diagnosisCorrect:  gameState.diagnosisCorrect,
-    outcome:           gameState.outcome,
-    playedAt:          serverTimestamp(),
+    budgetUsed:       gameState.cost,
+    diagnosisCorrect: gameState.diagnosisCorrect,
+    outcome:          gameState.outcome,
+    playedAt:         serverTimestamp(),
   });
 
-  batch.update(doc(db, 'users', uid), {
+  // Patch bestScores field if missing on older accounts
+  if (!profile?.bestScores) {
+    await setDoc(doc(db, 'users', uid), { bestScores: {} }, { merge: true });
+  }
+
+  await updateDoc(doc(db, 'users', uid), {
     [`bestScores.${caseId}`]: newScore,
   });
 
-  await batch.commit();
-
   await _updateUserStats(uid, newScore, gameState);
-  await _updateCaseStats(caseId, newScore, timeElapsed, isFirstTimePlayer);
+  await _updateCaseStats(caseId, newScore, timeElapsed, true);
 
-  return { written: true, alreadyBest: false, newBest: newScore };
+  return { written: true, alreadyPlayed: false, firstScore: newScore };
 }
 
 async function _writeScoreLog(uid, username, caseId, gameState, scoreResult, timeElapsed, isPersonalBest) {

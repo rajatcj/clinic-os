@@ -25,65 +25,6 @@ a{color:var(--green);text-decoration:none}
 input,button,textarea{font-family:inherit}
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg-base)}::-webkit-scrollbar-thumb{background:var(--border-lo);border-radius:99px}
 
-
-.case-history{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
-/* The card: looks like a mini case card + a compact completion bar at the bottom */
-.ch-card{
-  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r3);
-  overflow:hidden;cursor:pointer;transition:all .18s;
-  display:flex;flex-direction:column;
-}
-.ch-card:hover{border-color:var(--border-lo);background:var(--bg-hover);transform:translateY(-1px);box-shadow:var(--sh2)}
-.ch-card::before{content:'';display:block;height:2px;background:linear-gradient(90deg,var(--green),var(--blue));opacity:0;transition:opacity .18s}
-.ch-card:hover::before{opacity:1}
-
-.ch-body{padding:14px 16px 10px}
-
-/* Top row: difficulty badge + date completed */
-.ch-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
-.ch-diff{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:99px;border:1px solid}
-.diff-Intern{color:var(--green);border-color:rgba(13,189,139,.3);background:rgba(13,189,139,.07)}
-.diff-MO{color:var(--amber);border-color:rgba(245,166,35,.3);background:rgba(245,166,35,.07)}
-.diff-Resident{color:var(--red);border-color:rgba(232,64,88,.3);background:rgba(232,64,88,.07)}
-.ch-completed{font-family:var(--mono);font-size:9px;color:var(--text-dim);letter-spacing:.04em}
-
-/* Patient chip */
-.ch-patient{display:flex;align-items:center;gap:6px;margin-bottom:5px}
-.ch-dot{width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0}
-.ch-patient-txt{font-family:var(--mono);font-size:9px;color:var(--text-mid)}
-
-/* Title */
-.ch-title{font-family:var(--display);font-size:1rem;font-weight:500;line-height:1.2;margin-bottom:3px}
-
-/* Chief complaint */
-.ch-cc{font-size:.78rem;color:var(--text-mid);font-style:italic;line-height:1.4;margin-bottom:8px}
-
-/* Tags */
-.ch-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:0}
-.ch-tag{font-size:9px;padding:2px 7px;background:var(--bg-up);border:1px solid var(--border);border-radius:99px;color:var(--text-mid)}
-
-/* Footer bar: time taken + play again */
-.ch-footer{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:8px 16px;
-  border-top:1px solid var(--border);
-  background:var(--bg-deep);
-  gap:8px;
-}
-.ch-time{display:flex;align-items:center;gap:5px}
-.ch-time-icon{font-size:10px;color:var(--text-lo)}
-.ch-time-val{font-family:var(--mono);font-size:10px;color:var(--text-mid)}
-.ch-play{font-family:var(--mono);font-size:9px;font-weight:600;color:var(--green);background:rgba(13,189,139,.08);border:1px solid rgba(13,189,139,.22);padding:4px 11px;border-radius:99px;cursor:pointer;transition:all .15s;text-decoration:none}
-.ch-play:hover{background:rgba(13,189,139,.18)}
-
-/* empty / not found */
-.empty-box{font-family:var(--mono);font-size:11px;color:var(--text-dim);text-align:center;padding:32px 20px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r2)}
-.not-found{text-align:center;padding:72px 20px}
-.nf-icon{font-size:2.8rem;margin-bottom:10px}
-.nf-title{font-family:var(--display);font-size:1.25rem;margin-bottom:7px}
-.nf-sub{font-size:.84rem;color:var(--text-mid)}
-
-
 /* nav */
 .nav{display:flex;align-items:center;gap:14px;padding:12px 28px;background:var(--bg-base);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20}
 .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text-hi)}
@@ -125,10 +66,10 @@ input,button,textarea{font-family:inherit}
 .profile-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
 .profile-tag{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;padding:3px 9px;border-radius:99px;border:1px solid}
 .tag-developer{color:var(--purple);border-color:rgba(167,139,250,.3);background:rgba(167,139,250,.08)}
-.tag-casemaker{color:var(--amber);border-color:rgba(245,166,35,.3);background:rgba(245,166,35,.08)}
+.tag-case_maker{color:var(--amber);border-color:rgba(245,166,35,.3);background:rgba(245,166,35,.08)}
 .tag-professor{color:var(--blue);border-color:rgba(61,168,245,.3);background:rgba(61,168,245,.08)}
 .tag-supervisor{color:var(--orange);border-color:rgba(251,146,60,.3);background:rgba(251,146,60,.08)}
-.tag-early_supporter{color:var(--green);border-color:rgba(13,189,139,.3);background:rgba(13,189,139,.08)}
+.tag-top_scorer{color:var(--green);border-color:rgba(13,189,139,.3);background:rgba(13,189,139,.08)}
 .tag-veteran{color:var(--text-mid);border-color:var(--border-lo);background:var(--bg-up)}
 
 /* stats strip */
@@ -224,6 +165,8 @@ input,button,textarea{font-family:inherit}
 @media(max-width:600px){
   .page{padding:20px 14px 60px}
   .stats-strip{grid-template-columns:1fr 1fr}
+  .profile-actions{position:static;margin-top:14px}
+  .profile-header-top{flex-direction:column}
   .badges-grid{grid-template-columns:1fr 1fr}
   .score-entry{grid-template-columns:1fr}
 }
@@ -320,7 +263,6 @@ MedSim.onAuthChange(async user => {
     document.getElementById('nav-signin-link').classList.remove('hidden');
   }
 
-  await loadCaseIndex();
   await loadProfile();
 });
 
@@ -394,7 +336,7 @@ function renderProfile(p, scoreLog, isOwn) {
       <div class="profile-header-top">
         <div class="profile-avatar"><img class="profile-avatar" src="https://api.dicebear.com/9.x/bottts-neutral/svg?seed=id_${p.username}"></div>
         <div class="profile-main">
-          <div class="profile-displayname">${esc(p.displayName || p.username)}</div> 
+          <div class="profile-displayname">${esc(p.displayName || p.username)}</div>
           <div class="profile-username">@${esc(p.username)}</div>
           ${p.bio ? `<div class="profile-bio">${esc(p.bio)}</div>` : ''}
           <div class="profile-join">Joined ${joinDate}</div>
@@ -454,88 +396,35 @@ function renderProfile(p, scoreLog, isOwn) {
     </div>` : `<div class="empty-box">No cases played yet.</div>`}
   `;
 }
-let _caseIndex = [];   // loaded once for card enrichment
 
-/* ── Load case index (for enriching history cards) ─────────────────────── */
-async function loadCaseIndex() {
-  try {
-    const r = await fetch('./data/caseIndex.json');
-    _caseIndex = await r.json();
-    console.log(_caseIndex + "hi");
-  } catch(_) { _caseIndex = []; }
-}
+function renderScoreEntry(s) {
+  const gradeClass = `grade-${(s.grade || 'F').replace('+', '-plus')}`;
+  const outcomeClass = s.outcome === 'cured' ? 'outcome-cured' : s.outcome === 'death' ? 'outcome-death' : 'outcome-transfer';
+  const outcomeLabel = s.outcome === 'cured' ? '✓ Cured' : s.outcome === 'death' ? '✕ Died' : '→ Transferred';
+  const dateStr = s.playedAt?.toDate ? s.playedAt.toDate().toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+  const timeStr = s.timeElapsed ? formatDuration(s.timeElapsed) : '—';
+  const budgetPct = s.budgetTotal ? Math.round((s.budgetUsed / s.budgetTotal) * 100) : '—';
+  const dxClass = s.diagnosisCorrect ? 'correct' : 'wrong';
+  const dxLabel = s.diagnosisCorrect ? '✓ Correct Dx' : '✕ Wrong Dx';
 
-function renderScoreEntry(entry) {
-  // Find the matching case from caseIndex
-  const meta = _caseIndex.find(c => c.id === entry.caseId);
-
-  // Time taken (entry.timeElapsed is in seconds)
-  const timeTaken = entry.timeElapsed ? fmtDuration(entry.timeElapsed) : '—';
-
-  // When they completed it
-  const completedAt = entry.playedAt?.toDate
-    ? entry.playedAt.toDate().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'})
-    : '—';
-
-const budgetPct = entry.budgetTotal ? Math.round((entry.budgetUsed / entry.budgetTotal) * 100) : '—';
-  const gradeClass = `grade-${(entry.grade || 'F').replace('+', '-plus')}`;
-  
-
-  const diff    = meta?.difficulty || '—';
-  const diffCls = `diff-${diff}`;
-
-  // Fall back gracefully if case not in index (deleted/renamed)
-  if (!meta) {
-    return `
-<div class="ch-card" data-case-id="${esc(entry.caseId)}">
-  <div class="ch-body">
-    <div class="ch-top">
-      <span class="ch-diff ${diffCls}">${diff}</span>
-      <span class="ch-completed">Completed ${completedAt}</span>
+  return `<div class="score-entry">
+    <div class="se-left">
+      <div class="se-case">${esc(s.caseTitle || s.caseId)}</div>
+      <div class="se-meta">
+        <span class="se-meta-item">🕐 ${timeStr}</span>
+        <span class="se-meta-item">🪙 ${budgetPct}% budget</span>
+        <span class="se-meta-item">${dateStr}</span>
+      </div>
+      <div class="se-meta" style="margin-top:3px">
+        <span class="se-dx ${dxClass}">${dxLabel}</span>
+        <span class="se-outcome ${outcomeClass}">${outcomeLabel}</span>
+      </div>
     </div>
-    <div class="ch-title" style="color:var(--text-lo)">${esc(entry.caseId)}</div>
-    <div class="ch-cc" style="font-style:normal;color:var(--text-dim)">Case data not available</div>
-  </div>
-  <div class="ch-footer">
-        <div class="ch-time">
-      <span class="ch-time-icon">Case Solved in </span>
-      <span class="ch-time-val">⏱ ${timeTaken}</span>
-      <span class="ch-time-icon"> using </span>
-      <span class="ch-time-val">🪙 ${budgetPct}%</span>
-      <span class="ch-time-icon"> budget.</span>
+    <div class="se-right">
+      <div class="se-grade ${gradeClass}">${s.grade || '—'}</div>
+      <div class="se-score">${s.score}/100</div>
     </div>
-    </div>
-</div>`;
-  }
-
-  const tagsHTML = (meta.tags||[]).slice(0,4).map(t => `<span class="ch-tag">${esc(t)}</span>`).join('');
-
-  return `
-<div class="ch-card" data-case-id="${esc(meta.id)}" role="button" tabindex="0" title="Play again">
-  <div class="ch-body">
-    <div class="ch-top">
-      <span class="ch-diff ${diffCls}">${diff}</span>
-      <span class="ch-completed">Completed ${completedAt}</span>
-    </div>
-    <div class="ch-patient">
-      <div class="ch-dot"></div>
-      <span class="ch-patient-txt">${meta.patientAge}y ${esc(meta.patientSex)} · ${esc(meta.patientOccupation||meta.department||'—')}</span>
-    </div>
-    <div class="ch-title">${esc(meta.title)}</div>
-    <div class="ch-cc">"${esc(meta.chiefComplaint)}"</div>
-    ${tagsHTML ? `<div class="ch-tags">${tagsHTML}</div>` : ''}
-  </div>
-  <div class="ch-footer">
-    <div class="ch-time">
-      <span class="ch-time-icon">Case Solved in </span>
-      <span class="ch-time-val">⏱ ${timeTaken}</span>
-      <span class="ch-time-icon"> using </span>
-      <span class="ch-time-val">🪙 ${budgetPct}%</span>
-      <span class="ch-time-icon"> budget.</span>
-    </div>
-    <span class="ch-play">Practice again →</span>
-  </div>
-</div>`;
+  </div>`;
 }
 
 function renderNotFound(username) {
@@ -640,20 +529,6 @@ function showToast(msg) {
   c.appendChild(t);
   requestAnimationFrame(() => { t.style.transform = 'translateX(0)'; });
   setTimeout(() => { t.style.transform = 'translateX(110%)'; setTimeout(() => t.remove(), 300); }, 3000);
-}
-
-
-/* ── Helpers ──────────────────────────────────────────────────────────────── */
-
-function fmtPlayTime(seconds) {
-  if (!seconds||seconds<60) return '<1m';
-  const h = Math.floor(seconds/3600), m = Math.floor((seconds%3600)/60);
-  return h>0 ? `${h}h ${m}m` : `${m}m`;
-}
-function fmtDuration(seconds) {
-  if (!seconds) return '—';
-  const m = Math.floor(seconds/60), s = seconds%60;
-  return m>0 ? `${m}m ${s>0?s+'s':''}`.trim() : `${s}s`;
 }
 </script>
 

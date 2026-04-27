@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<title>Profile · Clinical Simulation OS</title>
+<meta name="theme-color" content="#070b0f"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+/* ── Base (mirrors site variables) ───────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-deep:#070b0f;--bg-base:#0b1017;--bg-panel:#0f1720;--bg-card:#141d28;--bg-hover:#192433;--bg-up:#1c2a3a;
+  --border:#1a2b3c;--border-lo:#213345;
+  --text-hi:#dde8f2;--text-mid:#6e90ad;--text-lo:#364e65;--text-dim:#243549;
+  --green:#0dbd8b;--green2:#06d4a0;--amber:#f5a623;--red:#e84058;--blue:#3da8f5;--purple:#a78bfa;--orange:#fb923c;
+  --mono:'IBM Plex Mono',monospace;--display:'Newsreader',Georgia,serif;--body:'DM Sans',system-ui,sans-serif;
+  --r1:3px;--r2:8px;--r3:14px;--r4:20px;
+  --sh2:0 4px 18px rgba(0,0,0,.55);--sh3:0 8px 36px rgba(0,0,0,.65);
+}
+html{font-size:14px;scroll-behavior:smooth}
+body{font-family:var(--body);background:var(--bg-deep);color:var(--text-hi);min-height:100vh;-webkit-font-smoothing:antialiased}
+a{color:var(--green);text-decoration:none}
+button,input,textarea{font-family:inherit}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg-base)}::-webkit-scrollbar-thumb{background:var(--border-lo);border-radius:99px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes skelPulse{from{opacity:.4}to{opacity:.8}}
+
+/* ── Nav ──────────────────────────────────────────────────────────────────── */
+.nav{display:flex;align-items:center;gap:14px;padding:13px 28px;background:var(--bg-base);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20}
+.nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;color:var(--text-hi)}
+.logo-icon{width:30px;height:30px;background:linear-gradient(135deg,var(--green),#089e72);border-radius:var(--r2);display:flex;align-items:center;justify-content:center;font-size:15px}
+.logo-text{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.04em}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.nav-link{font-family:var(--mono);font-size:10px;color:var(--text-mid);text-decoration:none;transition:color .15s}
+.nav-link:hover{color:var(--text-hi)}
+.nav-auth-area{display:flex;align-items:center}
+.nav-user-pill{display:flex;align-items:center;gap:7px;padding:4px 11px;background:var(--bg-card);border:1px solid var(--border);border-radius:99px;cursor:pointer;transition:all .15s;font-family:var(--mono);font-size:10px;color:var(--text-mid);text-decoration:none}
+.nav-user-pill:hover{border-color:var(--border-lo)}
+.nav-user-dot{width:6px;height:6px;border-radius:50%;background:var(--green);flex-shrink:0}
+.nav-signin-link{font-family:var(--mono);font-size:10px;color:var(--green);text-decoration:none;padding:5px 12px;border:1px solid rgba(13,189,139,.3);border-radius:99px;transition:all .15s}
+.nav-signin-link:hover{background:rgba(13,189,139,.1)}
+.btn-signout{font-family:var(--mono);font-size:10px;padding:4px 10px;background:none;border:1px solid var(--border);border-radius:var(--r2);color:var(--text-lo);cursor:pointer;transition:all .15s}
+.btn-signout:hover{color:var(--red);border-color:rgba(232,64,88,.4)}
+
+/* ── Page ─────────────────────────────────────────────────────────────────── */
+.page{max-width:860px;margin:0 auto;padding:32px 24px 80px;animation:fadeUp .3s ease}
+
+/* ── Skeleton ─────────────────────────────────────────────────────────────── */
+.skel{background:var(--bg-card);border-radius:var(--r3);animation:skelPulse 1.4s ease infinite alternate}
+
+/* ── Profile header ───────────────────────────────────────────────────────── */
+.profile-header{background:var(--bg-panel);border:1px solid var(--border-lo);border-radius:var(--r4);padding:24px;margin-bottom:16px;position:relative}
+.profile-header-top{display:flex;align-items:flex-start;gap:18px}
+.profile-avatar{width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,rgba(13,189,139,.22),rgba(61,168,245,.18));border:2px solid rgba(13,189,139,.28);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:1.5rem;font-weight:700;color:var(--green)}
+.profile-main{flex:1;min-width:0}
+.profile-displayname{font-family:var(--display);font-size:1.4rem;font-weight:500;line-height:1.2;margin-bottom:2px}
+.profile-username{font-family:var(--mono);font-size:11px;color:var(--green);letter-spacing:.06em;margin-bottom:6px}
+.profile-bio{font-size:.84rem;color:var(--text-mid);line-height:1.6;margin-bottom:8px}
+.profile-join{font-family:var(--mono);font-size:9px;color:var(--text-dim);letter-spacing:.08em}
+.profile-actions{position:absolute;top:20px;right:20px;display:flex;gap:7px}
+.btn-edit{font-family:var(--mono);font-size:10px;font-weight:600;padding:5px 13px;background:var(--bg-up);border:1px solid var(--border-lo);border-radius:var(--r2);color:var(--text-mid);cursor:pointer;transition:all .15s}
+.btn-edit:hover{color:var(--text-hi);border-color:var(--border)}
+.btn-share{font-family:var(--mono);font-size:10px;font-weight:600;padding:5px 13px;background:rgba(13,189,139,.07);border:1px solid rgba(13,189,139,.2);border-radius:var(--r2);color:var(--green);cursor:pointer;transition:all .15s}
+.btn-share:hover{background:rgba(13,189,139,.14)}
+
+/* Tags */
+.profile-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+.profile-tag{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:99px;border:1px solid}
+.tag-developer{color:var(--purple);border-color:rgba(167,139,250,.3);background:rgba(167,139,250,.07)}
+.tag-case_maker{color:var(--amber);border-color:rgba(245,166,35,.3);background:rgba(245,166,35,.07)}
+.tag-professor{color:var(--blue);border-color:rgba(61,168,245,.3);background:rgba(61,168,245,.07)}
+.tag-top_scorer{color:var(--green);border-color:rgba(13,189,139,.3);background:rgba(13,189,139,.07)}
+.tag-veteran{color:var(--text-mid);border-color:var(--border-lo);background:var(--bg-up)}
+
+/* ── Stats strip ──────────────────────────────────────────────────────────── */
+.stats-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--r3);overflow:hidden;margin-bottom:16px}
+.stat-box{background:var(--bg-card);padding:14px 10px;text-align:center}
+.stat-val{font-family:var(--mono);font-size:1.2rem;font-weight:700;color:var(--green);display:block}
+.stat-lbl{font-family:var(--mono);font-size:8px;color:var(--text-lo);text-transform:uppercase;letter-spacing:.1em;margin-top:2px;display:block}
+
+/* ── Section header ───────────────────────────────────────────────────────── */
+.section-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;margin-top:4px}
+.section-head-title{font-family:var(--display);font-size:1rem;font-weight:500}
+.section-head-line{flex:1;height:1px;background:var(--border)}
+.section-count{font-family:var(--mono);font-size:9px;color:var(--text-lo);padding:2px 7px;background:var(--bg-up);border-radius:99px;white-space:nowrap}
+
+/* ── Badges grid ──────────────────────────────────────────────────────────── */
+.badges-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px;margin-bottom:20px}
+.badge-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r2);padding:11px;display:flex;align-items:flex-start;gap:9px;transition:all .15s}
+.badge-card:hover{border-color:var(--border-lo)}
+.badge-card.locked{opacity:.3;filter:grayscale(.6)}
+.badge-icon{font-size:1.3rem;flex-shrink:0}
+.badge-info{flex:1;min-width:0}
+.badge-name{font-size:.78rem;font-weight:600;color:var(--text-hi);margin-bottom:2px}
+.badge-desc{font-size:.68rem;color:var(--text-lo);line-height:1.4}
+
+/* ── Case history ─────────────────────────────────────────────────────────── */
+.case-history{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+
+/* The card: looks like a mini case card + a compact completion bar at the bottom */
+.ch-card{
+  background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r3);
+  overflow:hidden;cursor:pointer;transition:all .18s;
+  display:flex;flex-direction:column;
+}
+.ch-card:hover{border-color:var(--border-lo);background:var(--bg-hover);transform:translateY(-1px);box-shadow:var(--sh2)}
+.ch-card::before{content:'';display:block;height:2px;background:linear-gradient(90deg,var(--green),var(--blue));opacity:0;transition:opacity .18s}
+.ch-card:hover::before{opacity:1}
+
+.ch-body{padding:14px 16px 10px}
+
+/* Top row: difficulty badge + date completed */
+.ch-top{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
+.ch-diff{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:2px 8px;border-radius:99px;border:1px solid}
+.diff-Intern{color:var(--green);border-color:rgba(13,189,139,.3);background:rgba(13,189,139,.07)}
+.diff-MO{color:var(--amber);border-color:rgba(245,166,35,.3);background:rgba(245,166,35,.07)}
+.diff-Resident{color:var(--red);border-color:rgba(232,64,88,.3);background:rgba(232,64,88,.07)}
+.ch-completed{font-family:var(--mono);font-size:9px;color:var(--text-dim);letter-spacing:.04em}
+
+/* Patient chip */
+.ch-patient{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.ch-dot{width:5px;height:5px;border-radius:50%;background:var(--green);flex-shrink:0}
+.ch-patient-txt{font-family:var(--mono);font-size:9px;color:var(--text-mid)}
+
+/* Title */
+.ch-title{font-family:var(--display);font-size:1rem;font-weight:500;line-height:1.2;margin-bottom:3px}
+
+/* Chief complaint */
+.ch-cc{font-size:.78rem;color:var(--text-mid);font-style:italic;line-height:1.4;margin-bottom:8px}
+
+/* Tags */
+.ch-tags{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:0}
+.ch-tag{font-size:9px;padding:2px 7px;background:var(--bg-up);border:1px solid var(--border);border-radius:99px;color:var(--text-mid)}
+
+/* Footer bar: time taken + play again */
+.ch-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 16px;
+  border-top:1px solid var(--border);
+  background:var(--bg-deep);
+  gap:8px;
+}
+.ch-time{display:flex;align-items:center;gap:5px}
+.ch-time-icon{font-size:10px;color:var(--text-lo)}
+.ch-time-val{font-family:var(--mono);font-size:10px;color:var(--text-mid)}
+.ch-play{font-family:var(--mono);font-size:9px;font-weight:600;color:var(--green);background:rgba(13,189,139,.08);border:1px solid rgba(13,189,139,.22);padding:4px 11px;border-radius:99px;cursor:pointer;transition:all .15s;text-decoration:none}
+.ch-play:hover{background:rgba(13,189,139,.18)}
+
+/* empty / not found */
+.empty-box{font-family:var(--mono);font-size:11px;color:var(--text-dim);text-align:center;padding:32px 20px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r2)}
+.not-found{text-align:center;padding:72px 20px}
+.nf-icon{font-size:2.8rem;margin-bottom:10px}
+.nf-title{font-family:var(--display);font-size:1.25rem;margin-bottom:7px}
+.nf-sub{font-size:.84rem;color:var(--text-mid)}
+
+/* ── Edit modal ───────────────────────────────────────────────────────────── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px;animation:fadeUp .2s ease}
+.modal-overlay.hidden{display:none}
+.modal{background:var(--bg-panel);border:1px solid var(--border-lo);border-radius:var(--r4);padding:24px;max-width:400px;width:100%;box-shadow:var(--sh3)}
+.modal-title{font-family:var(--display);font-size:1.05rem;font-weight:500;margin-bottom:3px}
+.modal-sub{font-size:.78rem;color:var(--text-mid);margin-bottom:16px;line-height:1.5}
+.form-group{display:flex;flex-direction:column;gap:4px;margin-bottom:11px}
+.form-label{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-lo)}
+.form-input{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r2);padding:8px 11px;font-size:.86rem;color:var(--text-hi);outline:none;transition:all .15s;width:100%}
+.form-input:focus{border-color:rgba(13,189,139,.44);box-shadow:0 0 0 2px rgba(13,189,139,.09)}
+.form-input::placeholder{color:var(--text-dim)}
+.form-hint{font-family:var(--mono);font-size:8px;color:var(--text-dim);margin-top:2px}
+.modal-error{background:rgba(232,64,88,.07);border:1px solid rgba(232,64,88,.25);border-radius:var(--r2);padding:7px 11px;font-family:var(--mono);font-size:10px;color:var(--red);margin-bottom:11px;display:none}
+.modal-error.show{display:block}
+.modal-actions{display:flex;gap:8px;margin-top:4px}
+.btn-save{flex:1;padding:10px;background:var(--green);color:#040d09;border:none;border-radius:var(--r2);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;cursor:pointer;transition:all .15s}
+.btn-save:hover{background:var(--green2)}
+.btn-save:disabled{opacity:.5;cursor:not-allowed}
+.btn-cancel{padding:10px 14px;background:none;border:1px solid var(--border);border-radius:var(--r2);color:var(--text-lo);font-family:var(--mono);font-size:10px;cursor:pointer;transition:all .15s}
+.btn-cancel:hover{color:var(--text-mid);border-color:var(--border-lo)}
+
+/* Pre-game modal (reuse site styles) */
+.pregame-overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(7px);display:flex;align-items:center;justify-content:center;z-index:200;padding:16px}
+.pregame-modal{background:var(--bg-panel);border:1px solid var(--border-lo);border-radius:var(--r4);max-width:520px;width:100%;max-height:92vh;overflow-y:auto;box-shadow:var(--sh3)}
+.pregame-head{padding:22px 22px 0;display:flex;flex-direction:column;gap:5px}
+.pregame-case-label{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--green)}
+.pregame-title{font-family:var(--display);font-size:1.4rem;font-weight:500;line-height:1.2}
+.pregame-patient{font-family:var(--mono);font-size:10px;color:var(--text-mid);background:var(--bg-card);border:1px solid var(--border);padding:9px 13px;border-radius:var(--r2);margin-top:9px;display:flex;gap:14px;flex-wrap:wrap}
+.pregame-patient-item{display:flex;flex-direction:column;gap:2px}
+.pregame-patient-item strong{color:var(--text-hi);font-size:11px}
+.pregame-patient-item small{font-size:8px;color:var(--text-lo);letter-spacing:.08em;text-transform:uppercase}
+.pregame-rules{padding:14px 22px;display:flex;flex-direction:column;gap:7px}
+.rules-title{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-lo);margin-bottom:3px}
+.rule-item{display:flex;gap:10px;align-items:flex-start;padding:9px 11px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r2)}
+.rule-icon{font-size:14px;flex-shrink:0;margin-top:1px}
+.rule-text{font-size:.78rem;color:var(--text-mid);line-height:1.5}
+.rule-text strong{color:var(--text-hi)}
+.pregame-meta{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:0 22px 16px}
+.meta-item{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r2);padding:9px 12px;display:flex;flex-direction:column;gap:3px}
+.meta-label{font-family:var(--mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--text-lo)}
+.meta-value{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--text-hi)}
+.meta-value.coins{color:var(--amber)}
+.pregame-actions{padding:0 22px 22px;display:flex;gap:9px}
+.btn-start{flex:1;padding:12px;border-radius:var(--r2);background:var(--green);color:var(--bg-deep);border:none;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;transition:all .15s;cursor:pointer}
+.btn-start:hover{background:var(--green2)}
+.btn-cancel-pg{padding:12px 16px;border-radius:var(--r2);background:none;color:var(--text-lo);border:1px solid var(--border);font-family:var(--mono);font-size:10px;transition:all .15s;cursor:pointer}
+.btn-cancel-pg:hover{color:var(--text-mid);border-color:var(--border-lo)}
+
+/* ── Footer ───────────────────────────────────────────────────────────────── */
+.hf{background:var(--bg-panel);border-top:1px solid var(--border)}
+.hf-inner{max-width:860px;margin:0 auto;padding:28px 24px 18px}
+.hf-top{display:flex;gap:36px;flex-wrap:wrap;margin-bottom:20px}
+.hf-brand{display:flex;align-items:flex-start;gap:9px;flex:1;min-width:180px}
+.hf-logo{font-size:1.3rem;margin-top:2px}
+.hf-name{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--text-hi);letter-spacing:.04em}
+.hf-tagline{font-family:var(--mono);font-size:9px;color:var(--text-lo);margin-top:2px;letter-spacing:.06em}
+.hf-links{display:flex;gap:28px;flex-wrap:wrap}
+.hf-col{display:flex;flex-direction:column;gap:7px}
+.hf-col-title{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-lo);margin-bottom:1px}
+.hf-link{font-family:var(--mono);font-size:10px;color:var(--text-mid);text-decoration:none;transition:color .15s}
+.hf-link:hover{color:var(--green)}
+.hf-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px;font-family:var(--mono);font-size:9px;color:var(--text-dim);letter-spacing:.06em;padding-top:14px;border-top:1px solid var(--border)}
+.hf-link-inline{color:var(--text-mid);text-decoration:underline}
+
+/* ── Toast ────────────────────────────────────────────────────────────────── */
+.toast-stack{position:fixed;bottom:16px;right:16px;display:flex;flex-direction:column;gap:6px;z-index:300}
+.toast{font-family:var(--mono);font-size:10px;padding:8px 13px;border-radius:var(--r2);background:var(--bg-up);border:1px solid var(--border-lo);color:var(--text-hi);max-width:270px;transform:translateX(110%);transition:transform .28s ease;box-shadow:var(--sh2)}
+.toast.t-on{transform:translateX(0)}
+.toast.t-ok{border-color:rgba(13,189,139,.5);background:rgba(13,189,139,.12)}
+.toast.t-err{border-color:rgba(232,64,88,.5);background:rgba(232,64,88,.1)}
+
+/* ── Mobile ───────────────────────────────────────────────────────────────── */
+@media(max-width:640px){
+  .nav{padding:11px 14px}
+  .page{padding:18px 12px 60px}
+  .profile-actions{position:static;margin-top:12px}
+  .profile-header-top{flex-direction:column;gap:12px}
+  .stats-strip{grid-template-columns:1fr 1fr}
+  .badges-grid{grid-template-columns:1fr 1fr}
+  .hf-inner{padding:20px 14px 14px}
+  .hf-top{gap:20px}
+  .hf-bottom{flex-direction:column;gap:3px}
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <div class="logo-icon">⚕</div>
+    <span class="logo-text" style="font-family:var(--mono)">Clinical Sim OS</span>
+  </a>
+  <div class="nav-right">
+    <a href="cases.html" class="nav-link">Cases</a>
+    <div id="nav-auth-area" class="nav-auth-area">
+      <a href="login.html" class="nav-signin-link">Sign In</a>
+    </div>
+    <button class="btn-signout hidden" id="btn-signout">Sign Out</button>
+  </div>
+</nav>
+
+<!-- Page content -->
+<div class="page" id="page-content">
+  <div style="display:flex;flex-direction:column;gap:14px">
+    <div class="skel" style="height:130px;border-radius:var(--r4)"></div>
+    <div class="skel" style="height:62px;border-radius:var(--r3)"></div>
+    <div class="skel" style="height:180px;border-radius:var(--r3)"></div>
+  </div>
+</div>
+
+<!-- Edit Profile Modal -->
+<div class="modal-overlay hidden" id="edit-modal">
+  <div class="modal">
+    <div class="modal-title">Edit Profile</div>
+    <div class="modal-sub">Update your display name and bio. Username cannot be changed.</div>
+    <div class="modal-error" id="edit-error"></div>
+    <div class="form-group">
+      <label class="form-label" for="edit-name">Display Name</label>
+      <input class="form-input" type="text" id="edit-name" maxlength="50" placeholder="Dr. Priya Sharma"/>
+    </div>
+    <div class="form-group">
+      <label class="form-label" for="edit-bio">Bio</label>
+      <input class="form-input" type="text" id="edit-bio" maxlength="120" placeholder="MBBS · BPKIHS · Pokhara"/>
+      <span class="form-hint">Max 120 characters</span>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-save" id="btn-save-edit">Save</button>
+      <button class="btn-cancel" id="btn-cancel-edit">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- Pre-game overlay mount -->
+<div id="pregame-mount"></div>
+
+<!-- Toasts -->
+<div class="toast-stack" id="toasts"></div>
+
+<!-- Footer -->
+<footer class="hf">
+  <div class="hf-inner">
+    <div class="hf-top">
+      <div class="hf-brand">
+        <div class="hf-logo">⚕</div>
+        <div>
+          <div class="hf-name">Clinical Simulation OS</div>
+          <div class="hf-tagline">Free medical education for everyone</div>
+        </div>
+      </div>
+      <div class="hf-links">
+        <div class="hf-col">
+          <div class="hf-col-title">Navigate</div>
+          <a href="index.html" class="hf-link">Home</a>
+          <a href="cases.html" class="hf-link">All Cases</a>
+          <a href="profile.html" class="hf-link">Profile</a>
+        </div>
+        <div class="hf-col">
+          <div class="hf-col-title">About</div>
+          <a href="https://rajatcj.com" target="_blank" class="hf-link">Developer</a>
+          <a href="mailto:mail@rajatcj.com" class="hf-link">Contact</a>
+        </div>
+      </div>
+    </div>
+    <div class="hf-bottom">
+      <span>© 2026 Clinical Simulation OS · By <a href="https://rajatcj.com" target="_blank" class="hf-link-inline">Rajat CJ</a></span>
+      <span>Educational use only · Not for clinical decisions</span>
+    </div>
+  </div>
+</footer>
+
+<script type="module">
+import MedSim from './firebase.js';
+
+/* ── Constants ────────────────────────────────────────────────────────────── */
+const BADGES = [
+  { id:'first_blood',     name:'First Diagnosis',      icon:'🩺', desc:'Completed your first case.' },
+  { id:'perfect_score',   name:'Textbook Clinician',   icon:'⭐', desc:'Scored 95%+ on any case.' },
+  { id:'speed_clinician', name:'Speed Clinician',      icon:'⚡', desc:'Completed a case under 10 min.' },
+  { id:'budget_master',   name:'Budget Master',        icon:'💰', desc:'Cured patient under 40% budget.' },
+  { id:'no_blunders',     name:'First, Do No Harm',    icon:'🛡️', desc:'Completed a case with zero blunders.' },
+  { id:'diagnostician',   name:'Senior Diagnostician', icon:'🔬', desc:'Correctly diagnosed 10 cases.' },
+  { id:'veteran',         name:'Veteran',              icon:'🎖️', desc:'Played 25+ cases.' },
+  { id:'resident_grade',  name:'Resident Level',       icon:'📋', desc:'Average 75+ score over 5 cases.' },
+];
+
+const DEFAULT_DATE = '2026-01-01';
+
+/* ── State ────────────────────────────────────────────────────────────────── */
+const urlParams    = new URLSearchParams(window.location.search);
+const targetUser   = urlParams.get('u');
+let viewedProfile  = null;
+let isOwnProfile   = false;
+let currentUser    = null;
+let _caseIndex     = [];   // loaded once for card enrichment
+
+/* ── Load case index (for enriching history cards) ─────────────────────── */
+async function loadCaseIndex() {
+  try {
+    const r = await fetch('./data/caseIndex.json');
+    _caseIndex = await r.json();
+  } catch(_) { _caseIndex = []; }
+}
+
+/* ── Auth state ───────────────────────────────────────────────────────────── */
+MedSim.onAuthChange(async user => {
+  currentUser = user;
+
+  // Update nav
+  const authArea = document.getElementById('nav-auth-area');
+  const signoutBtn = document.getElementById('btn-signout');
+  if (user) {
+    let uname = user.displayName || user.email?.split('@')[0] || 'User';
+    try {
+      const p = await MedSim.getUserProfile(user.uid);
+      if (p?.username) uname = p.username;
+    } catch(_) {}
+    if (authArea) authArea.innerHTML = `<a href="profile.html" class="nav-user-pill"><div class="nav-user-dot"></div><span>${esc(uname)}</span></a>`;
+    signoutBtn?.classList.remove('hidden');
+  } else {
+    if (authArea) authArea.innerHTML = `<a href="login.html" class="nav-signin-link">Sign In</a>`;
+    signoutBtn?.classList.add('hidden');
+  }
+
+  await loadCaseIndex();
+  await loadProfile();
+});
+
+document.getElementById('btn-signout')?.addEventListener('click', async () => {
+  await MedSim.logOut();
+  window.location.href = 'index.html';
+});
+
+/* ── Load profile ─────────────────────────────────────────────────────────── */
+async function loadProfile() {
+  const page = document.getElementById('page-content');
+  try {
+    if (targetUser) {
+      viewedProfile = await MedSim.getProfileByUsername(targetUser);
+      isOwnProfile  = currentUser ? viewedProfile?.uid === currentUser.uid : false;
+    } else {
+      if (!currentUser) { page.innerHTML = renderNotLoggedIn(); return; }
+      viewedProfile = await MedSim.getUserProfile(currentUser.uid);
+      isOwnProfile  = true;
+    }
+
+    if (!viewedProfile) { page.innerHTML = renderNotFound(targetUser || ''); return; }
+
+    // Fetch score log — we only need caseId, timeElapsed, playedAt (not scores)
+    const rawLog = await MedSim.getUserScoreLog(viewedProfile.uid, 40);
+
+    document.title = `${viewedProfile.displayName || viewedProfile.username} · Clinical Sim OS`;
+    page.innerHTML = renderProfile(viewedProfile, rawLog, isOwnProfile);
+    bindProfileEvents(viewedProfile);
+    bindEditModal(viewedProfile);
+
+  } catch(e) {
+    page.innerHTML = `<div class="not-found"><div class="nf-icon">⚠️</div><div class="nf-title">Error loading profile</div><div class="nf-sub">${esc(e.message)}</div></div>`;
+  }
+}
+
+/* ── Render profile ───────────────────────────────────────────────────────── */
+function renderProfile(p, rawLog, isOwn) {
+  const initials = (p.displayName || p.username || '?').charAt(0).toUpperCase();
+  const joined   = p.joinedAt?.toDate?.()
+    ? p.joinedAt.toDate().toLocaleDateString('en-GB',{month:'short',year:'numeric'})
+    : '—';
+  const avgScore  = p.averageScore  ? p.averageScore.toFixed(1) : '—';
+  const totalTime = fmtPlayTime(p.totalTimePlayed || 0);
+
+  const tagsHTML = (p.tags || []).map(t =>
+    `<span class="profile-tag tag-${esc(t)}">${t.replace('_',' ')}</span>`
+  ).join('');
+
+  const actionBtns = isOwn
+    ? `<div class="profile-actions">
+        <button class="btn-edit" id="btn-open-edit">Edit</button>
+        <button class="btn-share" id="btn-share">Share</button>
+       </div>`
+    : `<div class="profile-actions"><button class="btn-share" id="btn-share">Share</button></div>`;
+
+  return `
+<!-- Header -->
+<div class="profile-header">
+  ${actionBtns}
+  <div class="profile-header-top">
+    <div class="profile-avatar">${initials}</div>
+    <div class="profile-main">
+      <div class="profile-displayname">${esc(p.displayName || p.username)}</div>
+      <div class="profile-username">@${esc(p.username)}</div>
+      ${p.bio ? `<div class="profile-bio">${esc(p.bio)}</div>` : ''}
+      <div class="profile-join">Joined ${joined}</div>
+      ${tagsHTML ? `<div class="profile-tags">${tagsHTML}</div>` : ''}
+    </div>
+  </div>
+</div>
+
+<!-- Stats -->
+<div class="stats-strip">
+  <div class="stat-box"><span class="stat-val">${p.totalCasesPlayed || 0}</span><span class="stat-lbl">Played</span></div>
+  <div class="stat-box"><span class="stat-val">${p.totalCasesSolved || 0}</span><span class="stat-lbl">Solved</span></div>
+  <div class="stat-box"><span class="stat-val">${avgScore}</span><span class="stat-lbl">Avg Score</span></div>
+  <div class="stat-box"><span class="stat-val">${totalTime}</span><span class="stat-lbl">Time Played</span></div>
+</div>
+
+<!-- Badges -->
+<div class="section-head">
+  <div class="section-head-title">Badges</div>
+  <div class="section-head-line"></div>
+  <div class="section-count">${(p.badges||[]).length} / ${BADGES.length}</div>
+</div>
+<div class="badges-grid">
+  ${BADGES.map(b => {
+    const earned = (p.badges||[]).includes(b.id);
+    return `<div class="badge-card ${earned?'':'locked'}">
+      <div class="badge-icon">${b.icon}</div>
+      <div class="badge-info">
+        <div class="badge-name">${b.name}</div>
+        <div class="badge-desc">${b.desc}</div>
+      </div>
+    </div>`;
+  }).join('')}
+</div>
+
+<!-- Case history -->
+<div class="section-head">
+  <div class="section-head-title">Case History</div>
+  <div class="section-head-line"></div>
+  <div class="section-count">${rawLog.length} ${rawLog.length===1?'case':'cases'}</div>
+</div>
+${rawLog.length
+  ? `<div class="case-history">${rawLog.map(entry => renderCaseHistoryCard(entry)).join('')}</div>`
+  : `<div class="empty-box">No cases played yet.</div>`
+}`;
+}
+
+/* ── Case history card ────────────────────────────────────────────────────── */
+function renderCaseHistoryCard(entry) {
+  // Find the matching case from caseIndex
+  const meta = _caseIndex.find(c => c.id === entry.caseId);
+
+  // Time taken (entry.timeElapsed is in seconds)
+  const timeTaken = entry.timeElapsed ? fmtDuration(entry.timeElapsed) : '—';
+
+  // When they completed it
+  const completedAt = entry.playedAt?.toDate
+    ? entry.playedAt.toDate().toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'})
+    : '—';
+
+  const diff    = meta?.difficulty || '—';
+  const diffCls = `diff-${diff}`;
+
+  // Fall back gracefully if case not in index (deleted/renamed)
+  if (!meta) {
+    return `
+<div class="ch-card" data-case-id="${esc(entry.caseId)}">
+  <div class="ch-body">
+    <div class="ch-top">
+      <span class="ch-diff ${diffCls}">${diff}</span>
+      <span class="ch-completed">Completed ${completedAt}</span>
+    </div>
+    <div class="ch-title" style="color:var(--text-lo)">${esc(entry.caseId)}</div>
+    <div class="ch-cc" style="font-style:normal;color:var(--text-dim)">Case data not available</div>
+  </div>
+  <div class="ch-footer">
+    <div class="ch-time"><span class="ch-time-icon">⏱</span><span class="ch-time-val">${timeTaken}</span></div>
+  </div>
+</div>`;
+  }
+
+  const tagsHTML = (meta.tags||[]).slice(0,4).map(t => `<span class="ch-tag">${esc(t)}</span>`).join('');
+
+  return `
+<div class="ch-card" data-case-id="${esc(meta.id)}" role="button" tabindex="0" title="Play again">
+  <div class="ch-body">
+    <div class="ch-top">
+      <span class="ch-diff ${diffCls}">${diff}</span>
+      <span class="ch-completed">Completed ${completedAt}</span>
+    </div>
+    <div class="ch-patient">
+      <div class="ch-dot"></div>
+      <span class="ch-patient-txt">${meta.patientAge}y ${esc(meta.patientSex)} · ${esc(meta.patientOccupation||meta.department||'—')}</span>
+    </div>
+    <div class="ch-title">${esc(meta.title)}</div>
+    <div class="ch-cc">"${esc(meta.chiefComplaint)}"</div>
+    ${tagsHTML ? `<div class="ch-tags">${tagsHTML}</div>` : ''}
+  </div>
+  <div class="ch-footer">
+    <div class="ch-time">
+      <span class="ch-time-icon">⏱</span>
+      <span class="ch-time-val">${timeTaken}</span>
+    </div>
+    <span class="ch-play">Play again →</span>
+  </div>
+</div>`;
+}
+
+/* ── Bind profile events ─────────────────────────────────────────────────── */
+function bindProfileEvents(p) {
+  // Share
+  document.getElementById('btn-share')?.addEventListener('click', () => {
+    const url = `${window.location.origin}/profile.html?u=${p.username}`;
+    if (navigator.share) {
+      navigator.share({ title: `${p.displayName} on Clinical Sim OS`, url });
+    } else {
+      navigator.clipboard.writeText(url).then(() => showToast('Profile URL copied', 'ok'));
+    }
+  });
+
+  // Case history cards — click to open pre-game modal
+  document.querySelectorAll('.ch-card[data-case-id]').forEach(card => {
+    card.addEventListener('click', () => openPreGame(card.dataset.caseId));
+    card.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' ') openPreGame(card.dataset.caseId); });
+  });
+}
+
+/* ── Pre-game modal (minimal version for profile page) ─────────────────── */
+async function openPreGame(caseId) {
+  const meta = _caseIndex.find(c => c.id === caseId);
+  if (!meta) { showToast('Case data not found', 'err'); return; }
+
+  const overlay = document.createElement('div');
+  overlay.className = 'pregame-overlay';
+  overlay.innerHTML = `
+<div class="pregame-modal">
+  <div class="pregame-head">
+    <div class="pregame-case-label">${esc(meta.category)} · ${esc(meta.difficulty)}</div>
+    <div class="pregame-title">${esc(meta.title)}</div>
+    <div class="pregame-patient">
+      <div class="pregame-patient-item"><strong>${meta.patientAge}y ${esc(meta.patientSex)}</strong><small>Patient</small></div>
+      <div class="pregame-patient-item"><strong>${esc(meta.patientOccupation||'—')}</strong><small>Occupation</small></div>
+      <div class="pregame-patient-item"><strong>${esc(meta.department||'—')}</strong><small>Department</small></div>
+      <div class="pregame-patient-item"><strong>${meta.stages} stages</strong><small>Progression</small></div>
+    </div>
+  </div>
+  <div class="pregame-rules">
+    <div class="rules-title">Simulation Rules</div>
+    <div class="rule-item"><div class="rule-icon">⏱️</div><div class="rule-text"><strong>1 real second = 1 sim minute.</strong> Disease progresses automatically. Skip with ⏩.</div></div>
+    <div class="rule-item"><div class="rule-icon">🔬</div><div class="rule-text"><strong>Investigations</strong> cost coins and take time. Results vary by stage.</div></div>
+    <div class="rule-item"><div class="rule-icon">🩺</div><div class="rule-text"><strong>Set a diagnosis</strong> to unlock disease-specific treatment. Change anytime.</div></div>
+    <div class="rule-item"><div class="rule-icon">💊</div><div class="rule-text"><strong>Wrong treatments</strong> incur penalties. Blunders can end the case.</div></div>
+    <div class="rule-item"><div class="rule-icon">🪙</div><div class="rule-text"><strong>Budget: ${meta.budget?.toLocaleString()} coins.</strong> Overspending penalises final score.</div></div>
+  </div>
+  <div class="pregame-meta">
+    <div class="meta-item"><div class="meta-label">Time</div><div class="meta-value">${meta.estimatedTime}</div></div>
+    <div class="meta-item"><div class="meta-label">Difficulty</div><div class="meta-value">${meta.difficulty}</div></div>
+    <div class="meta-item"><div class="meta-label">Budget</div><div class="meta-value coins">🪙 ${meta.budget?.toLocaleString()}</div></div>
+    <div class="meta-item"><div class="meta-label">Stages</div><div class="meta-value">${meta.stages}</div></div>
+  </div>
+  <div class="pregame-actions">
+    <button class="btn-start" id="pg-start">Play →</button>
+    <button class="btn-cancel-pg" id="pg-cancel">Cancel</button>
+  </div>
+</div>`;
+
+  document.body.appendChild(overlay);
+  document.getElementById('pg-cancel').addEventListener('click', ()=>overlay.remove());
+  overlay.addEventListener('click', e=>{ if(e.target===overlay) overlay.remove(); });
+  document.getElementById('pg-start').addEventListener('click', ()=>{
+    overlay.remove();
+    window.location.href = `index.html?play=${caseId}`;
+  });
+}
+
+/* ── Edit modal ───────────────────────────────────────────────────────────── */
+function bindEditModal(p) {
+  document.getElementById('btn-open-edit')?.addEventListener('click', () => {
+    document.getElementById('edit-name').value = p.displayName || '';
+    document.getElementById('edit-bio').value  = p.bio || '';
+    document.getElementById('edit-modal').classList.remove('hidden');
+  });
+
+  document.getElementById('btn-cancel-edit')?.addEventListener('click', () =>
+    document.getElementById('edit-modal').classList.add('hidden'));
+
+  document.getElementById('edit-modal')?.addEventListener('click', e => {
+    if (e.target === document.getElementById('edit-modal'))
+      document.getElementById('edit-modal').classList.add('hidden');
+  });
+
+  document.getElementById('btn-save-edit')?.addEventListener('click', async () => {
+    const btn  = document.getElementById('btn-save-edit');
+    const name = document.getElementById('edit-name').value.trim();
+    const bio  = document.getElementById('edit-bio').value.trim();
+    const err  = document.getElementById('edit-error');
+    err.classList.remove('show');
+    if (!name) { err.textContent = 'Display name cannot be empty.'; err.classList.add('show'); return; }
+    btn.disabled = true;
+    try {
+      await MedSim.updateUserProfile(viewedProfile.uid, { displayName: name, bio });
+      document.getElementById('edit-modal').classList.add('hidden');
+      showToast('Profile updated', 'ok');
+      setTimeout(() => window.location.reload(), 900);
+    } catch(e) {
+      err.textContent = e.message || 'Save failed. Try again.';
+      err.classList.add('show');
+      btn.disabled = false;
+    }
+  });
+}
+
+/* ── Not logged in / not found renders ───────────────────────────────────── */
+function renderNotLoggedIn() {
+  return `<div class="not-found">
+    <div class="nf-icon">🔒</div>
+    <div class="nf-title">Sign in to view your profile</div>
+    <div class="nf-sub" style="margin-top:10px"><a href="login.html" style="color:var(--green);font-family:var(--mono);font-size:11px">Sign In or Create Account →</a></div>
+  </div>`;
+}
+
+function renderNotFound(username) {
+  return `<div class="not-found">
+    <div class="nf-icon">🔍</div>
+    <div class="nf-title">Profile not found</div>
+    <div class="nf-sub">No user "@${esc(username)}" exists.</div>
+  </div>`;
+}
+
+/* ── Toast ────────────────────────────────────────────────────────────────── */
+function showToast(msg, type='ok') {
+  const c = document.getElementById('toasts');
+  if (!c) return;
+  const t = document.createElement('div');
+  t.className = `toast t-${type}`;
+  t.textContent = msg;
+  c.appendChild(t);
+  requestAnimationFrame(()=>t.classList.add('t-on'));
+  setTimeout(()=>{ t.classList.remove('t-on'); setTimeout(()=>t.remove(),300); }, 3200);
+}
+
+/* ── Helpers ──────────────────────────────────────────────────────────────── */
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function fmtPlayTime(seconds) {
+  if (!seconds||seconds<60) return '<1m';
+  const h = Math.floor(seconds/3600), m = Math.floor((seconds%3600)/60);
+  return h>0 ? `${h}h ${m}m` : `${m}m`;
+}
+function fmtDuration(seconds) {
+  if (!seconds) return '—';
+  const m = Math.floor(seconds/60), s = seconds%60;
+  return m>0 ? `${m}m ${s>0?s+'s':''}`.trim() : `${s}s`;
+}
+</script>
+</body>
+</html>
