@@ -25,7 +25,8 @@
 /* View more / stats row on case cards */
 .card-stats-row { display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;align-items:center; }
 .cs-stat { font-family:var(--mono);font-size:9px;color:var(--text-lo);background:var(--bg-up);padding:2px 7px;border-radius:99px; }
-.cs-author { color:var(--text-dim); }
+.cs-author { color:#06d4a0; border:1px solid #06d4a0}
+.cs-author:hover { background-color: #455a48; }
 
 /* Section view-all link */
 .section-view-all { font-family:var(--mono);font-size:10px;color:var(--green);text-decoration:none;white-space:nowrap;flex-shrink:0; }

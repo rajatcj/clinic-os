@@ -36,14 +36,17 @@ function homeHTML(cases) {
 ${cases.slice(0, 4).map(c => caseCardHTML(c)).join('')}
 `;
 }
-
+  
 function caseCardHTML(c) {
+  const dateStr   = c.createdAt ? _fmtDate(c.createdAt) : '1 Jan 2026';
+  const author    = c.author || 'Original';
+
   const diffClass = `diff-${c.difficulty}`;
   return `
     <div class="case-card" data-case-id="${c.id}" data-diff="${c.difficulty}" data-sys="${c.system}" tabindex="0" role="button" aria-label="Open case: ${c.title}">
       <div class="card-top">
         <span class="card-difficulty ${diffClass}">${c.difficulty}</span>
-        <span class="card-id">${c.id}</span>
+        <span class="card-id">${dateStr}</span>
       </div>
       <div class="card-patient">
         <div class="patient-dot"></div>
@@ -52,11 +55,12 @@ function caseCardHTML(c) {
       <div class="card-title">${c.title}</div>
       <div class="card-subtitle">${c.subtitle}</div>
       <div class="card-desc">${c.description}</div>
-      <div class="card-tags">${(c.tags||[]).map(t=>`<span class="card-tag">${t}</span>`).join('')}</div>
+      <div class="card-tags">${(c.tags||[]).map(t=>`<span class="card-tag">${t}</span>`).join('')}<span class="cs-stat cs-author" onClick="window.location.href='./profile.html?u=${_esc(author)}'">by ${_esc(author)}</span>
+  </div>
       <div class="card-footer">
         <div class="card-meta">
           <span class="card-time">⏱ ${c.estimatedTime}</span>
-          <span class="card-coins">🪙 ${c.budget?.toLocaleString()} starting coins</span>
+          <span class="card-coins">${c.budget?.toLocaleString()} starting coins</span>
         </div>
         <span class="card-cta">Start →</span>
       </div>
