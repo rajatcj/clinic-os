@@ -1,67 +1,12 @@
 /**
- * ClinicalUI v3 — Full UI controller
- * Changes from v2:
- *  - Custom CSS confirm/alert dialogs (no browser confirm/alert)
- *  - Mobile toasts appear at top
- *  - Auto-scroll to disease management on diagnosis selection
- *  - Proper cured endgame: review mode with notes/results revealed
- *  - Review mode HUD bar with "View Scorecard" button
- *  - Death/Transfer review mode (same reveal, different badge)
- *  - Mobile: activity log as FAB + bottom drawer with skip-time buttons
- *  - Back button removed (CSS hides it; end-case is the only exit)
- *  - Dynamic exam section rendering (any key in exam JSON)
+ * ClinicalUI v2 — Full UI controller
  */
 class ClinicalUI {
   constructor(engine, caseData) {
     this.engine    = engine;
     this.case      = caseData;
     this.activeTab = 'history';
-    this._reviewMode = false;
-    this._reviewOutcome = null; // 'cured' | 'death' | 'transfer'
-    this._cachedScore = null;
     this._bindEngineEvents();
-  }
-
-  // ── Custom confirm / alert ────────────────────────────────────────────────
-  _confirm(opts) {
-    // opts: { icon, title, msg, okLabel, okClass, cancelLabel, onOk, onCancel }
-    return new Promise(resolve => {
-      const overlay = document.createElement('div');
-      overlay.className = 'cconfirm-overlay';
-      overlay.innerHTML = `
-        <div class="cconfirm-box">
-          ${opts.icon ? `<div class="cconfirm-icon">${opts.icon}</div>` : ''}
-          ${opts.title ? `<div class="cconfirm-title">${opts.title}</div>` : ''}
-          ${opts.msg   ? `<div class="cconfirm-msg">${opts.msg}</div>` : ''}
-          <div class="cconfirm-btns">
-            <button class="cconfirm-btn-cancel">${opts.cancelLabel || 'Cancel'}</button>
-            <button class="cconfirm-btn-ok ${opts.okClass || ''}">${opts.okLabel || 'Confirm'}</button>
-          </div>
-        </div>`;
-      document.body.appendChild(overlay);
-      const close = (val) => { overlay.remove(); resolve(val); };
-      overlay.querySelector('.cconfirm-btn-cancel').onclick = () => close(false);
-      overlay.querySelector('.cconfirm-btn-ok').onclick     = () => close(true);
-      overlay.onclick = e => { if (e.target === overlay) close(false); };
-    });
-  }
-
-  _alert(opts) {
-    return new Promise(resolve => {
-      const overlay = document.createElement('div');
-      overlay.className = 'cconfirm-overlay';
-      overlay.innerHTML = `
-        <div class="cconfirm-box">
-          ${opts.icon ? `<div class="cconfirm-icon">${opts.icon}</div>` : ''}
-          ${opts.title ? `<div class="cconfirm-title">${opts.title}</div>` : ''}
-          ${opts.msg   ? `<div class="cconfirm-msg">${opts.msg}</div>` : ''}
-          <div class="cconfirm-btns">
-            <button class="cconfirm-btn-ok ok-green" style="flex:1">${opts.okLabel || 'OK'}</button>
-          </div>
-        </div>`;
-      document.body.appendChild(overlay);
-      overlay.querySelector('.cconfirm-btn-ok').onclick = () => { overlay.remove(); resolve(); };
-    });
   }
 
   // ── Engine bindings ───────────────────────────────────────────────────────
@@ -71,51 +16,49 @@ class ClinicalUI {
       .on('stateChanged',    ()  => this._updateHUD())
       .on('stageChanged',    d   => { this._updateHUD(); this._flashStage(d); })
       .on('testResult',      r   => { this._showToast(`📋 Result ready: ${r.name}`, 'info'); this._refreshResults(); })
-      .on('log',             e   => { this._appendLog(e); this._appendDrawerLog(e); })
+      .on('log',             e   => this._appendLog(e))
       .on('cured',           ()  => {
         this._updateHUD();
-        this._reviewMode = true;
-        this._reviewOutcome = 'cured';
+        this._showToast('✅ Patient cured!', 'success');
+        this._pulseGlow('green');
+        document.getElementById('btn-end')?.classList.add('btn-end-ready');
         this._onCureSubmit();
-        this._showCuredModal();
       })
       .on('gameOver',        d   => this._handleGameOver(d))
-      .on('diagnosisChanged',d   => {
-        this._renderDiagnosisTab();
-        this._renderDiseaseTab();
-        this._showToast(`🩺 Dx: ${d.label}`, 'info');
-        // Scroll to disease management
-        setTimeout(() => {
-          const anchor = document.getElementById('disease-scroll-anchor');
-          if (anchor) anchor.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 120);
-      });
+      .on('diagnosisChanged',d   => { this._renderDiagnosisTab(); this._renderDiseaseTab(); this._showToast(`🩺 Dx: ${d.label}`, 'info'); });
   }
 
   // ── Score submission on cure ──────────────────────────────────────────────
+  // ── Score submission on cure ──────────────────────────────────────────────
   async _onCureSubmit() {
-    const MS = window.MedSim;
-    if (!MS) return;
-    try {
-      const user = await new Promise(resolve => {
-        const current = MS.currentUser();
-        if (current !== null && current !== undefined) { resolve(current); return; }
-        const unsub = MS.onAuthChange(u => { unsub(); resolve(u); });
-      });
-      if (!user) return;
-      await user.getIdToken(true);
-      const result = await MS.submitGameResult(
-        this.case.id,
-        this.engine.getState(),
-        this.engine.calculateScore(),
-        this.engine.log
-      );
-      if (result.written) this._showToast('🏆 First attempt score saved!', 'success');
-      else if (result.alreadyPlayed) this._showToast('📋 Score recorded — first attempt stands.', 'info');
-    } catch (e) {
-      console.warn('Score submit failed:', e.code, e.message);
-    }
+  const MS = window.MedSim;
+  if (!MS) return;
+
+  try {
+    // Wait for Firebase Auth session to fully restore
+    const user = await new Promise(resolve => {
+      const current = MS.currentUser();
+      if (current !== null && current !== undefined) { resolve(current); return; }
+      const unsub = MS.onAuthChange(u => { unsub(); resolve(u); });
+    });
+    if (!user) return;
+
+    // Force token refresh so Firestore rules see request.auth as non-null
+    await user.getIdToken(true);
+    console.log('Token refreshed, uid:', user.uid);
+
+    const result = await MS.submitGameResult(
+      this.case.id,
+      this.engine.getState(),
+      this.engine.calculateScore(),
+      this.engine.log
+    );
+    if (result.written) this._showToast('🏆 First attempt score saved!', 'success');
+    else if (result.alreadyPlayed) this._showToast('📋 Score recorded — first attempt stands.', 'info');
+  } catch (e) {
+    console.warn('Score submit failed:', e.code, e.message);
   }
+}
 
   // ── Render game ───────────────────────────────────────────────────────────
   renderGame() {
@@ -128,7 +71,6 @@ class ClinicalUI {
     this._renderGeneralTab();
     this._renderDiagnosisTab();
     this._renderDiseaseTab();
-    this._buildMobileLogFAB();
   }
 
   _gameHTML() {
@@ -140,6 +82,7 @@ class ClinicalUI {
           <button class="btn-back" id="btn-back">←</button>
           <div class="case-title-small">${c.title}</div>
         </div>
+        <div class="hud-vitals" id="///hud-vitals"></div>
         <div class="header-right">
           <div class="hud-stats">
             <div class="hud-stat btn-jump" id="btn-jump"><span class="hud-label">TIME</span><span class="hud-value mono" id="stat-time">00h 00m</span></div>
@@ -151,11 +94,6 @@ class ClinicalUI {
           </div>
         </div>
       </header>
-
-      <div id="review-mode-bar" style="display:none" class="review-mode-bar">
-        <div class="review-label">📖 REVIEW MODE, All notes unlocked</div>
-        <button class="btn-to-score" id="btn-review-to-score">View Scorecard →</button>
-      </div>
 
       <div class="patient-banner">
         <div class="patient-avatar">
@@ -188,7 +126,6 @@ class ClinicalUI {
           <div class="tab-panel" id="tab-general"></div>
           <div class="tab-panel" id="tab-diagnosis">
             <div id="tab-diagnosiss"></div>
-            <div id="disease-scroll-anchor"></div>
             <div id="tab-disease"></div>
           </div>
         </div>
@@ -198,25 +135,6 @@ class ClinicalUI {
         <div class="log-header">Activity Log</div>
         <div class="log-entries" id="log-entries"></div>
       </aside>
-    </div>
-
-    <!-- Mobile log drawer -->
-    <div class="log-drawer" id="log-drawer">
-      <div class="log-drawer-backdrop" id="log-drawer-backdrop"></div>
-      <div class="log-drawer-sheet">
-        <div class="log-drawer-header">
-          <div class="log-drawer-title">📋 Activity Log</div>
-          <div class="log-drawer-skip">
-            <button class="log-drawer-skip-btn" data-h="0.5">+30m</button>
-            <button class="log-drawer-skip-btn" data-h="1">+1h</button>
-            <button class="log-drawer-skip-btn" data-h="2">+2h</button>
-            <button class="log-drawer-skip-btn" data-h="4">+4h</button>
-            <button class="log-drawer-skip-btn" data-h="6">+6h</button>
-          </div>
-        </div>
-        <div class="log-drawer-entries" id="log-drawer-entries"></div>
-        <button class="log-drawer-close" id="log-drawer-close">✕ Close</button>
-      </div>
     </div>
 
     <div class="modal-overlay hidden" id="modal-jump">
@@ -241,78 +159,12 @@ class ClinicalUI {
     <div class="modal-overlay hidden" id="modal-gameover">
       <div class="modal modal-gameover" id="gameover-content"></div>
     </div>
-    <div class="modal-overlay hidden" id="modal-cured">
-      <div class="modal modal-cured" id="cured-content"></div>
-    </div>
     <div class="toast-container" id="toasts"></div>`;
-  }
-
-  // ── Mobile FAB + drawer ───────────────────────────────────────────────────
-  _buildMobileLogFAB() {
-    const fab = document.createElement('button');
-    fab.className = 'log-fab';
-    fab.id = 'log-fab';
-    fab.innerHTML = `📋<span class="fab-dot"></span>`;
-    fab.title = 'Activity Log';
-    document.body.appendChild(fab);
-
-    fab.addEventListener('click', () => this._openLogDrawer());
-    document.getElementById('log-drawer-close')?.addEventListener('click', () => this._closeLogDrawer());
-    document.getElementById('log-drawer-backdrop')?.addEventListener('click', () => this._closeLogDrawer());
-
-    document.querySelectorAll('.log-drawer-skip-btn').forEach(b => {
-      b.addEventListener('click', () => {
-        this.engine.jumpTime(parseFloat(b.dataset.h));
-        this._renderTestsTab();
-        this._renderGeneralTab();
-        this._renderDiseaseTab();
-        this._closeLogDrawer();
-      });
-    });
-  }
-
-  _openLogDrawer() {
-    const drawer = document.getElementById('log-drawer');
-    if (drawer) drawer.classList.add('open');
-    const fab = document.getElementById('log-fab');
-    if (fab) fab.classList.remove('has-new');
-  }
-
-  _closeLogDrawer() {
-    const drawer = document.getElementById('log-drawer');
-    if (drawer) drawer.classList.remove('open');
-  }
-
-  _appendDrawerLog(e) {
-    const c = document.getElementById('log-drawer-entries');
-    if (!c) return;
-    const d = document.createElement('div');
-    d.className = `log-entry log-${e.type}`;
-    d.innerHTML = `<span class="log-time">${e.timeLabel}</span><span class="log-msg">${e.msg}</span>`;
-    c.appendChild(d);
-    c.scrollTop = c.scrollHeight;
-    // Light up FAB
-    const fab = document.getElementById('log-fab');
-    const drawer = document.getElementById('log-drawer');
-    if (fab && drawer && !drawer.classList.contains('open')) {
-      fab.classList.add('has-new');
-    }
   }
 
   // ── History tab ───────────────────────────────────────────────────────────
   _renderHistoryTab() {
     const cp = this.case.clinicalPresentation, p = cp.patientParticulars;
-
-    // Dynamic exam sections — render ALL keys in cp.exam, not just general/others
-    const examSectionsHTML = Object.entries(cp.exam || {}).map(([key, val]) => {
-      const label = key.replace(/([A-Z])/g, ' $1').trim().toUpperCase();
-      const items = Array.isArray(val) ? val : [val];
-      return `<div class="exam-section">
-        <div class="exam-label">${label}</div>
-        <ul class="detail-list">${items.map(e => `<li>${e}</li>`).join('')}</ul>
-      </div>`;
-    }).join('');
-
     document.getElementById('tab-history').innerHTML = `
       <div class="history-grid">
         <div class="info-card">
@@ -357,7 +209,10 @@ class ClinicalUI {
         </div>
         <div class="info-card full-width">
           <div class="card-label">Examination</div>
-          <div class="exam-sections">${examSectionsHTML}</div>
+          <div class="exam-sections">
+            <div class="exam-section"><div class="exam-label">General</div><ul class="detail-list">${cp.exam.general.map(e=>`<li>${e}</li>`).join('')}</ul></div>
+            ${cp.exam.others?.length ? `<div class="exam-section"><div class="exam-label">Others</div><ul class="detail-list">${cp.exam.others.map(e=>`<li>${e}</li>`).join('')}</ul></div>` : ''}
+          </div>
         </div>
         ${this.case.clinicalClue ? `
         <div class="info-card full-width clue-card">
@@ -387,53 +242,35 @@ class ClinicalUI {
 
   // ── Tests tab ─────────────────────────────────────────────────────────────
   _renderTestsTab() {
-    const cats  = [...new Set(this.case.tests.map(t=>t.category))];
+    const cats = [...new Set(this.case.tests.map(t=>t.category))];
     const stage = this.engine.state.stage;
-    const review = this._reviewMode;
-
     document.getElementById('tab-testss').innerHTML = `<br><div class="disease-mgmt-label">SELECT YOUR TESTS:</div><div class="tests-container">` +
       cats.map(cat => {
         const tests = this.case.tests.filter(t=>t.category===cat);
         return `<div class="test-category"><div class="category-label">${cat}</div><div class="test-grid">
           ${tests.map(t => {
-            const pend  = this.engine.state.pendingResults.some(r=>r.testId===t.id);
-            const done  = this.engine.state.completedTests.some(r=>r.testId===t.id);
+            const pend = this.engine.state.pendingResults.some(r=>r.testId===t.id);
+            const done = this.engine.state.completedTests.some(r=>r.testId===t.id);
             const avail = t.stageAvailability?.includes(stage);
-            const cls   = pend?'test-pending':done?'test-done':!avail&&!review?'test-unavailable':'';
-
-            // In review mode, show all stage results for each test
-            let reviewBlock = '';
-            if (review && t.results) {
-              reviewBlock = `<div class="review-stage-results">` +
-                Object.entries(t.results).map(([stg, res]) => {
-                  const stgLabel = this.case.stages?.[stg]?.label || stg;
-                  return `<div class="review-stage-row"><strong>${stgLabel}:</strong> <span>${res}</span></div>`;
-                }).join('') +
-                `</div>`;
-            }
-
+            const cls = pend?'test-pending':done?'test-done':!avail?'test-unavailable':'';
             return `<div class="test-card ${cls}" id="tc-${t.id}">
               <div class="test-name">${t.name}</div>
               <div class="test-fullname">${t.fullName}</div>
               <div class="test-meta"><span>⏱ ${this.engine._fmtDur(t.time)}</span><span>🪙${t.cost}</span>${t.type==='dummy'?'<span class="test-type-dummy">Non-specific</span>':''}</div>
-              ${review
-                ? `<div class="test-status done">📖 Review</div>${reviewBlock}`
-                : !avail&&!done&&!pend?'<div class="test-status">Not available</div>'
-                  :pend?'<div class="test-status">⏳ Pending…</div>'
-                  :done?'<div class="test-status done">✅ Done</div>'
-                  :`<button class="btn-order" data-tid="${t.id}">Order</button>`}
+              ${!avail&&!done&&!pend?'<div class="test-status">Not available</div>'
+                :pend?'<div class="test-status">⏳ Pending…</div>'
+                :done?'<div class="test-status done">✅ Done</div>'
+                :`<button class="btn-order" data-tid="${t.id}">Order</button>`}
             </div>`;
           }).join('')}
         </div></div>`;
       }).join('') + `</div>`;
 
-    if (!review) {
-      document.querySelectorAll('.btn-order[data-tid]').forEach(b => b.addEventListener('click', () => {
-        const res = this.engine.orderTest(b.dataset.tid);
-        if (res.success) { this._renderTestsTab(); if(res.willOverspend) this._showToast('⚠️ Over budget — score penalised','warning'); }
-        else this._showToast(res.msg,'warning');
-      }));
-    }
+    document.querySelectorAll('.btn-order[data-tid]').forEach(b => b.addEventListener('click', () => {
+      const res = this.engine.orderTest(b.dataset.tid);
+      if (res.success) { this._renderTestsTab(); if(res.willOverspend) this._showToast('⚠️ Over budget — score penalised','warning'); }
+      else this._showToast(res.msg,'warning');
+    }));
   }
 
   // ── Results tab ───────────────────────────────────────────────────────────
@@ -448,9 +285,8 @@ class ClinicalUI {
     if (!panel) return;
 
     const stateKey = JSON.stringify({
-      d: done.map(x=>x.name),
-      p: pend.map(x=>x.testId),
-      r: this._reviewMode
+      d: done.map(x => x.name),
+      p: pend.map(x => x.testId)
     });
 
     if (panel.dataset.lastKey === stateKey) {
@@ -465,49 +301,32 @@ class ClinicalUI {
 
     panel.dataset.lastKey = stateKey;
 
-    // In review mode: show ALL test results for all stages
-    if (this._reviewMode) {
-      let html = '<br><div class="disease-mgmt-label">ALL TEST RESULTS (REVIEW):</div>';
-      html += this.case.tests.map(t => {
-        const stageResultsHTML = Object.entries(t.results || {}).map(([stg, res]) => {
-          const stgLabel = this.case.stages?.[stg]?.label || stg;
-          const interp   = t.interpretation?.[stg] || '';
-          return `<div class="review-stage-row"><strong>${stgLabel}:</strong> <span>${res}</span>
-            ${interp ? `<br><em style="color:var(--blue);font-size:9px">💡 ${interp}</em>` : ''}</div>`;
-        }).join('');
-        return `
-          <div class="result-card review-reveal">
-            <div class="result-header">
-              <span class="result-name">${t.name}</span>
-              <span class="result-time">${t.fullName}</span>
-            </div>
-            <div class="review-stage-results">${stageResultsHTML}</div>
-          </div>`;
-      }).join('');
-      panel.innerHTML = `<div class="results-container">${html}</div>`;
-      return;
-    }
-
     if (!done.length && !pend.length) {
       panel.innerHTML = `
         <br>
         <div class="disease-mgmt-label">TEST REPORTS:</div>
-        <div class="empty-state">No investigations ordered yet.</div>`;
+        <div class="empty-state">No investigations ordered yet.</div>
+      `;
       return;
     }
 
     let html = '<br><div class="disease-mgmt-label">TEST REPORTS:</div>';
+
     if (pend.length) {
       html += `<div class="results-section-label">⏳ Awaiting Results (Click on the clock at the top to skip time)</div>`;
       html += pend.map(r => {
-        const t   = this.case.tests.find(x=>x.id===r.testId);
+        const t = this.case.tests.find(x => x.id === r.testId);
         const eta = Math.max(0, r.readyAt - this.engine.state.time);
-        return `<div class="result-card pending">
-          <div class="result-name">${t?.name||r.testId}</div>
-          <div class="result-eta" data-eta="${r.testId}">ETA: ~${this.engine._fmtDur(eta)}</div>
-        </div>`;
+        return `
+          <div class="result-card pending">
+            <div class="result-name">${t?.name || r.testId}</div>
+            <div class="result-eta" data-eta="${r.testId}">
+              ETA: ~${this.engine._fmtDur(eta)}
+            </div>
+          </div>`;
       }).join('');
     }
+
     if (done.length) {
       html += `<div class="results-section-label">✅ Results Available</div>`;
       html += done.slice().reverse().map(r => `
@@ -518,99 +337,74 @@ class ClinicalUI {
           </div>
           <div class="result-text">${r.result}</div>
           ${r.interpretation ? `<div class="result-interp">💡 ${r.interpretation}</div>` : ''}
-        </div>`).join('');
+        </div>
+      `).join('');
     }
+
     panel.innerHTML = `<div class="results-container">${html}</div>`;
   }
 
   // ── General management tab ────────────────────────────────────────────────
   _renderGeneralTab() {
-    const given  = this.engine.state.givenManagement.map(g=>g.id);
-    const opts   = this.case.managementOptions.general || [];
-    const review = this._reviewMode;
-
+    const given = this.engine.state.givenManagement.map(g=>g.id);
+    const opts  = this.case.managementOptions.general || [];
     document.getElementById('tab-general').innerHTML = `
-      <br><div class="disease-mgmt-label">GENERAL MANAGEMENT:</div><br>
-      <div class="mgmt-container" style="width:100%"><div class="mgmt-grid">` +
+      <br><div class="disease-mgmt-label">GENERAL MANAGEMENT:</div><br><div class="mgmt-container" style="width:100%"><div class="mgmt-grid">` +
       opts.map(m => {
         const isGiven = given.includes(m.id);
-        const isBad   = m.type==='wrong'||m.type==='dummy';
-
-        // Collect all stage notes for review
-        let reviewNotes = '';
-        if (review && m.stageEffect) {
-          reviewNotes = Object.entries(m.stageEffect).map(([stg, eff]) => {
-            const stgLabel = this.case.stages?.[stg]?.label || stg;
-            return eff.note ? `<span class="review-note-pill ${isBad?'pill-warn':''}">${stgLabel}: ${eff.note}</span>` : '';
-          }).join('');
-        }
-
-        return `<div class="mgmt-card ${isGiven?'mgmt-given':''} ${isBad?'mgmt-wrong':''} ${review?'review-open':''}">
+        const isBad = m.type==='wrong'||m.type==='dummy';
+        return `<div class="mgmt-card ${isGiven?'mgmt-given':''} ${isBad?'mgmt-wrong':''}">
           <div class="mgmt-name">${m.name}</div>
           <div class="mgmt-fullname">${m.fullName}</div>
           <div class="mgmt-meta"><span>🪙${m.cost}</span>${isBad?`<span class="badge-wrong">⚠️ CAUTION</span>`:''}</div>
-          ${isGiven
-            ? '<div class="mgmt-done">✅ Done</div>'
-            : review
-              ? '<div class="mgmt-done" style="color:var(--text-dim)">— Not administered</div>'
-              : `<button class="btn-give btn-give-gen" data-mid="${m.id}">Administer</button>`}
-          ${review && reviewNotes ? `<div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:4px">${reviewNotes}</div>` : ''}
-          ${review && m.description ? `<div class="mgmt-review-note" style="display:block">${m.description}</div>` : ''}
+          ${isGiven?'<div class="mgmt-done">✅ Done</div>':`<button class="btn-give btn-give-gen" data-mid="${m.id}">Administer</button>`}
         </div>`;
       }).join('') + `</div></div>`;
 
-    if (!review) {
-      document.querySelectorAll('.btn-give-gen').forEach(b => b.addEventListener('click', () => {
-        const res = this.engine.applyGeneralManagement(b.dataset.mid);
-        if (res.success) { this._renderGeneralTab(); this._updateHUD(); }
-        else this._showToast(res.msg,'warning');
-      }));
-    }
+    document.querySelectorAll('.btn-give-gen').forEach(b => b.addEventListener('click', () => {
+      const res = this.engine.applyGeneralManagement(b.dataset.mid);
+      if (res.success) { this._renderGeneralTab(); this._updateHUD(); }
+      else this._showToast(res.msg,'warning');
+    }));
   }
 
   // ── Diagnosis tab ──────────────────────────────────────────────────────────
   _renderDiagnosisTab() {
-    const cur    = this.engine.state.selectedDiagnosis;
-    const opts   = this.case.diagnosisOptions;
-    const review = this._reviewMode;
-
+    const cur  = this.engine.state.selectedDiagnosis;
+    const opts = this.case.diagnosisOptions;
     document.getElementById('tab-diagnosiss').innerHTML = `
       <div class="diagnosis-container">
         <br><div class="disease-mgmt-label">SELECT YOUR DIAGNOSIS:</div>
-        ${!review ? `<div class="diagnosis-info-box">🔒 The <strong>Treatment</strong> tab unlocks after you select a diagnosis. You can change it at any time — the final selection at case end is scored.</div>` : ''}
+        <div class="diagnosis-info-box">🔒 The <strong>Treatment</strong> tab unlocks after you select a diagnosis. You can change it at any time — the final selection at case end is scored.</div>
         <div class="diagnosis-options">
-          ${opts.map(o => {
-            const isCorrect = o.correct;
-            return `<div class="diagnosis-option ${cur===o.id?'selected':''}" data-did="${o.id}" style="${review&&isCorrect?'border-color:rgba(13,189,139,.5);background:rgba(13,189,139,.05)':''}">
-              <div class="diag-radio ${cur===o.id?'filled':''}"></div>
-              <div class="diag-label">${o.label}${review&&isCorrect?' <span style="color:var(--green);font-size:10px">✓ Correct</span>':''}</div>
-            </div>`;
-          }).join('')}
+          ${opts.map(o=>`<div class="diagnosis-option ${cur===o.id?'selected':''}" data-did="${o.id}">
+            <div class="diag-radio ${cur===o.id?'filled':''}"></div>
+            <div class="diag-label">${o.label}</div>
+          </div>`).join('')}
         </div>
         <div class="diag-current">${cur?`Working Dx: <strong>${opts.find(o=>o.id===cur)?.label}</strong>`:'No diagnosis selected'}</div><br><br>
       </div>`;
 
-    if (!review) {
-      document.querySelectorAll('.diagnosis-option').forEach(el => el.addEventListener('click', () => {
-        this.engine.setDiagnosis(el.dataset.did);
-      }));
-    }
+    document.querySelectorAll('.diagnosis-option').forEach(el => el.addEventListener('click', () => {
+      this.engine.setDiagnosis(el.dataset.did);
+    }));
   }
 
   // ── Disease-specific treatment tab ────────────────────────────────────────
   _renderDiseaseTab() {
     const diagId = this.engine.state.selectedDiagnosis;
     const panel  = document.getElementById('tab-disease');
-    const review = this._reviewMode;
-
+    const lock   = document.getElementById('treatment-lock');
     if (!diagId) {
-      panel.innerHTML = `<div class="locked-treatment"><div class="lock-icon">🔒</div><div class="lock-title">Treatment Locked</div><div class="lock-desc">Select a working diagnosis in the Diagnosis tab to unlock disease-specific treatment options.</div></div>`;
+      if(lock){lock.textContent='🔒';lock.classList.add('badge-locked');}
+      panel.innerHTML=`<div class="locked-treatment"><div class="lock-icon">🔒</div><div class="lock-title">Treatment Locked</div><div class="lock-desc">Select a working diagnosis in the Diagnosis tab to unlock disease-specific treatment options.</div></div>`;
       return;
     }
+    if(lock){lock.textContent='';lock.classList.remove('badge-locked');}
 
     const diagLabel = this.case.diagnosisOptions.find(d=>d.id===diagId)?.label||diagId;
-    const opts      = this.case.managementOptions.diseaseSpecific?.[diagId];
-    if (!opts) { panel.innerHTML = `<div class="empty-state">No treatment options for: ${diagLabel}</div>`; return; }
+    const opts = this.case.managementOptions.diseaseSpecific?.[diagId];
+    if (!opts) { panel.innerHTML=`<div class="empty-state">No treatment options for: ${diagLabel}</div>`; return; }
 
     const given = this.engine.state.givenManagement.map(g=>g.id);
     const stage = this.engine.state.stage;
@@ -624,54 +418,35 @@ class ClinicalUI {
       opts.map(m => {
         const isGiven   = given.includes(m.id);
         const eff       = m.stageEffect?.[stage] || {};
-        const isBlocked = eff.blocked && !review;
-
-        // Build review notes across all stages
-        let reviewNotes = '';
-        if (review && m.stageEffect) {
-          reviewNotes = Object.entries(m.stageEffect).map(([stg, e]) => {
-            const stgLabel = this.case.stages?.[stg]?.label || stg;
-            const parts = [];
-            if (e.note) parts.push(e.note);
-            if (e.cure) parts.push('✅ Curative');
-            if (e.penalty) parts.push(`⚠️ Penalty: ${e.penalty}`);
-            if (e.blocked) parts.push('🚫 Blocked at this stage');
-            return parts.length ? `<div class="review-stage-row"><strong>${stgLabel}:</strong> <span>${parts.join(' · ')}</span></div>` : '';
-          }).join('');
-        }
-
-        const typeColor = m.type==='curative'?'mgmt-curative':m.type==='wrong'?'mgmt-wrong':m.type==='blunder'?'mgmt-blunder':'';
-        return `<div class="mgmt-card ${typeColor} ${isGiven?'mgmt-given':''} ${isBlocked?'mgmt-blocked':''} ${review?'review-open':''}">
+        const isBlocked = eff.blocked;
+        const cls = [isGiven?'mgmt-given':'', m.type==='curative'?'mgmt-curative':'', m.type==='wrong'?'mgmt-wrong':'', m.type==='blunder'?'mgmt-blunder':'', isBlocked?'mgmt-blocked':''].join(' ');
+        return `<div class="mgmt-card">
           <div class="mgmt-name">${m.name}</div>
           <div class="mgmt-fullname">${m.fullName}</div>
-          <div class="mgmt-meta"><span>🪙${m.cost}</span></div>
-          ${isGiven
-            ? '<div class="mgmt-done">✅ Administered</div>'
-            : isBlocked
-              ? `<div class="mgmt-blocked-msg">🚫 ${eff.note||'Not applicable now'}</div>`
-              : review
-                ? '<div class="mgmt-done" style="color:var(--text-dim)">— Not administered</div>'
-                : `<button class="btn-give btn-give-dis" data-mid="${m.id}" data-did="${diagId}">Administer</button>`}
-          ${review && reviewNotes ? `<div class="review-stage-results">${reviewNotes}</div>` : ''}
-          ${review && m.description ? `<div class="mgmt-review-note" style="display:block">${m.description}</div>` : ''}
+          <div class="mgmt-meta">
+            <span>🪙${m.cost}</span>
+          </div>
+          ${isGiven?'<div class="mgmt-done">✅ Administered</div>'
+            :isBlocked?`<div class="mgmt-blocked-msg">🚫 ${eff.note||'Not applicable now'}</div>`
+            :`<button class="btn-give btn-give-dis" data-mid="${m.id}" data-did="${diagId}">Administer</button>`}
         </div>`;
       }).join('') + `</div></div>`;
 
-    if (!review) {
-      document.querySelectorAll('.btn-give-dis').forEach(b => b.addEventListener('click', () => {
-        const res = this.engine.applyDiseaseManagement(b.dataset.mid, b.dataset.did);
-        if (res.success) { this._renderDiseaseTab(); this._renderGeneralTab(); this._updateHUD(); }
-        else this._showToast(res.msg,'warning');
-      }));
-    }
+    document.querySelectorAll('.btn-give-dis').forEach(b => b.addEventListener('click', () => {
+      const res = this.engine.applyDiseaseManagement(b.dataset.mid, b.dataset.did);
+      if (res.success) { this._renderDiseaseTab(); this._renderGeneralTab(); this._updateHUD(); }
+      else this._showToast(res.msg,'warning');
+    }));
   }
 
   // ── HUD ───────────────────────────────────────────────────────────────────
   _updateHUD() {
     const s = this.engine.state;
-
     const te = document.getElementById('stat-time');
     if (te) te.textContent = this.engine._formatTime(s.time);
+
+    const se = document.getElementById('stat-stage');
+    if (se) { se.textContent = this.engine.getCurrentStageLabel(); se.className = `hud-value mono stage-color-${this.engine.getCurrentStageColor()}`; }
 
     const be = document.getElementById('stat-budget');
     if (be) {
@@ -680,10 +455,8 @@ class ClinicalUI {
       be.className   = `hud-value mono${over?' budget-over':rem<600?' budget-low':''}`;
     }
 
-    // Vitals HUD
-    const renderVitals = (id) => {
-      const ve = document.getElementById(id);
-      if (!ve) return;
+    const ve = document.getElementById('hud-vitals');
+    if (ve) {
       const wHR = s.vitals.hr>110||s.vitals.hr<50;
       const wBP = parseInt((s.vitals.bp||'120/80').split('/')[0])<100;
       const wT  = s.vitals.temp>38.5;
@@ -692,45 +465,21 @@ class ClinicalUI {
         <div class="vital-hud-item${wBP?' vital-warn':''}">🫀 ${s.vitals.bp}</div>
         <div class="vital-hud-item${wT?' vital-warn':''}">🌡️ ${s.vitals.temp}°C</div>
         <div class="vital-hud-item">💨 ${s.vitals.rr||18}</div>`;
-    };
-    renderVitals('hud-vitals');
-    renderVitals('hud-vitals-header');
-
-    // Stage badge
-    let color, badgeLabel, badgeClass;
-    if (this._reviewMode) {
-      if (this._reviewOutcome === 'cured') {
-        color = 'green'; badgeLabel = '✅ Cured'; badgeClass = 'stage-badge-cured-review';
-      } else if (this._reviewOutcome === 'death') {
-        color = 'red'; badgeLabel = '💀 Death'; badgeClass = 'stage-badge-death';
-      } else {
-        color = 'amber'; badgeLabel = '🚑 Transferred'; badgeClass = 'stage-badge-transfer';
-      }
-    } else {
-      color      = s.cured ? 'green' : this.engine.getCurrentStageColor();
-      badgeLabel = this.engine.getCurrentStageLabel();
-      badgeClass = `stage-badge-${color}`;
     }
 
+    const color = s.cured ? 'green' : this.engine.getCurrentStageColor();
     const glow  = document.getElementById('stage-glow');
     const badge = document.getElementById('stage-badge');
     const btext = document.getElementById('stage-badge-text');
     if (glow)  glow.className  = `stage-glow glow-${color}`;
-    if (badge) badge.className = `patient-stage-badge ${badgeClass}`;
-    if (btext) btext.textContent = badgeLabel;
-
-    // Review mode bar
-    // if (this._reviewMode) {
-    //   const bar = document.getElementById('review-mode-bar');
-    //   if (bar) bar.style.display = 'flex';
-    // }
+    if (badge) badge.className = `patient-stage-badge stage-badge-${color}`;
+    if (btext) btext.textContent = this.engine.getCurrentStageLabel();
 
     this._updateSymptoms();
     this._refreshResults();
-
     this.case.tests.forEach(t => {
       const card = document.getElementById(`tc-${t.id}`);
-      if (!card || this._reviewMode) return;
+      if (!card) return;
       const pend  = this.engine.state.pendingResults.some(r=>r.testId===t.id);
       const done  = this.engine.state.completedTests.some(r=>r.testId===t.id);
       const avail = t.stageAvailability?.includes(this.engine.state.stage);
@@ -777,80 +526,8 @@ class ClinicalUI {
     if (g) { g.className=`stage-glow glow-${color} glow-pulse`; }
   }
 
-  // ── Cured endgame modal ───────────────────────────────────────────────────
-  _showCuredModal() {
-    this._pulseGlow('green');
-    document.getElementById('btn-end')?.classList.add('btn-end-ready');
-    
-
-    const modal = document.getElementById('modal-cured');
-    const cont  = document.getElementById('cured-content');
-    if (!modal || !cont) return;
-
-    const sc = this.engine.calculateScore();
-    this._cachedScore = sc;
-
-    cont.innerHTML = `
-      <div class="cured-header">
-        <div class="cured-icon">✅</div>
-        <div class="cured-title">Patient Cured!</div>
-        <div class="cured-sub">Excellent work! The patient has recovered. You can now review the full case details — all notes, drug mechanisms, and test results across all disease stages are now unlocked.</div>
-      </div>
-      <div class="cured-actions">
-        <button class="btn-review-case" id="cured-btn-review">📖 Study Case (Review Mode)</button>
-        <button class="btn-score-now" id="cured-btn-score">🏆 View Scorecard</button>
-      </div>`;
-
-    modal.classList.remove('hidden');
-
-    document.getElementById('cured-btn-review')?.addEventListener('click', () => {
-      modal.classList.add('hidden');
-      this._enterReviewMode();
-    });
-    document.getElementById('cured-btn-score')?.addEventListener('click', () => {
-      modal.classList.add('hidden');
-      this.showScoreModal(sc);
-    });
-  }
-
-  _enterReviewMode() {
-    this._reviewMode = true;
-    this._updateHUD();
-    this._renderHistoryTab();
-    this._renderTestsTab();
-    this._refreshResults();
-    this._renderGeneralTab();
-    this._renderDiagnosisTab();
-    this._renderDiseaseTab();
-    this._showToast('📖 Review Mode — all notes and results unlocked', 'info');
-
-    document.querySelector('.game-header').style.padding = "0";
-    document.querySelector('.game-header').style.margin = "0";
-    document.querySelector(".game-header").innerHTML = `
-      <div id="review-mode-bar" class="review-mode-bar">
-        <div class="review-label">📖 REVIEW MODE, All notes unlocked</div>
-        <button class="btn-to-score" id="btn-review-to-score">View Scorecard →</button>
-      </div>`;
-    // Hide game controls that no longer apply
-    const btnEnd    = document.getElementById('btn-end');
-    const btnResign = document.getElementById('btn-resign');
-    if (btnEnd)    { btnEnd.style.display = 'none'; }
-    if (btnResign) { btnResign.style.display = 'none'; }
-
-    // Wire review-to-score button
-    document.getElementById('btn-review-to-score')?.addEventListener('click', () => {
-      this.showScoreModal(this._cachedScore || this.engine.calculateScore());
-    });
-  }
-
   // ── Game Over ─────────────────────────────────────────────────────────────
   _handleGameOver(d) {
-    this._reviewMode    = true;
-    this._reviewOutcome = d.reason === 'death' ? 'death' : 'transfer';
-
-    const sc = this.engine.calculateScore();
-    this._cachedScore = sc;
-
     const modal = document.getElementById('modal-gameover');
     const cont  = document.getElementById('gameover-content');
     if (!modal||!cont) return;
@@ -862,19 +539,13 @@ class ClinicalUI {
         <div class="gameover-sub">${death?'The patient died due to disease progression without adequate treatment.':'Patient has been transferred to a higher centre.'}</div>
       </div>
       <div class="gameover-actions">
-        <button class="btn-review-case" id="go-review">📖 Review Case</button>
         <button class="btn-home" id="go-score">View Scorecard</button>
         <button class="btn-back-home" id="go-home2">Back to Cases</button>
       </div>`;
     modal.classList.remove('hidden');
-
-    document.getElementById('go-review')?.addEventListener('click', () => {
-      modal.classList.add('hidden');
-      this._enterReviewMode();
-    });
     document.getElementById('go-score')?.addEventListener('click', () => {
       modal.classList.add('hidden');
-      this.showScoreModal(sc);
+      this.showScoreModal(this.engine.calculateScore());
     });
     document.getElementById('go-home2')?.addEventListener('click', () => document.referrer ? history.back() : window.location.href = '/');
   }
@@ -915,15 +586,9 @@ class ClinicalUI {
         ${sc.mistakes.map(m=>`<div class="mistake-item mistake-${m.type}">${m.label}</div>`).join('')}
       </div>`:''}
       <div class="score-actions">
-        <button class="btn-review-case" id="score-review">📖 Review Case</button>
         <button class="btn-home" id="score-home">Back to Cases</button>
       </div>`;
     modal.classList.remove('hidden');
-
-    document.getElementById('score-review')?.addEventListener('click', () => {
-      modal.classList.add('hidden');
-      this._enterReviewMode();
-    });
     document.getElementById('score-home')?.addEventListener('click', () => document.referrer ? history.back() : window.location.href = '/');
   }
 
@@ -942,62 +607,30 @@ class ClinicalUI {
       if (tab==='general') this._renderGeneralTab();
     }));
 
-    // Back button — hidden via CSS, but wire it anyway
-    document.getElementById('btn-back')?.addEventListener('click', async () => {
-      const ok = await this._confirm({
-        icon: '🚪',
-        title: 'Exit Case?',
-        msg: 'All progress will be lost. Are you sure you want to leave?',
-        okLabel: 'Exit',
-        cancelLabel: 'Stay',
-        okClass: ''
-      });
-      if (ok) { this.engine.stop(); document.referrer ? history.back() : window.location.href = '/'; }
+    // Back
+    document.getElementById('btn-back')?.addEventListener('click', ()=>{
+      if (confirm('Exit case? Progress will be lost.')) { this.engine.stop(); document.referrer ? history.back() : window.location.href = '/'; }
     });
 
     // Jump modal
-    document.getElementById('btn-jump')?.addEventListener('click', () => document.getElementById('modal-jump')?.classList.remove('hidden'));
-    document.getElementById('jump-close')?.addEventListener('click', () => document.getElementById('modal-jump')?.classList.add('hidden'));
-    document.querySelectorAll('.jump-btn').forEach(b => b.addEventListener('click', () => {
+    document.getElementById('btn-jump')?.addEventListener('click', ()=>document.getElementById('modal-jump')?.classList.remove('hidden'));
+    document.getElementById('jump-close')?.addEventListener('click', ()=>document.getElementById('modal-jump')?.classList.add('hidden'));
+    document.querySelectorAll('.jump-btn').forEach(b => b.addEventListener('click', ()=>{
       this.engine.jumpTime(parseFloat(b.dataset.h));
       document.getElementById('modal-jump')?.classList.add('hidden');
       this._renderTestsTab(); this._renderGeneralTab(); this._renderDiseaseTab();
     }));
 
     // Transfer
-    document.getElementById('btn-resign')?.addEventListener('click', async () => {
-      const ok = await this._confirm({
-        icon: '🚑',
-        title: 'Transfer Patient?',
-        msg: 'Transfer the patient to a higher centre? This ends the case with a score penalty.',
-        okLabel: 'Transfer',
-        okClass: 'ok-amber',
-        cancelLabel: 'Cancel'
-      });
-      if (ok) this.engine.resignCase();
+    document.getElementById('btn-resign')?.addEventListener('click', ()=>{
+      if (confirm('Transfer patient to higher centre? This ends the case with a penalty.')) this.engine.resignCase();
     });
 
     // End & score
-    document.getElementById('btn-end')?.addEventListener('click', async () => {
-      if (!this.engine.state.selectedDiagnosis) {
-        const ok = await this._confirm({
-          icon: '🩺',
-          title: 'No Diagnosis Selected',
-          msg: 'You have not selected a working diagnosis. End the case anyway?',
-          okLabel: 'End Anyway',
-          cancelLabel: 'Go Back'
-        });
-        if (!ok) return;
-      }
+    document.getElementById('btn-end')?.addEventListener('click', ()=>{
+      if (!this.engine.state.selectedDiagnosis && !confirm('No diagnosis selected — end anyway?')) return;
       this.engine.stop(); this.engine.ended = true;
-      const sc = this.engine.calculateScore();
-      this._cachedScore = sc;
-      this.showScoreModal(sc);
-    });
-
-    // Review-to-score (wired once bar appears)
-    document.getElementById('btn-review-to-score')?.addEventListener('click', () => {
-      this.showScoreModal(this._cachedScore || this.engine.calculateScore());
+      this.showScoreModal(this.engine.calculateScore());
     });
   }
 }

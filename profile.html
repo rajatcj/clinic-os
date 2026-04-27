@@ -503,7 +503,7 @@ const budgetPct = entry.budgetTotal ? Math.round((entry.budgetUsed / entry.budge
       <span class="ch-time-icon">Case Solved in </span>
       <span class="ch-time-val">⏱ ${timeTaken}</span>
       <span class="ch-time-icon"> using </span>
-      <span class="ch-time-val">🪙 ${budgetPct}%</span>
+      <span class="ch-time-val"> ${budgetPct}%</span>
       <span class="ch-time-icon"> budget.</span>
     </div>
     </div>
@@ -532,12 +532,60 @@ const budgetPct = entry.budgetTotal ? Math.round((entry.budgetUsed / entry.budge
       <span class="ch-time-icon">Case Solved in </span>
       <span class="ch-time-val">⏱ ${timeTaken}</span>
       <span class="ch-time-icon"> using </span>
-      <span class="ch-time-val">🪙 ${budgetPct}%</span>
+      <span class="ch-time-val"> ${budgetPct}%</span>
       <span class="ch-time-icon"> budget.</span>
     </div>
     <span class="ch-play">Practice again →</span>
   </div>
 </div>`;
+}
+
+/* ── Pre-game modal (minimal version for profile page) ─────────────────── */
+async function openPreGame(caseId) {
+  const meta = _caseIndex.find(c => c.id === caseId);
+  if (!meta) { showToast('Case data not found', 'err'); return; }
+
+  const overlay = document.createElement('div');
+  overlay.className = 'pregame-overlay';
+  overlay.innerHTML = `
+<div class="pregame-modal">
+  <div class="pregame-head">
+    <div class="pregame-case-label">${esc(meta.category)} · ${esc(meta.difficulty)}</div>
+    <div class="pregame-title">${esc(meta.title)}</div>
+    <div class="pregame-patient">
+      <div class="pregame-patient-item"><strong>${meta.patientAge}y ${esc(meta.patientSex)}</strong><small>Patient</small></div>
+      <div class="pregame-patient-item"><strong>${esc(meta.patientOccupation||'—')}</strong><small>Occupation</small></div>
+      <div class="pregame-patient-item"><strong>${esc(meta.department||'—')}</strong><small>Department</small></div>
+      <div class="pregame-patient-item"><strong>${meta.stages} stages</strong><small>Progression</small></div>
+    </div>
+  </div>
+  <div class="pregame-rules">
+    <div class="rules-title">Simulation Rules</div>
+    <div class="rule-item"><div class="rule-icon">⏱️</div><div class="rule-text"><strong>1 real second = 1 sim minute.</strong> Disease progresses automatically. Skip with ⏩.</div></div>
+    <div class="rule-item"><div class="rule-icon">🔬</div><div class="rule-text"><strong>Investigations</strong> cost coins and take time. Results vary by stage.</div></div>
+    <div class="rule-item"><div class="rule-icon">🩺</div><div class="rule-text"><strong>Set a diagnosis</strong> to unlock disease-specific treatment. Change anytime.</div></div>
+    <div class="rule-item"><div class="rule-icon">💊</div><div class="rule-text"><strong>Wrong treatments</strong> incur penalties. Blunders can end the case.</div></div>
+    <div class="rule-item"><div class="rule-icon">🪙</div><div class="rule-text"><strong>Budget: ${meta.budget?.toLocaleString()} coins.</strong> Overspending penalises final score.</div></div>
+  </div>
+  <div class="pregame-meta">
+    <div class="meta-item"><div class="meta-label">Time</div><div class="meta-value">${meta.estimatedTime}</div></div>
+    <div class="meta-item"><div class="meta-label">Difficulty</div><div class="meta-value">${meta.difficulty}</div></div>
+    <div class="meta-item"><div class="meta-label">Budget</div><div class="meta-value coins">🪙 ${meta.budget?.toLocaleString()}</div></div>
+    <div class="meta-item"><div class="meta-label">Stages</div><div class="meta-value">${meta.stages}</div></div>
+  </div>
+  <div class="pregame-actions">
+    <button class="btn-start" id="pg-start">Play →</button>
+    <button class="btn-cancel-pg" id="pg-cancel">Cancel</button>
+  </div>
+</div>`;
+
+  document.body.appendChild(overlay);
+  document.getElementById('pg-cancel').addEventListener('click', ()=>overlay.remove());
+  overlay.addEventListener('click', e=>{ if(e.target===overlay) overlay.remove(); });
+  document.getElementById('pg-start').addEventListener('click', ()=>{
+    overlay.remove();
+    window.location.href = `./play.html?id=${caseId}`;
+  });
 }
 
 function renderNotFound(username) {
@@ -556,6 +604,7 @@ function renderNotLoggedIn() {
   </div>`;
 }
 
+
 // ── Profile event bindings ────────────────────────────────────────────────
 function bindProfileEvents(p) {
   // Edit button (own profile only)
@@ -573,6 +622,12 @@ function bindProfileEvents(p) {
     } else {
       navigator.clipboard.writeText(url).then(() => showToast('Profile URL copied to clipboard'));
     }
+  });
+
+    // Case history cards — click to open pre-game modal
+  document.querySelectorAll('.ch-card[data-case-id]').forEach(card => {
+    card.addEventListener('click', () => openPreGame(card.dataset.caseId));
+    card.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' ') openPreGame(card.dataset.caseId); });
   });
 }
 

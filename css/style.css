@@ -466,7 +466,7 @@ button{cursor:pointer;font-family:inherit}
 
   .game-layout{grid-template-rows:auto auto 1fr auto;grid-template-columns:1fr;grid-template-areas:"hdr" "ban" "body" "log";height:auto;min-height:100vh;overflow:auto}
   .game-body{height:auto;overflow:visible}
-  .tab-content{overflow:visible}
+  .tab-content{overflow:visible; padding-bottom: 50px;}
   .tab-panel{height:auto}
   .log-panel{max-height:180px;border-left:none;border-top:1px solid var(--border); margin-bottom:50px;}
 

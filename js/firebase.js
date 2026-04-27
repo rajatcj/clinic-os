@@ -100,17 +100,17 @@ async function createUserProfile(uid, username, displayName, bio = '') {
     uid,
     username,
     usernameLower,
-    displayName:          displayName || username,
+    displayName:      displayName || username,
     bio,
-    avatarUrl:            '',
-    joinedAt:             serverTimestamp(),
-    tags:                 [],
-    badges:               [],
-    totalCasesPlayed:     0,
-    totalCasesSolved:     0,
-    averageScore:         0,
-    totalTimePlayed:      0,
-    bestScores:           {},
+    avatarUrl:        '',
+    joinedAt:         serverTimestamp(),
+    tags:             [],
+    badges:           [],
+    totalCasesPlayed: 0,
+    totalCasesSolved: 0,
+    averageScore:     0,
+    totalTimePlayed:  0,
+    bestScores:       {},
   });
 
   batch.set(doc(db, 'usernames', usernameLower), { uid });
@@ -138,7 +138,7 @@ async function getProfileByUsername(username) {
 async function updateUserProfile(uid, { displayName, bio }) {
   const updates = {};
   if (displayName !== undefined) updates.displayName = displayName;
-  if (bio         !== undefined) updates.bio = bio;
+  if (bio         !== undefined) updates.bio         = bio;
   await updateDoc(doc(db, 'users', uid), updates);
   if (auth.currentUser && displayName) {
     await updateProfile(auth.currentUser, { displayName });
@@ -165,41 +165,54 @@ async function searchUsers(term) {
 // ═══════════════════════════════════════════════════════════════════════════
 
 /**
- * Submit a completed (cured) case result.
- * Only call this when the patient is cured.
+ * Submit a completed case result.
+ * Only the FIRST attempt per case is recorded on the leaderboard.
+ * Subsequent plays still update aggregate stats and award badges.
  *
  * @param {string} caseId
  * @param {object} gameState   — engine.getState()
  * @param {object} scoreResult — engine.calculateScore()
  * @param {Array}  eventLog    — engine.log
  *
- * Returns: { written, alreadyBest, newBest }
+ * Returns: { written, alreadyPlayed, firstScore }
  */
 async function submitGameResult(caseId, gameState, scoreResult, eventLog) {
   const user = currentUser();
   if (!user) throw new Error('Must be logged in to submit scores.');
 
-  const uid      = user.uid;
-  const profile  = await getUserProfile(uid);
-  const username = profile?.username || user.displayName || uid;
+  // Ensure fresh auth token so Firestore rules see request.auth correctly
+  await user.getIdToken(true);
+
+  const uid         = user.uid;
+  const profile     = await getUserProfile(uid);
+  const username    = profile?.username || user.displayName || uid;
   const newScore    = scoreResult.score;
   const timeElapsed = Math.round(gameState.time * 3600);
 
-  // ── Only record the FIRST attempt — if leaderboard entry exists, skip ──
+  // ── Check if this user already has a leaderboard entry for this case ─────
   const lbRef  = doc(db, 'leaderboard', caseId, 'entries', uid);
   const lbSnap = await getDoc(lbRef);
+
   if (lbSnap.exists()) {
-    // Already have a score for this case — update stats only, don't overwrite
-    await _updateUserStats(uid, newScore, gameState);
+    // Not their first play — update stats and badges only
+    await _updateUserStats(uid, newScore, gameState, profile);
     await _updateCaseStats(caseId, newScore, timeElapsed, false);
+    await _checkAndAwardBadges(uid, scoreResult);
     return { written: false, alreadyPlayed: true, firstScore: lbSnap.data().score };
   }
 
-  // ── First time playing this case — write everything ──
-  const logRef = doc(collection(db, 'scoreLog'));
+  // ── First time playing this case ─────────────────────────────────────────
 
-  await setDoc(logRef, {
-    uid, username, caseId,
+  // Patch bestScores map if missing on older accounts
+  if (!profile?.bestScores) {
+    await setDoc(doc(db, 'users', uid), { bestScores: {} }, { merge: true });
+  }
+
+  // Write score log entry
+  await addDoc(collection(db, 'scoreLog'), {
+    uid,
+    username,
+    caseId,
     score:             newScore,
     grade:             scoreResult.grade,
     diagnosisCorrect:  gameState.diagnosisCorrect,
@@ -217,8 +230,10 @@ async function submitGameResult(caseId, gameState, scoreResult, eventLog) {
     playedAt:          serverTimestamp(),
   });
 
+  // Write leaderboard entry
   await setDoc(lbRef, {
-    uid, username,
+    uid,
+    username,
     score:            newScore,
     grade:            scoreResult.grade,
     timeElapsed,
@@ -228,104 +243,92 @@ async function submitGameResult(caseId, gameState, scoreResult, eventLog) {
     playedAt:         serverTimestamp(),
   });
 
-  // Patch bestScores field if missing on older accounts
-  if (!profile?.bestScores) {
-    await setDoc(doc(db, 'users', uid), { bestScores: {} }, { merge: true });
-  }
-
+  // Update bestScores map on user doc
   await updateDoc(doc(db, 'users', uid), {
     [`bestScores.${caseId}`]: newScore,
   });
 
-  await _updateUserStats(uid, newScore, gameState);
+  // Update aggregate stats
+  await _updateUserStats(uid, newScore, gameState, profile);
   await _updateCaseStats(caseId, newScore, timeElapsed, true);
+
+  // Evaluate and award any badges earned
+  await _checkAndAwardBadges(uid, scoreResult);
 
   return { written: true, alreadyPlayed: false, firstScore: newScore };
 }
 
-async function _writeScoreLog(uid, username, caseId, gameState, scoreResult, timeElapsed, isPersonalBest) {
-  try {
-    await addDoc(collection(db, 'scoreLog'), {
-      uid,
-      username,
-      caseId,
-      score:             scoreResult.score,
-      grade:             scoreResult.grade,
-      diagnosisCorrect:  gameState.diagnosisCorrect,
-      selectedDiagnosis: gameState.selectedDiagnosis,
-      timeElapsed,
-      budgetUsed:        gameState.cost,
-      budgetTotal:       gameState.budget,
-      outcome:           gameState.outcome,
-      finalStage:        gameState.stage,
-      cured:             gameState.cured,
-      penaltyTotal:      gameState.penalty,
-      testsOrdered:      gameState.completedTests.map(t => t.testId),
-      managementGiven:   gameState.givenManagement.map(m => m.id),
-      isPersonalBest,
-      playedAt:          serverTimestamp(),
-    });
-  } catch (_) {}
-}
 
-async function _updateUserStats(uid, newScore, gameState) {
-  try {
-    const userRef  = doc(db, 'users', uid);
-    const userSnap = await getDoc(userRef);
-    const data     = userSnap.exists() ? userSnap.data() : {};
+// ── Stat helpers ──────────────────────────────────────────────────────────────
 
-    const prevCount = data.totalCasesPlayed || 0;
-    const prevAvg   = data.averageScore     || 0;
-    const newAvg    = prevCount === 0
-      ? newScore
-      : parseFloat(((prevAvg * prevCount + newScore) / (prevCount + 1)).toFixed(1));
+async function _updateUserStats(uid, newScore, gameState, cachedProfile) {
+  const userRef = doc(db, 'users', uid);
+  const data    = cachedProfile || (await getDoc(userRef)).data() || {};
 
-    await updateDoc(userRef, {
-      totalCasesPlayed:  increment(1),
-      totalCasesSolved:  increment(gameState.cured ? 1 : 0),
-      averageScore:      newAvg,
-      totalTimePlayed:   increment(Math.round(gameState.time * 3600)),
-    });
-  } catch (_) {}
+  const prevCount = data.totalCasesPlayed || 0;
+  const prevAvg   = data.averageScore     || 0;
+  const newAvg    = prevCount === 0
+    ? newScore
+    : parseFloat(((prevAvg * prevCount + newScore) / (prevCount + 1)).toFixed(1));
+
+  await updateDoc(userRef, {
+    totalCasesPlayed: increment(1),
+    totalCasesSolved: increment(gameState.cured ? 1 : 0),
+    averageScore:     newAvg,
+    totalTimePlayed:  increment(Math.round(gameState.time * 3600)),
+  });
 }
 
 async function _updateCaseStats(caseId, newScore, timeElapsed, isFirstTimePlayer) {
+  const ref  = doc(db, 'cases', caseId);
+  const snap = await getDoc(ref);
+
+  if (!snap.exists()) {
+    await setDoc(ref, {
+      caseId,
+      totalPlays:         1,
+      totalCompletions:   1,
+      totalUniquePlayers: isFirstTimePlayer ? 1 : 0,
+      averageScore:       newScore,
+      averageTime:        timeElapsed,
+    });
+    return;
+  }
+
+  const d         = snap.data();
+  const prevCompl = d.totalCompletions || 0;
+
+  const newAvgScore = prevCompl === 0
+    ? newScore
+    : parseFloat((((d.averageScore || 0) * prevCompl + newScore) / (prevCompl + 1)).toFixed(1));
+
+  const newAvgTime = prevCompl === 0
+    ? timeElapsed
+    : Math.round(((d.averageTime || 0) * prevCompl + timeElapsed) / (prevCompl + 1));
+
+  const updates = {
+    totalPlays:       increment(1),
+    totalCompletions: increment(1),
+    averageScore:     newAvgScore,
+    averageTime:      newAvgTime,
+  };
+  if (isFirstTimePlayer) updates.totalUniquePlayers = increment(1);
+
+  await updateDoc(ref, updates);
+}
+
+// ── Badge helper ──────────────────────────────────────────────────────────────
+
+async function _checkAndAwardBadges(uid, scoreResult) {
   try {
-    const ref  = doc(db, 'cases', caseId);
-    const snap = await getDoc(ref);
-
-    if (!snap.exists()) {
-      await setDoc(ref, {
-        caseId,
-        totalPlays:         1,
-        totalCompletions:   1,
-        totalUniquePlayers: isFirstTimePlayer ? 1 : 0,
-        averageScore:       newScore,
-        averageTime:        timeElapsed,
-      });
-      return;
-    }
-
-    const d         = snap.data();
-    const prevCompl = d.totalCompletions || 0;
-
-    const newAvgScore = prevCompl === 0
-      ? newScore
-      : parseFloat((((d.averageScore || 0) * prevCompl + newScore) / (prevCompl + 1)).toFixed(1));
-
-    const newAvgTime = prevCompl === 0
-      ? timeElapsed
-      : Math.round(((d.averageTime || 0) * prevCompl + timeElapsed) / (prevCompl + 1));
-
-    const updates = {
-      totalCompletions: increment(1),
-      averageScore:     newAvgScore,
-      averageTime:      newAvgTime,
-    };
-    if (isFirstTimePlayer) updates.totalUniquePlayers = increment(1);
-
-    await updateDoc(ref, updates);
-  } catch (_) {}
+    // Re-fetch profile to get freshly updated stats
+    const freshProfile = await getUserProfile(uid);
+    if (!freshProfile) return;
+    const earned = evaluateBadges(freshProfile, scoreResult);
+    if (earned.length) await awardBadges(uid, earned);
+  } catch (e) {
+    console.warn('Badge award failed (non-critical):', e.message);
+  }
 }
 
 
@@ -418,16 +421,13 @@ async function getCaseMeta(caseId) {
 /**
  * Increment the case play counter when a user starts a case.
  * Works for guests too — no auth required.
- * Uses setDoc with merge:true so it works even if the doc doesn't exist yet.
  */
 async function recordCaseStart(caseId) {
   try {
     const ref = doc(db, 'cases', caseId);
-    // Try updateDoc first; if doc doesn't exist, create it
     try {
       await updateDoc(ref, { totalPlays: increment(1) });
     } catch (e) {
-      // Document doesn't exist yet — create it
       await setDoc(ref, { caseId, totalPlays: 1 }, { merge: true });
     }
   } catch (_) {}
@@ -486,7 +486,8 @@ const BADGE_DEFINITIONS = [
     name:        'First Diagnosis',
     description: 'Completed your first case.',
     icon:        '🩺',
-    check:       (profile, _score) => (profile.totalCasesPlayed || 0) === 0,
+    // Check after stats update — totalCasesPlayed will be 1 on first completion
+    check:       (profile, _score) => (profile.totalCasesPlayed || 0) === 1,
   },
   {
     id:          'perfect_score',
@@ -608,7 +609,5 @@ export const MedSim = {
 
 export default MedSim;
 
-// ── CRITICAL FIX: expose as a global so non-module scripts can use MedSim ──
-// cases.html, index.html and app.js check `typeof MedSim !== 'undefined'`
-// but since this file is an ES module it never sets window.MedSim automatically.
+// Expose as global so non-module scripts can access window.MedSim
 window.MedSim = MedSim;
