@@ -130,6 +130,7 @@ input,button,textarea{font-family:inherit}
 .tag-supervisor{color:var(--orange);border-color:rgba(251,146,60,.3);background:rgba(251,146,60,.08)}
 .tag-early_supporter{color:var(--green);border-color:rgba(13,189,139,.3);background:rgba(13,189,139,.08)}
 .tag-veteran{color:var(--text-mid);border-color:var(--border-lo);background:var(--bg-up)}
+.tag-sponsor{color:#18ef6e;border-color:rgba(23, 199, 149, 0.3);background:rgba(16, 187, 139, 0.08)}
 
 /* stats strip */
 .stats-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--r3);overflow:hidden;margin-bottom:18px}
@@ -224,6 +225,8 @@ input,button,textarea{font-family:inherit}
 @media(max-width:600px){
   .page{padding:20px 14px 60px}
   .stats-strip{grid-template-columns:1fr 1fr}
+  .profile-actions{position:static;margin-top:14px}
+  .profile-actions{position:absolute;top:24px;right:24px;display:flex;gap:8px}
   .badges-grid{grid-template-columns:1fr 1fr}
   .score-entry{grid-template-columns:1fr}
 }
@@ -237,7 +240,6 @@ input,button,textarea{font-family:inherit}
     <div class="logo-text">Clinical Simulation</div>
   </a>
   <div class="nav-right">
-    <a href="index.html" class="nav-link">← Home</a>
     <!-- Shown when logged in -->
     <div class="nav-user-pill hidden" id="nav-user-pill">
       <div class="nav-user-dot"></div>
@@ -380,11 +382,11 @@ function renderProfile(p, scoreLog, isOwn) {
 
   const editBtns = isOwn ? `
     <div class="profile-actions">
-      <button class="btn-edit" id="btn-open-edit">Edit Profile</button>
+      <button class="btn-edit" id="btn-open-edit">✏️ Edit</button>
       <button class="btn-share" id="btn-share">Share</button>
     </div>` : `
     <div class="profile-actions">
-      <button class="btn-share" id="btn-share">Share Profile</button>
+      <button class="btn-share" id="btn-share">Share</button>
     </div>`;
 
   return `

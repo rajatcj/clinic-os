@@ -125,7 +125,7 @@ if (result.written) {
           </div>
           <div class="tab-panel" id="tab-general"></div>
           <div class="tab-panel" id="tab-diagnosis">
-            <div id="tab-diagnosiss"></div><br><br>
+            <div id="tab-diagnosiss"></div>
             <div id="tab-disease"></div>
           </div>
         </div>
