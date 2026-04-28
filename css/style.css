@@ -191,12 +191,12 @@ button{cursor:pointer;font-family:inherit}
 .btn-jump:hover{background:rgba(61,168,245,.1);border-color:rgba(61,168,245,.4)}
 .btn-resign{font-family:var(--mono);font-size:10px;font-weight:600;padding:6px 10px;border-radius:var(--r1);border:1px solid var(--border);background:var(--bg-card);color:var(--text-lo);transition:all .15s;white-space:nowrap}
 .btn-resign:hover{color:var(--amber);border-color:rgba(245,166,35,.4);background:rgba(245,166,35,.06)}
-.btn-end{font-family:var(--mono);font-size:10px;font-weight:600;padding:6px 10px;border-radius:var(--r1);border:1px solid var(--border);background:var(--bg-card);color:var(--text-lo);transition:all .15s;white-space:nowrap}
-.btn-end.btn-end-ready{color:var(--amber);border-color:rgba(245,166,35,.4);background:rgba(245,166,35,.07)}
+.btn-end{font-family:var(--mono);font-size:10px;font-weight:600;padding:6px 10px;border-radius:var(--r1);border:1px solid #db464654;background:var(--bg-card);color:var(--text-lo);transition:all .15s;white-space:nowrap}
+.btn-end.btn-end-ready{color:var(--amber);border-color:rgba(245,166,35,.4);background:rgba(245, 63, 35, 0.07)}
 .btn-end:hover{color:var(--text-mid);border-color:var(--border-lo)}
 
 /* patient banner */
-.patient-banner{grid-area:ban;display:flex;align-items:center;gap:13px;padding:5px 16px;background:#091814;border-bottom:1px solid var(--border)}
+.patient-banner{grid-area:ban;display:flex;align-items:center;gap:13px;padding:20px 16px;background:#091814;border-bottom:1px solid var(--border)}
 .patient-avatar{width:38px;height:38px;flex-shrink:0;background:var(--bg-up);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text-mid)}
 .patient-avatar svg{width:26px;height:26px}
 .patient-info{flex:1;width:0}
@@ -472,7 +472,7 @@ button{cursor:pointer;font-family:inherit}
 
   .patient-info{display:none}
   .patient-avatar{display: none;}
-  .case-title-small{max-width:150px}
+  .case-title-small{max-width:150px; display:none;}
   .hud-stat{min-width:58px;padding:4px 7px}
   .hud-label{font-size:6px}
   .hud-value{font-size:10px}
@@ -516,15 +516,15 @@ button{cursor:pointer;font-family:inherit}
 .game-header{
   position: fixed;
   top: 0;
+  padding: 5px;
   left: 0;
   width: 100%;
-  height: 40px;
   z-index: 1000;
 }
 
 .patient-banner{
   position: fixed;
-  top: 40px;
+  top: 52px;
   left: 0;
   width: 100%;
   height: 30px;

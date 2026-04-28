@@ -139,6 +139,7 @@ class ClinicalUI {
         <div class="header-left">
           <button class="btn-back" id="btn-back">←</button>
           <div class="case-title-small">${c.title}</div>
+          <div class="patient-stage-badge stage-badge-yellow" id="stage-badge"><span id="stage-badge-text">—</span></div>
         </div>
         <div class="header-right">
           <div class="hud-stats">
@@ -168,7 +169,6 @@ class ClinicalUI {
         <div class="stage-glow-wrap">
           <div class="hud-vitals" id="hud-vitals"></div>
           <div class="stage-glow glow-yellow" id="stage-glow"></div>
-          <div class="patient-stage-badge stage-badge-yellow" id="stage-badge"><span id="stage-badge-text">—</span></div>
         </div>
       </div>
 

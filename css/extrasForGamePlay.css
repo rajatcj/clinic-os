@@ -313,9 +313,9 @@
     position: absolute;
     top: 6px;
     right: 6px;
-    width: 8px;
-    height: 8px;
-    background: var(--blue);
+    width: 10px;
+    height: 10px;
+    background: var(--red);
     border-radius: 50%;
     display: none;
   }
