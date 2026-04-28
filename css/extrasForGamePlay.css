@@ -433,3 +433,52 @@
 #disease-scroll-anchor {
   scroll-margin-top: 12px;
 }
+
+/* ── Clinical Clue Spoiler ─────────────────────────────────────────────── */
+/* your card just needs this */
+.clinical-clue-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.spoiler-overlay {
+  position: absolute;
+  inset: 0;
+  background: #111;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  z-index: 10;
+  border-radius: inherit;
+  cursor: pointer;
+  transition: opacity 0.35s ease;
+}
+
+.spoiler-overlay input[type="checkbox"] {
+  display: none;
+}
+
+.spoiler-overlay:has(input:checked) {
+  opacity: 0;
+}
+
+.spoiler-title {
+  font-family: inherit;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #e2e8f0;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+}
+
+.spoiler-hint {
+  font-family: inherit;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  text-align: center;
+  max-width: 80%;
+  line-height: 1.5;
+  pointer-events: none;
+}

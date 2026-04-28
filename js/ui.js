@@ -361,15 +361,21 @@ class ClinicalUI {
           <div class="card-label">Examination</div>
           <div class="exam-sections">${examSectionsHTML}</div>
         </div>
-        ${this.case.clinicalClue ? `
-        <div class="info-card full-width clue-card">
-          <div class="card-label">⚡ Clinical Clue</div>
-          <div class="card-value">${this.case.clinicalClue}</div>
-        </div>` : ''}
         <div class="info-card full-width">
           <div class="card-label">Current Active Symptoms</div>
           <div class="symptom-tags" id="active-symptoms"></div>
         </div>
+        ${this.case.clinicalClue ? `
+        <div class="info-card full-width clue-card">
+            <label class="spoiler-overlay" for="spoiler-1">
+    <input type="checkbox" id="spoiler-1">
+    <span class="spoiler-title">⚡ Clinical Clue</span>
+    <span class="spoiler-hint">Click to reveal, try to solve without it first!</span>
+  </label>
+          <div class="card-label">⚡ Clinical Clue</div>
+          <div class="card-value">${this.case.clinicalClue}</div>
+        </div>` : ''}
+        
         <div class="skip-inline-bar">
           <span class="skip-inline-label">⏩ Skip Time:</span>
           ${[['0.5','+30m'],['1','+1h'],['2','+2h'],['4','+4h'],['6','+6h']].map(([h,l])=>`<button class="skip-inline-btn" data-h="${h}">${l}</button>`).join('')}
@@ -381,6 +387,9 @@ class ClinicalUI {
       this._renderTestsTab(); this._renderGeneralTab(); this._renderDiseaseTab();
     }));
   }
+
+  
+
 
   _updateSymptoms() {
     const el = document.getElementById('active-symptoms');
