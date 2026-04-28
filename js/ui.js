@@ -873,7 +873,7 @@ class ClinicalUI {
         <div class="gameover-sub">${death?'The patient died due to disease progression without adequate treatment.':'Patient has been transferred to a higher centre.'}</div>
       </div>
       <div class="gameover-actions">
-        <button class="btn-review-case" id="go-review">📖 Review Case</button>
+        <button class="btn-review-case" id="go-review">Review Case</button>
         <button class="btn-home" id="go-score">View Scorecard</button>
         <button class="btn-back-home" id="go-home2">Back to Cases</button>
       </div>`;

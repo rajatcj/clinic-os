@@ -273,10 +273,9 @@ function caseCardHTML(c) {
   return `
 <div class="case-card" data-case-id="${c.id}" data-diff="${c.difficulty}" data-sys="${c.system}" tabindex="0" role="button">
   <div class="card-top">
-    <span class="card-difficulty ${diffClass}">${c.difficulty}</span>
+    <div class="card-patient"><span class="card-difficulty ${diffClass}">${c.difficulty}</span><div class="patient-dot"></div>${c.patientAge}y ${c.patientSex} · ${_esc(c.patientOccupation||c.department)}</div>
     <span class="card-id">${dateStr}</span>
   </div>
-  <div class="card-patient"><div class="patient-dot"></div>${c.patientAge}y ${c.patientSex} · ${_esc(c.patientOccupation||c.department)}</div>
   <div class="card-title">${_esc(c.title)}</div>
   <div class="card-subtitle">${_esc(c.subtitle)}</div>
   <div class="card-desc">${_esc(c.description)}</div>
@@ -339,7 +338,6 @@ function buildPreGameModal(meta) {
       <div class="pregame-patient-item"><strong>${meta.patientAge}y ${_esc(meta.patientSex)}</strong><small>Patient</small></div>
       <div class="pregame-patient-item"><strong>${_esc(meta.patientOccupation||'—')}</strong><small>Occupation</small></div>
       <div class="pregame-patient-item"><strong>${_esc(meta.department)}</strong><small>Department</small></div>
-      <div class="pregame-patient-item"><strong>${meta.stages} stages</strong><small>Progression</small></div>
     </div>
   </div>
 
@@ -351,7 +349,7 @@ function buildPreGameModal(meta) {
 
   <div class="pregame-rules">
     <div class="rules-title">Simulation Rules</div>
-    <div class="rule-item"><div class="rule-icon">⏱️</div><div class="rule-text"><strong>1 real second = 1 sim minute.</strong> Disease progresses automatically. Skip with ⏩.</div></div>
+    <div class="rule-item"><div class="rule-icon">⏱️</div><div class="rule-text"><strong>1 real second = 1 sim minute.</strong> Disease progresses automatically. Click on clock on the top to skip.</div></div>
     <div class="rule-item"><div class="rule-icon">🔬</div><div class="rule-text"><strong>Investigations</strong> cost coins and take time. Results vary by disease stage.</div></div>
     <div class="rule-item"><div class="rule-icon">🩺</div><div class="rule-text"><strong>Set a diagnosis</strong> to unlock disease-specific treatment. Change anytime.</div></div>
     <div class="rule-item"><div class="rule-icon">💊</div><div class="rule-text"><strong>Wrong treatments</strong> incur score penalties. Blunders can end the case.</div></div>
@@ -366,7 +364,7 @@ function buildPreGameModal(meta) {
   </div>
 
   <div class="pregame-actions">
-    <button class="btn-start" id="btn-start-case">Start Simulation →</button>
+    <button class="btn-start" id="btn-start-case">Solve Case →</button>
     <button class="btn-cancel" id="btn-cancel-case">Cancel</button>
   </div>
 </div>`;

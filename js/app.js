@@ -45,13 +45,14 @@ function caseCardHTML(c) {
   return `
     <div class="case-card" data-case-id="${c.id}" data-diff="${c.difficulty}" data-sys="${c.system}" tabindex="0" role="button" aria-label="Open case: ${c.title}">
       <div class="card-top">
-        <span class="card-difficulty ${diffClass}">${c.difficulty}</span>
+        <div class="card-patient">
+          <span class="card-difficulty ${diffClass}">${c.difficulty}</span>
+          <div class="patient-dot"></div>
+          ${c.patientAge}y ${c.patientSex} · ${c.patientOccupation || c.department}
+        </div>
         <span class="card-id">${dateStr}</span>
       </div>
-      <div class="card-patient">
-        <div class="patient-dot"></div>
-        ${c.patientAge}y ${c.patientSex} · ${c.patientOccupation || c.department}
-      </div>
+
       <div class="card-title">${c.title}</div>
       <div class="card-subtitle">${c.subtitle}</div>
       <div class="card-desc">${c.description}</div>
@@ -143,9 +144,9 @@ function buildPreGameModal(meta) {
           <div class="pregame-patient-item"><strong>${meta.patientAge}y ${meta.patientSex}</strong><small>Patient</small></div>
           <div class="pregame-patient-item"><strong>${meta.patientOccupation||'—'}</strong><small>Occupation</small></div>
           <div class="pregame-patient-item"><strong>${meta.department}</strong><small>Department</small></div>
-          <div class="pregame-patient-item"><strong>${meta.stages} stages</strong><small>Progression</small></div>
         </div>
       </div>
+
 
       <div class="pregame-stats-wrap">
         <div id="pregame-stats" class="pregame-stats-loading">
@@ -170,7 +171,7 @@ function buildPreGameModal(meta) {
       </div>
 
       <div class="pregame-actions">
-        <button class="btn-start" id="btn-start-case">Start Simulation →</button>
+        <button class="btn-start" id="btn-start-case">Solve Case →</button>
         <button class="btn-cancel" id="btn-cancel-case">Cancel</button>
       </div>
     </div>`;

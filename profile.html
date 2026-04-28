@@ -511,25 +511,24 @@ const budgetPct = entry.budgetTotal ? Math.round((entry.budgetUsed / entry.budge
   }
 
   const tagsHTML = (meta.tags||[]).slice(0,4).map(t => `<span class="ch-tag">${esc(t)}</span>`).join('');
-
+  const caseauthor    = meta.author || 'Original';
   return `
 <div class="ch-card" data-case-id="${esc(meta.id)}" role="button" tabindex="0" title="Play again">
   <div class="ch-body">
-    <div class="ch-top">
-      <span class="ch-diff ${diffCls}">${diff}</span>
-      <span class="ch-completed">Completed ${completedAt}</span>
-    </div>
+    
     <div class="ch-patient">
+      <span class="ch-diff ${diffCls}">${diff}</span>
       <div class="ch-dot"></div>
       <span class="ch-patient-txt">${meta.patientAge}y ${esc(meta.patientSex)} · ${esc(meta.patientOccupation||meta.department||'—')}</span>
     </div>
     <div class="ch-title">${esc(meta.title)}</div>
-    <div class="ch-cc">"${esc(meta.chiefComplaint)}"</div>
-    ${tagsHTML ? `<div class="ch-tags">${tagsHTML}</div>` : ''}
+    <div class="ch-cc">${esc(meta.chiefComplaint)}</div>
+    <div class="ch-tags">${tagsHTML ? `${tagsHTML}` : ''}<span class="cs-stat cs-author" onClick="window.location.href='./profile.html?u=${esc(caseauthor)}'">by ${esc(caseauthor)}</span></div>
   </div>
   <div class="ch-footer">
     <div class="ch-time">
-      <span class="ch-time-icon">Case Solved in </span>
+      <span class="ch-completed">${completedAt} - </span>
+      <span class="ch-time-icon">Cured in </span>
       <span class="ch-time-val">⏱ ${timeTaken}</span>
       <span class="ch-time-icon"> using </span>
       <span class="ch-time-val"> ${budgetPct}%</span>
@@ -556,7 +555,6 @@ async function openPreGame(caseId) {
       <div class="pregame-patient-item"><strong>${meta.patientAge}y ${esc(meta.patientSex)}</strong><small>Patient</small></div>
       <div class="pregame-patient-item"><strong>${esc(meta.patientOccupation||'—')}</strong><small>Occupation</small></div>
       <div class="pregame-patient-item"><strong>${esc(meta.department||'—')}</strong><small>Department</small></div>
-      <div class="pregame-patient-item"><strong>${meta.stages} stages</strong><small>Progression</small></div>
     </div>
   </div>
   <div class="pregame-rules">
@@ -574,8 +572,8 @@ async function openPreGame(caseId) {
     <div class="meta-item"><div class="meta-label">Stages</div><div class="meta-value">${meta.stages}</div></div>
   </div>
   <div class="pregame-actions">
-    <button class="btn-start" id="pg-start">Play →</button>
-    <button class="btn-cancel-pg" id="pg-cancel">Cancel</button>
+    <button class="btn-start" id="pg-start">Solve Case →</button>
+    <button class="btn-cancel" id="pg-cancel">Cancel</button>
   </div>
 </div>`;
 
