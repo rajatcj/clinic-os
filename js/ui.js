@@ -252,7 +252,7 @@ class ClinicalUI {
     const fab = document.createElement('button');
     fab.className = 'log-fab';
     fab.id = 'log-fab';
-    fab.innerHTML = `📋<span class="fab-dot"></span>`;
+    fab.innerHTML = `LOG<span class="fab-dot"></span>`;
     fab.title = 'Activity Log';
     document.body.appendChild(fab);
 
@@ -431,7 +431,7 @@ class ClinicalUI {
                 ? `<div class="test-status done">📖 Review</div>${reviewBlock}`
                 : !avail&&!done&&!pend?'<div class="test-status">Not available</div>'
                   :pend?'<div class="test-status">⏳ Pending…</div>'
-                  :done?'<div class="test-status done">✅ Done</div>'
+                  :done?'<div class="test-status done">✅ Done, check Logs for effect</div>'
                   :`<button class="btn-order" data-tid="${t.id}">Order</button>`}
             </div>`;
           }).join('')}
@@ -561,7 +561,7 @@ class ClinicalUI {
           <div class="mgmt-fullname">${m.fullName}</div>
           <div class="mgmt-meta"><span>🪙${m.cost}</span>${isBad?`<span class="badge-wrong">⚠️ CAUTION</span>`:''}</div>
           ${isGiven
-            ? '<div class="mgmt-done">✅ Done</div>'
+            ? '<div class="mgmt-done">✅ Done, check Logs for effect</div>'
             : review
               ? '<div class="mgmt-done" style="color:var(--text-dim)">— Not administered</div>'
               : `<button class="btn-give btn-give-gen" data-mid="${m.id}">Administer</button>`}
@@ -657,7 +657,7 @@ class ClinicalUI {
           <div class="mgmt-fullname">${m.fullName}</div>
           <div class="mgmt-meta"><span>🪙${m.cost}</span></div>
           ${isGiven
-            ? '<div class="mgmt-done">✅ Administered</div>'
+            ? '<div class="mgmt-done">✅ Administered, check Logs for effect</div>'
             : isBlocked
               ? `<div class="mgmt-blocked-msg">🚫 ${eff.note||'Not applicable now'}</div>`
               : review

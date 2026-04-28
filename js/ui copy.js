@@ -259,7 +259,7 @@ class ClinicalUI {
               <div class="test-meta"><span>⏱ ${this.engine._fmtDur(t.time)}</span><span>🪙${t.cost}</span>${t.type==='dummy'?'<span class="test-type-dummy">Non-specific</span>':''}</div>
               ${!avail&&!done&&!pend?'<div class="test-status">Not available</div>'
                 :pend?'<div class="test-status">⏳ Pending…</div>'
-                :done?'<div class="test-status done">✅ Done</div>'
+                :done?'<div class="test-status done">✅ Done, check Logs for effect</div>'
                 :`<button class="btn-order" data-tid="${t.id}">Order</button>`}
             </div>`;
           }).join('')}
@@ -357,7 +357,7 @@ class ClinicalUI {
           <div class="mgmt-name">${m.name}</div>
           <div class="mgmt-fullname">${m.fullName}</div>
           <div class="mgmt-meta"><span>🪙${m.cost}</span>${isBad?`<span class="badge-wrong">⚠️ CAUTION</span>`:''}</div>
-          ${isGiven?'<div class="mgmt-done">✅ Done</div>':`<button class="btn-give btn-give-gen" data-mid="${m.id}">Administer</button>`}
+          ${isGiven?'<div class="mgmt-done">✅ Done, check Logs for effect</div>':`<button class="btn-give btn-give-gen" data-mid="${m.id}">Administer</button>`}
         </div>`;
       }).join('') + `</div></div>`;
 
@@ -426,7 +426,7 @@ class ClinicalUI {
           <div class="mgmt-meta">
             <span>🪙${m.cost}</span>
           </div>
-          ${isGiven?'<div class="mgmt-done">✅ Administered</div>'
+          ${isGiven?'<div class="mgmt-done">✅ Administered, check Logs for effect.</div>'
             :isBlocked?`<div class="mgmt-blocked-msg">🚫 ${eff.note||'Not applicable now'}</div>`
             :`<button class="btn-give btn-give-dis" data-mid="${m.id}" data-did="${diagId}">Administer</button>`}
         </div>`;
