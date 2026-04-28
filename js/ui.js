@@ -528,7 +528,7 @@ class ClinicalUI {
             <span class="result-time">${r.timeLabel}</span>
           </div>
           <div class="result-text">${r.result}</div>
-          ${r.interpretation ? `<div class="result-interp">💡 ${r.interpretation}</div>` : ''}
+          
         </div>`).join('');
     }
     panel.innerHTML = `<div class="results-container">${html}</div>`;

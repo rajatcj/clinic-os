@@ -81,7 +81,7 @@
     }
   },
 
-  "clinicalClue": "KEY FINDING: The classic migration of pain from periumbilical to RLQ (McBurney's point) combined with anorexia preceding pain, positive Rovsing's sign, and voluntary guarding is the hallmark triad of acute appendicitis. Anorexia is the most sensitive symptom (~95%) its absence should question the diagnosis. The Alvarado score in this patient is ≥6, indicating high clinical probability for appendicitis.",
+  "clinicalClue": "KEY FINDING: The classic migration of pain from periumbilical to RLQ (McBurney's point) combined with anorexia preceding pain, positive Rovsing's sign, and voluntary guarding is the hallmark triad of acute appendicitis. Do not jump to diagnosis yet! Perform some tests i the Test tab to confirm. Anorexia is the most sensitive symptom (~95%) its absence should question the diagnosis. The Alvarado score in this patient is ≥6, indicating high clinical probability for appendicitis?",
 
   "initialState": {
     "time": 0,
@@ -167,7 +167,7 @@
           "Generalised abdominal rigidity, board-like abdomen",
           "Patient appears toxic and distressed",
           "High-grade fever",
-          "Sudden worsening then brief easing of pain (classic perforation event)",
+          "Sudden worsening then brief easing of pain",
           "Pain rapidly spreading to whole abdomen"
         ],
         "vitals": { "bp": "90/60", "hr": 126, "temp": 39.3, "rr": 24 },
