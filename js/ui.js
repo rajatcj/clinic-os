@@ -348,12 +348,14 @@ class ClinicalUI {
             <div class="vital-item"><span>BP</span><strong>${cp.vitals.bp}</strong></div>
             <div class="vital-item"><span>RR</span><strong>${cp.vitals.rr}/min</strong></div>
             <div class="vital-item"><span>SpO₂</span><strong>${cp.vitals.spo2}%</strong></div>
+            <div class="vital-item"><span>Weight</span><strong>${cp.vitals.weight}</strong></div>
           </div>
         </div>
         <div class="info-card full-width clue-card">
           <div class="card-label">SPONSORED SEGMENT</div>
-          <h2>SPONSORED ADS SPACE (3/3)</h2>
-          A free service still take resources to operate for the database, server and domain! The cases of this website will always be free of cost available for everyone powered by our sponsors.
+          <h2>SPONSORED ADS SPACE</h2>
+          <ul class="detail-list"><li>A free service still take resources to operate. To purchase Database, Host, Domain and API services. The cases of this website will always be free of cost available for everyone powered by our sponsors.</li></ul>
+          Place your advertisement? Contace me at <a style="color: #0dbd8b;" href="mail@rajatcj.com">mail@rajatcj.com</a>
         </div>
         <div class="info-card full-width">
           <div class="card-label">Examination</div>
@@ -369,7 +371,7 @@ class ClinicalUI {
           <div class="symptom-tags" id="active-symptoms"></div>
         </div>
         <div class="skip-inline-bar">
-          <span class="skip-inline-label">⏩ Skip:</span>
+          <span class="skip-inline-label">⏩ Skip Time:</span>
           ${[['0.5','+30m'],['1','+1h'],['2','+2h'],['4','+4h'],['6','+6h']].map(([h,l])=>`<button class="skip-inline-btn" data-h="${h}">${l}</button>`).join('')}
         </div>
       </div>`;
