@@ -628,3 +628,121 @@ button{cursor:pointer;font-family:inherit}
   transform: translateY(0);
   box-shadow: none;
 }
+
+
+/* ══════════════════════════════════════════════════════
+   GAME FONT SIZE PATCH
+   Drop this AFTER your main stylesheet.
+   Only targets in-game UI — home screen untouched.
+   ══════════════════════════════════════════════════════ */
+
+/* ── Header / HUD ─────────────────────────────────── */
+.btn-back          { font-size: 12px; }
+.case-title-small  { font-size: 1rem; }
+
+.vital-hud-item    { font-size: 13px; }
+
+.hud-label         { font-size: 9px; }
+.hud-value         { font-size: 14px; }
+
+.btn-jump,
+.btn-resign,
+.btn-end           { font-size: 12px; }
+
+/* ── Patient banner ───────────────────────────────── */
+.patient-name      { font-size: 12px; }
+.patient-complaint { font-size: 1.05rem; }
+.patient-stage-badge { font-size: 11px; }
+
+/* ── Tab bar (desktop) ────────────────────────────── */
+.tab-btn           { font-size: 12px; }
+.badge             { font-size: 10px; }
+
+/* ── Log panel ────────────────────────────────────── */
+.log-header        { font-size: 11px; }
+.log-entry         { font-size: 12px; }
+.log-time          { font-size: 10px; }
+.log-msg           { font-size: 12px; }
+
+/* ── History / info cards ─────────────────────────── */
+.card-label        { font-size: 10px; }
+.card-value        { font-size: 1rem; }
+.card-value.big    { font-size: 1.1rem; }
+.detail-list li    { font-size: .9rem; }
+
+.vital-item span   { font-size: 10px; }
+.vital-item strong { font-size: 13px; }
+
+.exam-label        { font-size: 12px; }
+.symptom-tag       { font-size: 12px; }
+
+/* ── Tests tab ────────────────────────────────────── */
+.category-label    { font-size: 10px; }
+.test-name         { font-size: .95rem; }
+.test-fullname     { font-size: .8rem; }
+.test-meta span    { font-size: 11px; }
+.test-status       { font-size: 11px; }
+.btn-order         { font-size: 12px; }
+
+/* ── Results tab ──────────────────────────────────── */
+.results-section-label { font-size: 10px; }
+.result-name       { font-size: .95rem; }
+.result-time       { font-size: 10px; }
+.result-eta        { font-size: 12px; }
+.result-text       { font-size: 12px; }
+.result-interp     { font-size: .85rem; }
+
+/* ── Management tab ───────────────────────────────── */
+.mgmt-name         { font-size: .95rem; }
+.mgmt-fullname     { font-size: .8rem; }
+.mgmt-meta span    { font-size: 11px; }
+.mgmt-done         { font-size: 11px; }
+.mgmt-blocked-msg  { font-size: 11px; }
+.badge-curative,
+.badge-wrong,
+.badge-blunder     { font-size: 10px; }
+.btn-give          { font-size: 12px; }
+.disease-mgmt-label       { font-size: 13px; }
+.disease-mgmt-warning     { font-size: 11px; }
+.lock-title        { font-size: 1.25rem; }
+.lock-desc         { font-size: .9rem; }
+
+/* ── Diagnosis tab ────────────────────────────────── */
+.diagnosis-prompt  { font-size: 1.1rem; }
+.diagnosis-info-box { font-size: .88rem; }
+.diag-label        { font-size: .95rem; }
+.diag-current      { font-size: 12px; }
+.empty-state       { font-size: 13px; }
+
+/* ── Score / modals ───────────────────────────────── */
+.score-msg         { font-size: .9rem; }
+.dx-label          { font-size: 11px; }
+.dx-value          { font-size: .9rem; }
+.score-label       { font-size: .88rem; }
+.score-pts         { font-size: 14px; }
+.stat-row          { font-size: .88rem; }
+.stat-row strong   { font-size: 13px; }
+.mistakes-label    { font-size: 11px; }
+.mistake-item      { font-size: .85rem; }
+
+/* ── Game-over modal ──────────────────────────────── */
+.gameover-sub      { font-size: .9rem; }
+
+/* ── Mobile overrides (≤ 800px) ───────────────────── */
+@media (max-width: 800px) {
+  .hud-label       { font-size: 7px; }
+  .hud-value       { font-size: 12px; }
+
+  .tab-btn         { font-size: 9px; }   /* emoji-mode already tiny */
+
+  .test-name,
+  .mgmt-name       { font-size: .9rem; }
+
+  .result-text,
+  .log-msg         { font-size: 11px; }
+}
+
+@media (max-width: 420px) {
+  .hud-label       { font-size: 6px; }
+  .hud-value       { font-size: 11px; }
+}
