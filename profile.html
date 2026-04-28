@@ -499,7 +499,6 @@ const budgetPct = entry.budgetTotal ? Math.round((entry.budgetUsed / entry.budge
     <div class="ch-cc" style="font-style:normal;color:var(--text-dim)">Case data not available</div>
   </div>
   <div class="ch-footer">
-        <div class="ch-time">
       <span class="ch-time-icon">Case Solved in </span>
       <span class="ch-time-val">⏱ ${timeTaken}</span>
       <span class="ch-time-icon"> using </span>
@@ -516,8 +515,11 @@ const budgetPct = entry.budgetTotal ? Math.round((entry.budgetUsed / entry.budge
 <div class="ch-card" data-case-id="${esc(meta.id)}" role="button" tabindex="0" title="Play again">
   <div class="ch-body">
     
-    <div class="ch-patient">
+    <div class="ch-top">
       <span class="ch-diff ${diffCls}">${diff}</span>
+      <span class="ch-completed">Completed ${completedAt}</span>
+    </div>
+    <div class="ch-patient">
       <div class="ch-dot"></div>
       <span class="ch-patient-txt">${meta.patientAge}y ${esc(meta.patientSex)} · ${esc(meta.patientOccupation||meta.department||'—')}</span>
     </div>
@@ -527,7 +529,6 @@ const budgetPct = entry.budgetTotal ? Math.round((entry.budgetUsed / entry.budge
   </div>
   <div class="ch-footer">
     <div class="ch-time">
-      <span class="ch-completed">${completedAt} - </span>
       <span class="ch-time-icon">Cured in </span>
       <span class="ch-time-val">⏱ ${timeTaken}</span>
       <span class="ch-time-icon"> using </span>
