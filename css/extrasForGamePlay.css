@@ -82,7 +82,7 @@
 /* ── Mobile toast — top ──────────────────────────────────────────────────── */
 @media (max-width: 800px) {
   .toast-container {
-    top: 75px;
+    top: 100px;
     bottom: auto;
     right: 10px;
     left: 10px;

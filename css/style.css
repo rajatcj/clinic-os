@@ -524,7 +524,7 @@ button{cursor:pointer;font-family:inherit}
 
 .patient-banner{
   position: fixed;
-  top: 52px;
+  top: 50px;
   left: 0;
   width: 100%;
   height: 30px;
@@ -533,7 +533,7 @@ button{cursor:pointer;font-family:inherit}
 
 /* push content down so it doesn't hide */
 .game-body{
-  margin-top: 60px;
+  margin-top: 90px;
 }
 }
 @media(max-width:420px){
