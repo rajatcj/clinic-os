@@ -56,6 +56,7 @@
 /* ── Reset ─────────────────────────────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:14px;scroll-behavior:smooth}
+
 body{font-family:var(--body);background:var(--bg-deep);color:var(--text-hi);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 button{cursor:pointer;font-family:inherit}
 ::-webkit-scrollbar{width:4px;height:4px}
