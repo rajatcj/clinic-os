@@ -587,8 +587,7 @@ class ClinicalUI {
 
     document.getElementById('tab-diagnosiss').innerHTML = `
       <div class="diagnosis-container">
-        <br><div class="disease-mgmt-label">SELECT YOUR DIAGNOSIS:</div>
-        ${!review ? `<div class="diagnosis-info-box">🔒 The <strong>Treatment</strong> tab unlocks after you select a diagnosis. You can change it at any time — the final selection at case end is scored.</div>` : ''}
+        <div class="disease-mgmt-label">SELECT YOUR DIAGNOSIS:</div>
         <div class="diagnosis-options">
           ${opts.map(o => {
             const isCorrect = o.correct;

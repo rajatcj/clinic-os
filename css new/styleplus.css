@@ -1,0 +1,317 @@
+/* ══ STYLEPLUS.CSS — additions for new features ══════════════════════════════
+   Design language: #09090f base · violet #8b5cf6 + pink #ec4899 accents
+   Plus Jakarta Sans body · JetBrains Mono code · glass panels · glow shadows
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Custom Confirm / Alert Modal ────────────────────────────────────────── */
+.cconfirm-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.82);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 9000; padding: 20px;
+  animation: fadeIn .18s ease;
+}
+.cconfirm-box {
+  background: #0f0f1b;
+  border: 1px solid rgba(255,255,255,.11);
+  border-radius: 20px; padding: 30px 26px 24px;
+  max-width: 380px; width: 100%;
+  box-shadow: 0 20px 70px rgba(0,0,0,.8), 0 0 0 1px rgba(139,92,246,.06);
+  display: flex; flex-direction: column; gap: 14px;
+  position: relative; overflow: hidden;
+}
+.cconfirm-box::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, #8b5cf6, #ec4899);
+}
+.cconfirm-icon { font-size: 2.2rem; text-align: center; }
+.cconfirm-title {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 1.1rem; font-weight: 800;
+  text-align: center; color: #f0eeff; line-height: 1.3;
+}
+.cconfirm-msg {
+  font-size: .84rem; color: #9d9ab5;
+  text-align: center; line-height: 1.65;
+}
+.cconfirm-btns { display: flex; gap: 9px; margin-top: 4px; }
+.cconfirm-btn-cancel {
+  flex: 1; padding: 11px;
+  background: none;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 14px; color: #6b6882;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  cursor: pointer; transition: all .18s;
+}
+.cconfirm-btn-cancel:hover { color: #9d9ab5; border-color: rgba(255,255,255,.14); background: rgba(255,255,255,.03); }
+.cconfirm-btn-ok {
+  flex: 1; padding: 11px;
+  background: linear-gradient(135deg, #7c3aed, #ec4899);
+  border: none; border-radius: 14px; color: #fff;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+  cursor: pointer; transition: all .18s;
+  box-shadow: 0 4px 18px rgba(124,58,237,.4);
+}
+.cconfirm-btn-ok:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(124,58,237,.55); }
+.cconfirm-btn-ok.ok-green {
+  background: linear-gradient(135deg, #059669, #10b981);
+  box-shadow: 0 4px 18px rgba(16,185,129,.35);
+  color: #fff;
+}
+.cconfirm-btn-ok.ok-green:hover { box-shadow: 0 6px 24px rgba(16,185,129,.5); }
+.cconfirm-btn-ok.ok-amber {
+  background: linear-gradient(135deg, #d97706, #f59e0b);
+  box-shadow: 0 4px 18px rgba(245,158,11,.35);
+  color: #09090f;
+}
+.cconfirm-btn-ok.ok-amber:hover { box-shadow: 0 6px 24px rgba(245,158,11,.5); }
+
+/* ── Mobile toast — top ──────────────────────────────────────────────────── */
+@media (max-width: 800px) {
+  .toast-container {
+    top: 100px; bottom: auto; right: 10px; left: 10px;
+  }
+  .toast {
+    transform: translateY(-110%);
+  }
+  .toast.toast-show {
+    transform: translateY(0);
+  }
+}
+
+/* ── Review Mode Banner ──────────────────────────────────────────────────── */
+.review-mode-bar {
+  background: rgba(139,92,246,.08);
+  border-bottom: 1px solid rgba(139,92,246,.15);
+  display: flex; align-items: center; justify-content: space-between;
+  width: 100%; padding: 6px 14px;
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  letter-spacing: .08em; color: #a78bfa; flex-shrink: 0;
+}
+.review-mode-bar .review-label {
+  display: flex; align-items: center; gap: 7px;
+  font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+}
+.review-mode-bar .btn-to-score {
+  padding: 5px 14px; border-radius: 99px;
+  border: 1px solid rgba(139,92,246,.38);
+  background: rgba(139,92,246,.12); color: #a78bfa;
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700;
+  cursor: pointer; transition: all .18s;
+}
+.review-mode-bar .btn-to-score:hover {
+  background: rgba(139,92,246,.25); border-color: rgba(139,92,246,.6);
+}
+
+/* ── Stage badge overrides ───────────────────────────────────────────────── */
+.stage-badge-death {
+  color: #fff !important;
+  background: rgba(239,68,68,.2) !important;
+  border: 1px solid rgba(239,68,68,.55) !important;
+  animation: warnPulse .4s ease infinite alternate;
+}
+.stage-badge-transfer {
+  color: #f59e0b !important;
+  background: rgba(245,158,11,.12) !important;
+  border: 1px solid rgba(245,158,11,.4) !important;
+}
+.stage-badge-cured-review {
+  color: #10b981 !important;
+  background: rgba(16,185,129,.1) !important;
+  border: 1px solid rgba(16,185,129,.35) !important;
+}
+
+/* ── Review mode: test/result cards with revealed info ───────────────────── */
+.result-card.review-reveal {
+  border-color: rgba(139,92,246,.45);
+  background: rgba(139,92,246,.04);
+}
+.review-note-pill {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px;
+  padding: 2px 8px; border-radius: 99px;
+  background: rgba(16,185,129,.1); border: 1px solid rgba(16,185,129,.3);
+  color: #10b981; display: inline-block; margin-top: 4px;
+}
+.review-note-pill.pill-warn {
+  background: rgba(245,158,11,.1); border-color: rgba(245,158,11,.3); color: #f59e0b;
+}
+.review-note-pill.pill-danger {
+  background: rgba(239,68,68,.1); border-color: rgba(239,68,68,.3); color: #ef4444;
+}
+
+/* ── Review stage labels ─────────────────────────────────────────────────── */
+.review-stage-results { margin-top: 6px; display: flex; flex-direction: column; gap: 4px; }
+.review-stage-row {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; color: #6b6882;
+  background: #1c1c30; padding: 4px 9px; border-radius: 6px; line-height: 1.5;
+  border: 1px solid rgba(255,255,255,.06);
+}
+.review-stage-row span { color: #9d9ab5; }
+
+/* ── Cured endgame modal ─────────────────────────────────────────────────── */
+.modal-cured { max-width: 420px; padding: 0; overflow: hidden; }
+.cured-header {
+  background: linear-gradient(135deg, rgba(16,185,129,.08), rgba(13,189,139,.04));
+  border-bottom: 1px solid rgba(16,185,129,.22);
+  padding: 34px 26px 24px;
+  text-align: center; display: flex; flex-direction: column; align-items: center; gap: 9px;
+}
+.cured-icon  { font-size: 3.2rem; filter: drop-shadow(0 0 20px rgba(16,185,129,.5)); }
+.cured-title {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 1.4rem; font-weight: 800; color: #10b981;
+}
+.cured-sub { font-size: .84rem; color: #9d9ab5; line-height: 1.6; }
+.cured-actions { padding: 20px 22px; display: flex; flex-direction: column; gap: 9px; }
+.btn-review-case {
+  width: 50%; padding: 13px; border-radius: 14px;
+  background: rgba(16,185,129,.1); border: 1px solid rgba(16,185,129,.35);
+  color: #10b981;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+  letter-spacing: .06em; cursor: pointer; transition: all .18s;
+}
+.btn-review-case:hover { background: rgba(16,185,129,.22); border-color: rgba(16,185,129,.55); }
+.btn-score-now {
+  width: 100%; padding: 13px; border-radius: 14px;
+  background: linear-gradient(135deg, #7c3aed, #ec4899);
+  border: none; color: #fff;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700;
+  letter-spacing: .06em; cursor: pointer; transition: all .18s;
+  box-shadow: 0 6px 24px rgba(124,58,237,.4);
+}
+.btn-score-now:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(124,58,237,.55); }
+
+/* ── Review mode: mgmt cards fully revealed ──────────────────────────────── */
+.mgmt-card.review-open {
+  border-color: rgba(139,92,246,.4);
+  background: rgba(139,92,246,.04);
+}
+.mgmt-card.review-open .mgmt-review-note { display: block; }
+.mgmt-review-note {
+  display: none; font-size: .72rem; color: #a78bfa;
+  line-height: 1.5; margin-top: 4px; font-style: italic;
+}
+
+/* ── Mobile: Activity Log as FAB + drawer ────────────────────────────────── */
+@media (max-width: 800px) {
+  .log-panel { display: none !important; }
+
+  .log-fab {
+    position: fixed; bottom: 62px; left: 12px;
+    width: 46px; height: 46px; border-radius: 50%;
+    background: rgba(9,9,15,.9);
+    border: 1px solid rgba(255,255,255,.12);
+    color: #6b6882; font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 900; cursor: pointer;
+    box-shadow: 0 8px 28px rgba(0,0,0,.7);
+    transition: all .18s;
+    backdrop-filter: blur(12px);
+  }
+  .log-fab:hover { border-color: rgba(139,92,246,.4); color: #a78bfa; }
+  .log-fab.has-new { border-color: rgba(139,92,246,.5); color: #a78bfa; }
+  .log-fab .fab-dot {
+    position: absolute; top: 7px; right: 7px;
+    width: 10px; height: 10px;
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    border-radius: 50%; display: none;
+    border: 1.5px solid #09090f;
+  }
+  .log-fab.has-new .fab-dot { display: block; }
+}
+@media (min-width: 801px) { .log-fab { display: none; } }
+
+/* Log drawer (mobile) */
+.log-drawer {
+  position: fixed; inset: 0; z-index: 950;
+  display: flex; flex-direction: column;
+  pointer-events: none; opacity: 0; transition: opacity .22s ease;
+}
+.log-drawer.open { pointer-events: all; opacity: 1; }
+.log-drawer-backdrop {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,.72);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+}
+.log-drawer-sheet {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: #0f0f1b;
+  border-top: 1px solid rgba(255,255,255,.11);
+  border-radius: 20px 20px 0 0;
+  max-height: 75vh; display: flex; flex-direction: column;
+  transform: translateY(100%); transition: transform .28s cubic-bezier(.32,1,.6,1);
+  overflow: hidden;
+}
+.log-drawer.open .log-drawer-sheet { transform: translateY(0); }
+.log-drawer-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 15px 16px 11px; border-bottom: 1px solid rgba(255,255,255,.06);
+  flex-shrink: 0; position: relative;
+}
+.log-drawer-header::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, #8b5cf6, #ec4899);
+}
+.log-drawer-title {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; color: #6b6882;
+}
+.log-drawer-skip { display: flex; gap: 6px; }
+.log-drawer-skip-btn {
+  font-family: 'JetBrains Mono', monospace; font-size: 9px; font-weight: 700;
+  padding: 4px 11px; border-radius: 99px;
+  border: 1px solid rgba(6,182,212,.32); background: rgba(6,182,212,.1);
+  color: #06b6d4; cursor: pointer; transition: all .18s;
+}
+.log-drawer-skip-btn:hover { background: rgba(6,182,212,.2); border-color: rgba(6,182,212,.5); }
+.log-drawer-entries {
+  flex: 1; overflow-y: auto; padding: 8px;
+  display: flex; flex-direction: column; gap: 3px;
+}
+.log-drawer-close {
+  width: 100%; padding: 14px;
+  background: #141424; border: none;
+  border-top: 1px solid rgba(255,255,255,.06);
+  color: #9d9ab5;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600;
+  letter-spacing: .08em; cursor: pointer; flex-shrink: 0; transition: all .18s;
+}
+.log-drawer-close:hover { background: #1c1c30; color: #f0eeff; }
+
+/* ── Remove back button ──────────────────────────────────────────────────── */
+.btn-back { display: none !important; }
+
+/* ── Diagnosis scroll anchor ─────────────────────────────────────────────── */
+#disease-scroll-anchor { scroll-margin-top: 12px; }
+
+/* ── Clinical Clue Spoiler ───────────────────────────────────────────────── */
+.clinical-clue-card { position: relative; overflow: hidden; }
+
+.spoiler-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, #0f0f1b, #141424);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 10px;
+  z-index: 10; border-radius: inherit; cursor: pointer;
+  transition: opacity 0.35s ease;
+  border: 1px solid rgba(139,92,246,.2);
+}
+.spoiler-overlay input[type="checkbox"] { display: none; }
+.spoiler-overlay:has(input:checked)     { opacity: 0; pointer-events: none; }
+
+.spoiler-title {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  font-size: 1.05rem; font-weight: 800; color: #f0eeff;
+  letter-spacing: .02em; pointer-events: none;
+}
+.spoiler-hint {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: .72rem; color: #6b6882;
+  text-align: center; max-width: 80%; line-height: 1.55; pointer-events: none;
+}
+
+/* ── warnPulse keyframe (needed if styleplus loaded standalone) ─────────── */
+@keyframes warnPulse { from { opacity: .65; } to { opacity: 1; } }
+@keyframes fadeIn    { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeUp    { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
