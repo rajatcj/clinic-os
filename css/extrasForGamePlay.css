@@ -1,4 +1,4 @@
-/* ══ STYLEPLUS.CSS — additions for new features ══════════════════════════ */
+/* ══ extra.CSS — additions for new features ══════════════════════════ */
 
 
 /* ── Custom Confirm / Alert Modal ────────────────────────────────────────── */
@@ -293,7 +293,7 @@
     left: 12px;
     width: 44px;
     height: 44px;
-    border-radius: 50%;
+    border-radius: 20%;
     background: var(--bg-panel);
     border: 1px solid var(--border-lo);
     color: var(--text-mid);
@@ -307,15 +307,15 @@
     transition: all .15s;
   }
   .log-fab.has-new {
-    border-color: rgba(61,168,245,.5);
-    color: var(--blue);
+    border-color: var(--red);
+    color: var(--red);
   }
   .log-fab .fab-dot {
     position: absolute;
-    top: 6px;
-    right: 6px;
-    width: 10px;
-    height: 10px;
+    top: 3px;
+    right: 3px;
+    width: 0px;
+    height: 0px;
     background: var(--red);
     border-radius: 50%;
     display: none;

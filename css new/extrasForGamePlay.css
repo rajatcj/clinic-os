@@ -1,0 +1,325 @@
+/* ══ STYLEPLUS.CSS ══════════════════════════════════════════════════════════
+   Original color scheme: --green #0dbd8b · --amber #f5a623 · --red #e84058
+   --blue #3da8f5 · --purple #a78bfa · bg-deep #070b0f · text-hi #dde8f2
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Custom Confirm / Alert Modal ────────────────────────────────────────── */
+.cconfirm-overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.78);
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  display:flex;align-items:center;justify-content:center;
+  z-index:9000;padding:20px;
+  animation:fadeIn .18s ease;
+}
+.cconfirm-box{
+  background:var(--bg-panel);
+  border:1px solid var(--border-lo);
+  border-radius:var(--r4);
+  padding:28px 26px 22px;
+  max-width:380px;width:100%;
+  box-shadow:var(--sh3);
+  display:flex;flex-direction:column;gap:14px;
+  animation:fadeUp .2s ease;
+  position:relative;overflow:hidden;
+}
+/* green top accent matching app identity */
+.cconfirm-box::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--green),var(--blue));
+}
+.cconfirm-icon{font-size:2rem;text-align:center}
+.cconfirm-title{font-family:var(--display);font-size:1.1rem;font-weight:500;text-align:center;color:var(--text-hi);line-height:1.3}
+.cconfirm-msg{font-size:.82rem;color:var(--text-mid);text-align:center;line-height:1.6}
+.cconfirm-btns{display:flex;gap:9px;margin-top:4px}
+.cconfirm-btn-cancel{
+  flex:1;padding:10px;background:none;
+  border:1px solid var(--border);border-radius:var(--r2);
+  color:var(--text-lo);font-family:var(--mono);font-size:11px;
+  cursor:pointer;transition:all .15s;
+}
+.cconfirm-btn-cancel:hover{color:var(--text-mid);border-color:var(--border-lo)}
+.cconfirm-btn-ok{
+  flex:1;padding:10px;
+  background:var(--red);border:none;border-radius:var(--r2);
+  color:#fff;font-family:var(--mono);font-size:11px;font-weight:700;
+  cursor:pointer;transition:all .15s;
+}
+.cconfirm-btn-ok:hover{opacity:.88;transform:translateY(-1px)}
+.cconfirm-btn-ok.ok-green{background:var(--green);color:var(--bg-deep)}
+.cconfirm-btn-ok.ok-amber{background:var(--amber);color:var(--bg-deep)}
+
+/* ── Mobile toast — top ──────────────────────────────────────────────────── */
+/* (handled in style.css @media block, but keep here for cascade safety) */
+@media(max-width:800px){
+  .toast-container{top:calc(env(safe-area-inset-top,0px) + 80px);bottom:auto;right:12px;left:12px}
+  .toast{transform:translateY(-110%);opacity:0;max-width:100%;border-radius:14px;font-size:13px;padding:13px 16px}
+  .toast.toast-show{transform:translateY(0);opacity:1}
+}
+
+/* ── Review Mode Banner ──────────────────────────────────────────────────── */
+.review-mode-bar{
+  background:rgba(13,189,139,.08);
+  border-bottom:1px solid rgba(13,189,139,.15);
+  display:flex;align-items:center;justify-content:space-between;
+  width:100%;padding:5px 14px;
+  font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--green);
+  flex-shrink:0;
+}
+.review-mode-bar .review-label{display:flex;align-items:center;gap:6px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.review-mode-bar .btn-to-score{
+  padding:4px 12px;border-radius:99px;
+  border:1px solid rgba(13,189,139,.4);background:rgba(13,189,139,.1);
+  color:var(--green);font-family:var(--mono);font-size:10px;font-weight:600;
+  cursor:pointer;transition:all .15s;
+}
+.review-mode-bar .btn-to-score:hover{background:rgba(13,189,139,.22);border-color:rgba(13,189,139,.6)}
+
+/* ── Death/Transfer state badge overrides ────────────────────────────────── */
+.stage-badge-death{color:#fff!important;background:rgba(232,64,88,.25)!important;border:1px solid rgba(232,64,88,.6)!important;animation:warnPulse .4s ease infinite alternate}
+.stage-badge-transfer{color:var(--amber)!important;background:rgba(245,166,35,.15)!important;border:1px solid rgba(245,166,35,.45)!important}
+.stage-badge-cured-review{color:var(--green)!important;background:rgba(13,189,139,.12)!important;border:1px solid rgba(13,189,139,.4)!important}
+
+/* ── Review mode: result cards ───────────────────────────────────────────── */
+.result-card.review-reveal{border-color:rgba(167,139,250,.55);background:rgba(167,139,250,.04)}
+.review-note-pill{font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:99px;background:rgba(13,189,139,.1);border:1px solid rgba(13,189,139,.28);color:var(--green);display:inline-block;margin-top:4px}
+.review-note-pill.pill-warn{background:rgba(245,166,35,.1);border-color:rgba(245,166,35,.3);color:var(--amber)}
+.review-note-pill.pill-danger{background:rgba(232,64,88,.1);border-color:rgba(232,64,88,.28);color:var(--red)}
+
+/* ── Review stage labels ─────────────────────────────────────────────────── */
+.review-stage-results{margin-top:6px;display:flex;flex-direction:column;gap:4px}
+.review-stage-row{font-family:var(--mono);font-size:9px;color:var(--text-lo);background:var(--bg-up);padding:4px 8px;border-radius:var(--r1);line-height:1.5}
+.review-stage-row span{color:var(--text-mid)}
+
+/* ── Cured endgame modal ─────────────────────────────────────────────────── */
+.modal-cured{max-width:420px;padding:0;overflow:hidden}
+.cured-header{background:rgba(13,189,139,.08);border-bottom:1px solid rgba(13,189,139,.22);padding:32px 26px 22px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:8px}
+.cured-icon{font-size:3rem}
+.cured-title{font-family:var(--display);font-size:1.4rem;font-weight:500;color:var(--green)}
+.cured-sub{font-size:.82rem;color:var(--text-mid);line-height:1.55}
+.cured-actions{padding:18px 22px;display:flex;flex-direction:column;gap:8px}
+.btn-review-case{width:50%;padding:12px;border-radius:var(--r2);background:rgba(13,189,139,.1);border:1px solid rgba(13,189,139,.35);color:var(--green);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;cursor:pointer;transition:all .15s}
+.btn-review-case:hover{background:rgba(13,189,139,.2)}
+.btn-score-now{width:100%;padding:12px;border-radius:var(--r2);background:var(--green);border:none;color:var(--bg-deep);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;cursor:pointer;transition:all .15s;box-shadow:0 4px 18px rgba(13,189,139,.35)}
+.btn-score-now:hover{background:var(--green2);transform:translateY(-1px)}
+
+/* ── Review mode: mgmt cards ─────────────────────────────────────────────── */
+.mgmt-card.review-open{border-color:rgba(167,139,250,.98)}
+.mgmt-card.review-open .mgmt-review-note{display:block}
+.mgmt-review-note{display:none;font-size:.72rem;color:var(--purple);line-height:1.45;margin-top:4px;font-style:italic}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   MOBILE: Activity Log FAB + Drawer
+   — FAB is visually punchy so users notice it
+   ══════════════════════════════════════════════════════════════════════════ */
+@media(max-width:800px){
+  .log-panel{display:none!important}
+
+  /* ── FAB: hard to miss ── */
+  .log-fab{
+    position:fixed;bottom:72px;left:14px;
+    width:48px;height:48px;border-radius:50%;
+    /* glass surface with green tint */
+    background:rgba(13,29,40,.92);
+    border:1.5px solid rgba(13,189,139,.4);
+    color:var(--green);font-size:19px;
+    display:flex;align-items:center;justify-content:center;
+    z-index:900;cursor:pointer;
+    box-shadow:0 4px 20px rgba(0,0,0,.7), 0 0 0 0 rgba(13,189,139,.4);
+    transition:all .2s;
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    -webkit-tap-highlight-color:transparent;
+  }
+  .log-fab:active{transform:scale(.88)}
+  .log-fab.has-new{
+    border-color:rgba(13,189,139,.7);
+    box-shadow:0 4px 20px rgba(0,0,0,.7), 0 0 14px rgba(13,189,139,.35);
+    animation:fabPulse 2s ease infinite;
+  }
+  .log-fab .fab-dot{
+    position:absolute;top:6px;right:6px;
+    width:11px;height:11px;
+    background:var(--red);border-radius:50%;display:none;
+    border:2px solid var(--bg-deep);
+    box-shadow:0 0 6px rgba(232,64,88,.6);
+  }
+  .log-fab.has-new .fab-dot{display:block}
+
+  @keyframes fabPulse{
+    0%,100%{box-shadow:0 4px 20px rgba(0,0,0,.7), 0 0 14px rgba(13,189,139,.35)}
+    50%{box-shadow:0 4px 20px rgba(0,0,0,.7), 0 0 22px rgba(13,189,139,.55)}
+  }
+}
+@media(min-width:801px){.log-fab{display:none}}
+
+/* Log drawer */
+.log-drawer{position:fixed;inset:0;z-index:950;display:flex;flex-direction:column;pointer-events:none;opacity:0;transition:opacity .22s ease}
+.log-drawer.open{pointer-events:all;opacity:1}
+.log-drawer-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+.log-drawer-sheet{
+  position:absolute;bottom:0;left:0;right:0;
+  background:var(--bg-panel);
+  border-top:1px solid var(--border-lo);
+  border-radius:var(--r4) var(--r4) 0 0;
+  max-height:75vh;display:flex;flex-direction:column;
+  transform:translateY(100%);transition:transform .28s cubic-bezier(.32,1,.6,1);
+  overflow:hidden;
+}
+.log-drawer.open .log-drawer-sheet{transform:translateY(0)}
+.log-drawer-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;border-bottom:1px solid var(--border);flex-shrink:0;position:relative}
+/* green top accent on drawer too */
+.log-drawer-header::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),var(--blue))}
+.log-drawer-title{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--text-lo)}
+.log-drawer-skip{display:flex;gap:6px}
+.log-drawer-skip-btn{font-family:var(--mono);font-size:9px;font-weight:600;padding:3px 9px;border-radius:99px;border:1px solid rgba(61,168,245,.3);background:rgba(61,168,245,.07);color:var(--blue);cursor:pointer;transition:all .15s}
+.log-drawer-skip-btn:hover{background:rgba(61,168,245,.15);border-color:rgba(61,168,245,.5)}
+.log-drawer-entries{flex:1;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:3px}
+.log-drawer-close{width:100%;padding:13px;background:var(--bg-card);border:none;border-top:1px solid var(--border);color:var(--text-mid);font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.08em;cursor:pointer;flex-shrink:0;transition:all .15s}
+.log-drawer-close:hover{background:var(--bg-hover);color:var(--text-hi)}
+
+/* ── Remove back button ──────────────────────────────────────────────────── */
+.btn-back{display:none!important}
+
+/* ── Diagnosis scroll anchor ─────────────────────────────────────────────── */
+#disease-scroll-anchor{scroll-margin-top:12px}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   CLINICAL CLUE SPOILER
+   ── HOW IT WORKS ──────────────────────────────────────────────────────────
+   The card has a .spoiler-overlay on top.
+   Inside the overlay is a hidden <input type="checkbox" id="spoilerX">.
+   A <label for="spoilerX"> wraps the visible "tap to reveal" UI.
+   When the checkbox is checked the overlay fades out, revealing the card.
+   Clicking the revealed card area has no checkbox, so there's no toggle-back
+   unless you add another label — this preserves the original behaviour.
+   ══════════════════════════════════════════════════════════════════════════ */
+.clinical-clue-card{position:relative;overflow:hidden}
+
+.spoiler-overlay{
+  position:absolute;inset:0;
+  /* dark glass surface */
+  background:rgba(7,11,15,.96);
+  border:1px solid rgba(61,168,245,.15);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  z-index:10;border-radius:inherit;
+  /* pointer target is the label inside, not the overlay itself */
+  pointer-events:none;
+  transition:opacity .35s ease;
+}
+
+/* The hidden checkbox drives the reveal */
+.spoiler-overlay input[type="checkbox"]{display:none}
+
+/* When checked → fade overlay away */
+.spoiler-overlay:has(input:checked){
+  opacity:0;
+  pointer-events:none; /* let clicks pass through to the card */
+}
+
+/* The label IS the clickable target */
+.spoiler-overlay label{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;
+  cursor:pointer;
+  pointer-events:all; /* label catches clicks */
+}
+
+.spoiler-title{
+  font-family:var(--mono);font-size:1.1rem;font-weight:600;
+  color:var(--text-hi);letter-spacing:.05em;
+  pointer-events:none;
+  /* subtle glow to hint it's interactive */
+  text-shadow:0 0 20px rgba(61,168,245,.3);
+}
+.spoiler-hint{
+  font-family:var(--mono);font-size:0.75rem;color:var(--text-mid);
+  text-align:center;max-width:80%;line-height:1.5;
+  pointer-events:none;
+}
+
+/* "tap to reveal" affordance pill — makes clickability obvious */
+.spoiler-overlay label::after{
+  content:'TAP TO REVEAL';
+  font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.14em;
+  color:var(--blue);
+  border:1px solid rgba(61,168,245,.35);
+  background:rgba(61,168,245,.08);
+  padding:4px 12px;border-radius:99px;
+  margin-top:4px;
+  transition:background .15s, border-color .15s;
+}
+.spoiler-overlay label:hover::after{
+  background:rgba(61,168,245,.16);
+  border-color:rgba(61,168,245,.55);
+}
+
+
+/* ══ TIME WIDGET — clickable hint ══════════════════════════════════════════
+   The clock/time on the homepage is clickable. Add .clickable-time to the
+   element (or target the existing ID) to show an affordance.
+   ══════════════════════════════════════════════════════════════════════════ */
+#clock, .clk-time, .clickable-time{
+  cursor:pointer;
+  position:relative;
+  transition:color .2s, text-shadow .2s;
+  border-radius:6px;
+}
+#clock:hover, .clk-time:hover, .clickable-time:hover{
+  color:var(--green);
+  text-shadow:var(--glow-g);
+}
+/* underline dots hint */
+#clock::after, .clk-time::after, .clickable-time::after{
+  content:'';
+  position:absolute;bottom:-3px;left:10%;right:10%;
+  height:1px;
+  background:linear-gradient(90deg,transparent,rgba(13,189,139,.5),transparent);
+  border-radius:99px;
+  opacity:0;transition:opacity .2s;
+}
+#clock:hover::after, .clk-time:hover::after, .clickable-time:hover::after{opacity:1}
+
+
+/* ══ MOBILE-WIDE POLISH ════════════════════════════════════════════════════ */
+@media(max-width:800px){
+
+  /* ── Modals slide up from bottom (iOS sheet style) ── */
+  .modal-overlay{align-items:flex-end;padding:0}
+  .modal,.modal-score,.modal-gameover,.modal-cured{border-radius:var(--r4) var(--r4) 0 0;max-width:100%}
+  .modal-score{max-height:88vh}
+  .pregame-modal{border-radius:var(--r4) var(--r4) 0 0;max-width:100%;max-height:90vh}
+
+  /* ── Cconfirm stays centered on mobile (intent is important) ── */
+  .cconfirm-overlay{align-items:center;padding:20px}
+  .cconfirm-box{border-radius:var(--r4)}
+
+  /* ── Jump options: 2 cols ── */
+  .jump-options{grid-template-columns:1fr 1fr}
+
+  /* ── Pre-game meta: 2 cols ── */
+  .pregame-meta{grid-template-columns:1fr 1fr}
+
+  /* ── Score + game-over full-width ── */
+  .modal-score,.modal-gameover{max-width:100%}
+
+  /* ── Bigger touch targets for buttons ── */
+  .btn-start,.btn-cancel,.btn-score-now,.btn-review-case{padding:15px}
+  .btn-home{padding:14px;font-size:13px}
+  .btn-jump,.btn-end{padding:8px 12px;font-size:11px}
+
+  /* ── Log FAB label — whisper text under icon ── */
+  .log-fab::before{
+    content:'LOG';
+    position:absolute;bottom:-16px;left:50%;transform:translateX(-50%);
+    font-family:var(--mono);font-size:7px;font-weight:700;letter-spacing:.1em;
+    color:var(--text-lo);white-space:nowrap;
+  }
+  .log-fab{margin-bottom:12px} /* give room for label */
+}
+
+/* ── Keyframes referenced here ── */
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes warnPulse{from{opacity:.65}to{opacity:1}}

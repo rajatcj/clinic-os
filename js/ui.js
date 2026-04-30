@@ -252,7 +252,7 @@ class ClinicalUI {
     const fab = document.createElement('button');
     fab.className = 'log-fab';
     fab.id = 'log-fab';
-    fab.innerHTML = `LOG<span class="fab-dot"></span>`;
+    fab.innerHTML = `<i class="fa-solid fa-list-ol"></i><span class="fab-dot"></span>`;
     fab.title = 'Activity Log';
     document.body.appendChild(fab);
 

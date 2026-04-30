@@ -1,7 +1,4 @@
-/* style.css */
-
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=DM+Sans:wght@300;400;500;600&display=swap');
 
 /* ── Variables ─────────────────────────────────────────────────────────────── */
 :root {
@@ -32,6 +29,7 @@
   --glow-o: 0 0 16px rgba(251,146,60,.38),0 0 36px rgba(251,146,60,.12);
   --glow-r: 0 0 18px rgba(232,64,88,.42), 0 0 40px rgba(232,64,88,.18);
   --glow-k: 0 0 22px rgba(232,64,88,.6),  0 0 55px rgba(232,64,88,.28);
+  --glow-b: 0 0 16px rgba(61,168,245,.38),0 0 36px rgba(61,168,245,.12);
 
   --dbg:  rgba(232,64,88,.07);
   --wbg:  rgba(245,166,35,.07);
@@ -41,24 +39,88 @@
   --mono:    'IBM Plex Mono', monospace;
   --display: 'Newsreader', Georgia, serif;
   --body:    'DM Sans', system-ui, sans-serif;
-  
-  --mono:    'JetBrains Mono', monospace;
-  --body:    'Plus Jakarta Sans', system-ui, sans-serif;
+
+    --mono:    'JetBrains Mono', monospace;
+  --serif:   'Georgia', serif;
+  --sans:    'Nunito', system-ui, sans-serif;
 
   --r1:3px; --r2:8px; --r3:14px; --r4:20px;
   --sh1:0 1px 4px rgba(0,0,0,.5);
   --sh2:0 4px 18px rgba(0,0,0,.55);
   --sh3:0 8px 36px rgba(0,0,0,.65);
+  --sh4:0 16px 56px rgba(0,0,0,.75);
 
   --hdr: 60px;
   --ban: 70px;
   --tab: 46px;
 }
 
+
+[data-theme="light"] {
+  /* Surfaces */
+  --bg-deep:      #f2ede6;
+  --bg-base:     #fffdf9;
+  --bg-panel:     #ffffff;
+  --bg-card:     #f7f2eb;
+  --bghover:     #ede8e1;
+
+  /* Borders */
+  --border:     #e0d9d0;
+  --b:    #cec6bb;
+
+  /* Text */
+  --text-hi:      #1a1510;
+  --text-mid:      #5a4f43;
+  --text-lo:      #9e9187;
+  --text-dim:      #c8bfb5;
+
+  /* Brand / status */
+  --green:   #1aaa7a;
+  --green2:  #0fc98c;
+  --amber:   #f5a623;
+  --red:     #e8405a;
+  --blue:    #2f8fd6;
+  --purple:  #7c5cbf;
+  --orange:  #f07030;
+  --acc:     #f07030;    /* primary CTA = orange like Clinicos */
+  --acc2:    #e85a20;
+
+  /* Glows */
+  --glow-g:  0 0 12px rgba(26,170,122,.3);
+  --glow-y:  0 0 12px rgba(245,166,35,.3);
+  --glow-o:  0 0 12px rgba(240,112,48,.3);
+  --glow-r:  0 0 14px rgba(232,64,90,.35);
+  --glow-k:  0 0 18px rgba(232,64,90,.5);
+
+  /* Alpha tints */
+  --dbg:     rgba(232,64,90,.07);
+  --wbg:     rgba(245,166,35,.08);
+  --sbg:     rgba(26,170,122,.07);
+  --ibg:     rgba(47,143,214,.07);
+
+  /* Type */
+  --mono:    'JetBrains Mono', monospace;
+  --serif:   'Georgia', serif;
+  --sans:    'Nunito', system-ui, sans-serif;
+
+  /* Radii */
+  --r1: 8px; --r2: 12px; --r3: 18px; --r4: 24px; --r5: 32px;
+
+  /* Shadows */
+  --sh:  0 4px 16px rgba(100,80,60,.12);
+  --sh2: 0 8px 28px rgba(100,80,60,.16);
+  --sh3: 0 12px 40px rgba(100,80,60,.2);
+
+  /* Layout */
+  --vbar: 56px;
+  --bnav: 64px;
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+
 /* ── Reset ─────────────────────────────────────────────────────────────────── */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{font-size:14px;scroll-behavior:smooth}
-
 body{font-family:var(--body);background:var(--bg-deep);color:var(--text-hi);min-height:100vh;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 button{cursor:pointer;font-family:inherit}
 ::-webkit-scrollbar{width:4px;height:4px}
@@ -66,26 +128,35 @@ button{cursor:pointer;font-family:inherit}
 ::-webkit-scrollbar-thumb{background:var(--border-lo);border-radius:99px}
 .hidden{display:none!important}
 
+/* ── Keyframes ─────────────────────────────────────────────────────────────── */
+@keyframes fadeIn  {from{opacity:0}to{opacity:1}}
+@keyframes fadeUp  {from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes warnPulse{from{opacity:.65}to{opacity:1}}
+@keyframes glowPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.7}}
+@keyframes flashFade{0%{opacity:0;transform:scale(.93)}12%{opacity:1;transform:scale(1)}72%{opacity:1}100%{opacity:0}}
+@keyframes skelPulse{from{opacity:.4}to{opacity:.8}}
+@keyframes toastIn {from{transform:translateX(110%);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes toastInTop{from{transform:translateY(-110%);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes pulse   {0%,100%{opacity:1}50%{opacity:.55}}
+
+
 /* ══ HOME ══════════════════════════════════════════════════════════════════ */
 .home-screen{min-height:100vh;display:flex;flex-direction:column;animation:fadeUp .4s ease}
 
-/* topbar */
-.home-topbar{display:flex;align-items:center;gap:14px;padding:16px 28px;background:var(--bg-base);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20}
+.home-topbar{display:flex;align-items:center;gap:14px;padding:16px 28px;background:rgba(11,16,23,.92);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:20;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
 .topbar-logo{display:flex;align-items:center;gap:10px}
-.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--green),#089e72);border-radius:var(--r2);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,var(--green),#089e72);border-radius:var(--r2);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;box-shadow:var(--glow-g)}
 .logo-text{font-family:var(--mono);font-size:12px;font-weight:600;letter-spacing:.04em}
 .logo-sub{font-family:var(--mono);font-size:9px;color:var(--text-lo);letter-spacing:.1em;text-transform:uppercase}
 .topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
 .topbar-badge{font-family:var(--mono);font-size:10px;letter-spacing:.05em;color:var(--green);background:rgba(13,189,139,.09);border:1px solid rgba(13,189,139,.22);padding:4px 10px;border-radius:99px}
 
-/* filters */
 .home-filters{display:flex;align-items:center;gap:8px;padding:11px 28px;background:var(--bg-panel);border-bottom:1px solid var(--border);overflow-x:auto;flex-wrap:wrap}
 .filter-label{font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--text-lo);text-transform:uppercase;flex-shrink:0}
 .filter-sep{width:1px;height:18px;background:var(--border);flex-shrink:0}
 .filter-btn{font-family:var(--mono);font-size:10px;font-weight:500;padding:4px 12px;border-radius:99px;border:1px solid var(--border-lo);background:var(--bg-card);color:var(--text-mid);transition:all .15s;white-space:nowrap}
 .filter-btn:hover,.filter-btn.active{background:rgba(13,189,139,.1);border-color:rgba(13,189,139,.35);color:var(--green)}
 
-/* hero */
 .home-hero{padding:52px 28px 36px;text-align:center;position:relative;overflow:hidden}
 .home-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 65% 55% at 50% 0%,rgba(13,189,139,.055) 0%,transparent 68%);pointer-events:none}
 .hero-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);margin-bottom:14px}
@@ -93,13 +164,11 @@ button{cursor:pointer;font-family:inherit}
 .hero-title em{font-style:italic;color:var(--green)}
 .hero-sub{margin:14px auto 0;font-size:.95rem;color:var(--text-mid);max-width:520px;line-height:1.65}
 
-/* stats */
 .home-stats{display:flex;justify-content:center;gap:36px;padding:20px 28px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg-base);flex-wrap:wrap}
 .home-stat{text-align:center}
 .home-stat-value{font-family:var(--mono);font-size:1.4rem;font-weight:600;color:var(--green)}
 .home-stat-label{font-size:.7rem;color:var(--text-lo);text-transform:uppercase;letter-spacing:.1em;margin-top:2px}
 
-/* cases section */
 .home-cases-section{flex:1;padding:32px 28px}
 .section-header{display:flex;align-items:center;gap:12px;margin-bottom:22px}
 .section-title{font-family:var(--display);font-size:1.25rem;font-weight:500;white-space:nowrap}
@@ -132,8 +201,8 @@ button{cursor:pointer;font-family:inherit}
 .card-cta{font-size:11px;font-weight:600;color:var(--green);background:rgba(13,189,139,.1);border:1px solid rgba(13,189,139,.25);padding:6px 14px;border-radius:99px;transition:all .15s}
 .case-card:hover .card-cta{background:rgba(13,189,139,.2);border-color:rgba(13,189,139,.45)}
 
-/* pre-game modal (rules) */
-.pregame-overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(7px);display:flex;align-items:center;justify-content:center;z-index:200;padding:16px;animation:fadeIn .25s ease}
+/* pre-game modal */
+.pregame-overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);display:flex;align-items:center;justify-content:center;z-index:200;padding:16px;animation:fadeIn .25s ease}
 .pregame-modal{background:var(--bg-panel);border:1px solid var(--border-lo);border-radius:var(--r4);max-width:560px;width:100%;max-height:92vh;overflow-y:auto;box-shadow:var(--sh3)}
 .pregame-head{padding:26px 26px 0;display:flex;flex-direction:column;gap:6px}
 .pregame-case-label{font-family:var(--mono);font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--green)}
@@ -154,19 +223,29 @@ button{cursor:pointer;font-family:inherit}
 .meta-value{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--text-hi)}
 .meta-value.coins{color:var(--amber)}
 .pregame-actions{padding:0 26px 26px;display:flex;gap:10px}
-.btn-start{flex:1;padding:13px;border-radius:var(--r2);background:var(--green);color:var(--bg-deep);border:none;font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.06em;transition:all .15s}
-.btn-start:hover{background:var(--green2)}
+.btn-start{flex:1;padding:13px;border-radius:var(--r2);background:var(--green);color:var(--bg-deep);border:none;font-family:var(--mono);font-size:12px;font-weight:700;letter-spacing:.06em;transition:all .15s;box-shadow:var(--glow-g)}
+.btn-start:hover{background:var(--green2);transform:translateY(-1px)}
 .btn-cancel{padding:13px 18px;border-radius:var(--r2);background:none;color:var(--text-lo);border:1px solid var(--border);font-family:var(--mono);font-size:11px;transition:all .15s}
 .btn-cancel:hover{color:var(--text-mid);border-color:var(--border-lo)}
 
-/* home footer */
+.home-cta-btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:10px 22px;border-radius:99px;background:rgba(13,189,139,.08);border:1px solid rgba(13,189,139,.35);color:var(--green);transition:all .2s ease}
+.home-cta-btn:hover{background:rgba(13,189,139,.16);border-color:rgba(13,189,139,.55);transform:translateY(-2px);box-shadow:var(--glow-g)}
+.home-mid-cta{display:flex;justify-content:center;padding:22px 28px}
 .home-footer{text-align:center;padding:18px;font-family:var(--mono);font-size:9px;color:var(--text-dim);letter-spacing:.1em;border-top:1px solid var(--border)}
+
 
 /* ══ GAME ═══════════════════════════════════════════════════════════════════ */
 .game-layout{display:grid;grid-template-rows:var(--hdr) var(--ban) 1fr;grid-template-columns:1fr 268px;grid-template-areas:"hdr hdr" "ban ban" "body log";height:100vh;overflow:hidden}
 
-/* header */
-.game-header{grid-area:hdr;display:flex;align-items:center;gap:10px;padding:0 14px;background:var(--bg-base);border-bottom:1px solid var(--border);z-index:10}
+/* ── game header: visually distinct from content ── */
+.game-header{
+  grid-area:hdr;display:flex;align-items:center;gap:10px;padding:0 14px;
+  background:linear-gradient(180deg, rgba(4,8,14,1) 0%, rgba(7,11,18,1) 100%);
+  border-bottom:1px solid rgba(61,168,245,.12);
+  box-shadow:0 1px 0 rgba(61,168,245,.06), 0 4px 24px rgba(0,0,0,.7);
+  z-index:10;
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+}
 .header-left{display:flex;align-items:center;gap:10px;min-width:0}
 .header-right{display:flex;align-items:center;gap:10px;margin-left:auto;flex-shrink:0}
 .btn-back{font-family:var(--mono);font-size:10px;letter-spacing:.04em;color:var(--text-mid);background:none;border:1px solid var(--border);padding:5px 10px;border-radius:var(--r1);transition:all .15s;white-space:nowrap}
@@ -175,12 +254,11 @@ button{cursor:pointer;font-family:inherit}
 
 /* vitals strip */
 .hud-vitals{display:flex;gap:5px;flex-wrap:wrap}
-.vital-hud-item{font-family:var(--mono);font-size:11px;padding:3px 7px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r1);color:var(--text-mid);white-space:nowrap;transition:all .3s}
+.vital-hud-item{font-family:var(--mono);font-size:11px;padding:3px 7px;background:rgba(28,42,58,.8);border:1px solid var(--border);border-radius:var(--r1);color:var(--text-mid);white-space:nowrap;transition:all .3s}
 .vital-hud-item.vital-warn{color:var(--red);border-color:rgba(232,64,88,.4);background:var(--dbg);animation:warnPulse 1.2s ease infinite alternate}
-@keyframes warnPulse{from{opacity:.65}to{opacity:1}}
 
 /* hud stats */
-.hud-stats{display:flex;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden; margin:2px}
+.hud-stats{display:flex;background:rgba(20,29,40,.9);border:1px solid var(--border-lo);border-radius:var(--r2);overflow:hidden;margin:2px;backdrop-filter:blur(8px)}
 .hud-stat{display:flex;flex-direction:column;align-items:center;padding:5px 11px;min-width:70px;border-right:1px solid var(--border)}
 .hud-stat:last-child{border-right:none}
 .hud-label{font-family:var(--mono);font-size:7px;letter-spacing:.14em;color:var(--text-lo);text-transform:uppercase}
@@ -194,21 +272,26 @@ button{cursor:pointer;font-family:inherit}
 .budget-low{color:var(--amber)!important}
 
 .hud-actions{display:flex;gap:5px}
-.btn-jump{font-family:var(--mono);font-size:10px;font-weight:600;padding:6px 10px;border-radius:var(--r1);border:1px solid var(--border-lo);background:var(--bg-up);color:var(--blue);transition:all .15s;white-space:nowrap}
-.btn-jump:hover{background:rgba(61,168,245,.1);border-color:rgba(61,168,245,.4)}
+.btn-jump{font-family:var(--mono);font-size:10px;font-weight:600;padding:6px 10px;border-radius:var(--r1);border:1px solid rgba(61,168,245,.3);background:var(--ibg);color:var(--blue);transition:all .15s;white-space:nowrap}
+.btn-jump:hover{background:rgba(61,168,245,.14);border-color:rgba(61,168,245,.5)}
 .btn-resign{font-family:var(--mono);font-size:10px;font-weight:600;padding:6px 10px;border-radius:var(--r1);border:1px solid var(--border);background:var(--bg-card);color:var(--text-lo);transition:all .15s;white-space:nowrap}
-.btn-resign:hover{color:var(--amber);border-color:rgba(245,166,35,.4);background:rgba(245,166,35,.06)}
-.btn-end{font-family:var(--mono);font-size:10px;font-weight:600;padding:6px 10px;border-radius:var(--r1);border:1px solid #db464654;background:var(--bg-card);color:var(--text-lo);transition:all .15s;white-space:nowrap}
-.btn-end.btn-end-ready{color:var(--amber);border-color:rgba(245,166,35,.4);background:rgba(245, 63, 35, 0.07)}
+.btn-resign:hover{color:var(--amber);border-color:rgba(245,166,35,.4);background:var(--wbg)}
+.btn-end{font-family:var(--mono);font-size:10px;font-weight:600;padding:6px 10px;border-radius:var(--r1);border:1px solid rgba(232,64,88,.25);background:var(--bg-card);color:var(--text-lo);transition:all .15s;white-space:nowrap}
+.btn-end.btn-end-ready{color:var(--amber);border-color:rgba(245,166,35,.4);background:rgba(245,63,35,.07)}
 .btn-end:hover{color:var(--text-mid);border-color:var(--border-lo)}
 
-/* patient banner */
-.patient-banner{grid-area:ban;display:flex;align-items:center;gap:13px;padding:20px 16px;background:#091814;border-bottom:1px solid var(--border)}
-.patient-avatar{width:38px;height:38px;flex-shrink:0;background:var(--bg-up);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text-mid)}
+/* ── patient banner: distinct background from game body ── */
+.patient-banner{
+  grid-area:ban;display:flex;align-items:center;gap:13px;padding:0 16px;
+  background:linear-gradient(180deg, rgba(9,24,20,1) 0%, rgba(7,15,14,1) 100%);
+  border-bottom:1px solid rgba(13,189,139,.14);
+  box-shadow:0 1px 0 rgba(13,189,139,.08), 0 4px 20px rgba(0,0,0,.6);
+}
+.patient-avatar{width:38px;height:38px;flex-shrink:0;background:var(--bg-up);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--text-mid);border:1px solid var(--border-lo)}
 .patient-avatar svg{width:26px;height:26px}
 .patient-info{flex:1;width:0}
 .patient-name{font-family:var(--mono);font-size:10px;color:var(--text-mid);letter-spacing:.04em}
-.patient-complaint{font-family:var(--display);font-size:.88rem;font-style:italic;color:var(--text-hi);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top: 10px;}
+.patient-complaint{font-family:var(--display);font-size:.88rem;font-style:italic;color:var(--text-hi);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:10px}
 .stage-glow-wrap{display:flex;align-items:center;gap:8px;flex-shrink:0}
 .stage-glow{width:10px;height:10px;border-radius:50%;flex-shrink:0;transition:all .5s}
 .glow-yellow{background:var(--amber);box-shadow:var(--glow-y)}
@@ -217,7 +300,6 @@ button{cursor:pointer;font-family:inherit}
 .glow-black{background:var(--red);box-shadow:var(--glow-k);animation:warnPulse .4s ease infinite alternate}
 .glow-green{background:var(--green);box-shadow:var(--glow-g)}
 .glow-pulse{animation:glowPulse 1s ease infinite}
-@keyframes glowPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:.7}}
 .patient-stage-badge{padding:4px 11px;border-radius:99px;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;transition:all .4s}
 .stage-badge-yellow{color:var(--amber);background:rgba(245,166,35,.1);border:1px solid rgba(245,166,35,.3)}
 .stage-badge-orange{color:var(--orange);background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.3)}
@@ -225,28 +307,34 @@ button{cursor:pointer;font-family:inherit}
 .stage-badge-black{color:var(--red);background:rgba(232,64,88,.15);border:1px solid rgba(232,64,88,.5);animation:warnPulse .4s ease infinite alternate}
 .stage-badge-green{color:var(--green);background:rgba(13,189,139,.1);border:1px solid rgba(13,189,139,.3)}
 
-/* game body */
+/* ── game body: lighter so it reads as "content area" ── */
 .game-body{grid-area:body;display:flex;flex-direction:column;overflow:hidden;background:var(--bg-base)}
 
-.tab-bar{display:flex;background:var(--bg-panel);border-bottom:1px solid var(--border);overflow-x:auto;flex-shrink:0;}
 
-
+/* ══ TAB BAR — floating pill style, distinct from content ══════════════════ */
+.tab-bar{
+  display:flex;
+  background:rgba(11,16,23,.95);
+  border-bottom:1px solid var(--border);
+  overflow-x:auto;flex-shrink:0;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  box-shadow:0 2px 12px rgba(0,0,0,.4);
+}
 .tab-bar::-webkit-scrollbar{height:2px}
-.tab-btn{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.04em;padding:0 15px;height:var(--tab);background:none;border:none;border-bottom:2px solid transparent;color:var(--text-lo);white-space:nowrap;transition:all .15s;display:flex;align-items:center;gap:5px;  flex: 1;              /* 👈 each button grows equally */
-  text-align: center; align-items: center;
-  flex: 1;
 
-  display: flex;              /* 👈 make button a flex container */
-  align-items: center;       /* vertical centering */
-  justify-content: center;   /* horizontal centering */
-
-  gap: 6px;                  /* space between text + badge */
-  text-align: center;}
+.tab-btn{
+  font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.04em;
+  padding:0 15px;height:var(--tab);background:none;border:none;
+  border-bottom:2px solid transparent;
+  color:var(--text-lo);white-space:nowrap;transition:all .15s;
+  flex:1;display:flex;align-items:center;justify-content:center;gap:6px;text-align:center;
+}
 .tab-btn:hover{color:var(--text-mid)}
 .tab-btn.active{color:var(--green);border-bottom-color:var(--green);background:rgba(13,189,139,.04)}
 .badge{font-size:8px;background:var(--green);color:var(--bg-deep);padding:1px 5px;border-radius:99px;font-weight:700;min-width:15px;text-align:center}
 .badge-locked{background:var(--text-dim);color:var(--text-lo)}
-.tab-content{flex:1;overflow:hidden}
+
+.tab-content{flex:1;overflow:hidden;touch-action:pan-y}
 .tab-panel{display:none;height:100%;overflow-y:auto;padding:16px}
 .tab-panel.active{display:block}
 
@@ -265,9 +353,8 @@ button{cursor:pointer;font-family:inherit}
 .log-entry.log-success{background:var(--sbg);border-left-color:var(--green)}
 .log-entry.log-info{background:var(--ibg);border-left-color:var(--blue)}
 
-/* ══ TAB CONTENT ══════════════════════════════════════════════════════════ */
 
-/* history */
+/* ══ TAB CONTENT ══════════════════════════════════════════════════════════ */
 .history-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .info-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r2);padding:12px 14px;animation:fadeUp .2s ease both}
 .info-card.full-width{grid-column:1/-1}
@@ -365,25 +452,14 @@ button{cursor:pointer;font-family:inherit}
 .diag-label{font-size:.86rem;color:var(--text-hi)}
 .diag-current{font-family:var(--mono);font-size:10px;color:var(--text-lo)}
 .diag-current strong{color:var(--blue)}
+.diagnosis-container{float:left;width:49%;margin-right:2%;box-sizing:border-box}
+.mgmt-container{float:left;width:49%;box-sizing:border-box}
 
-.diagnosis-container {
-  float: left;
-  width: 49%;
-  margin-right: 2%;
-  box-sizing: border-box;
-}
-
-.mgmt-container {
-  float: left;
-  width: 49%;
-  box-sizing: border-box;
-}
-
-/* empty state */
 .empty-state{font-family:var(--mono);font-size:11px;color:var(--text-dim);text-align:center;padding:40px 20px;letter-spacing:.04em}
 
+
 /* ══ MODALS ════════════════════════════════════════════════════════════════ */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px;animation:fadeIn .2s ease}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px;animation:fadeIn .2s ease}
 .modal{background:var(--bg-panel);border:1px solid var(--border-lo);border-radius:var(--r4);padding:24px;max-width:400px;width:100%;box-shadow:var(--sh3)}
 .modal-title{font-family:var(--display);font-size:1.1rem;font-weight:500;margin-bottom:6px}
 .modal-desc{font-size:.8rem;color:var(--text-mid);margin-bottom:16px;line-height:1.5}
@@ -421,8 +497,8 @@ button{cursor:pointer;font-family:inherit}
 .mistake-item.mistake-wrong,.mistake-item.mistake-blunder{color:var(--red);background:var(--dbg);border-left-color:var(--red)}
 .mistake-item.mistake-unnecessary{color:var(--text-mid);background:var(--bg-card);border-left-color:var(--text-lo)}
 .score-actions{display:flex;gap:10px}
-.btn-home{flex:1;padding:11px;background:var(--green);color:var(--bg-deep);border:none;border-radius:var(--r2);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;transition:all .15s}
-.btn-home:hover{background:var(--green2)}
+.btn-home{flex:1;padding:11px;background:var(--green);color:var(--bg-deep);border:none;border-radius:var(--r2);font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;transition:all .15s;box-shadow:var(--glow-g)}
+.btn-home:hover{background:var(--green2);transform:translateY(-1px)}
 
 /* game over */
 .modal-gameover{max-width:400px;padding:0;overflow:hidden}
@@ -448,22 +524,30 @@ button{cursor:pointer;font-family:inherit}
 .stage-flash-text{font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:3px}
 .stage-flash-red .stage-flash-text,.stage-flash-black .stage-flash-text{color:var(--red)}
 .stage-flash-sub{font-family:var(--display);font-size:1.15rem;font-style:italic;color:var(--text-hi)}
-@keyframes flashFade{0%{opacity:0;transform:scale(.93)}12%{opacity:1;transform:scale(1)}72%{opacity:1}100%{opacity:0}}
 
-/* toasts */
-.toast-container{position:fixed;bottom:16px;right:16px;display:flex;flex-direction:column;gap:6px;z-index:300}
-.toast{font-family:var(--mono);font-size:10px;padding:8px 13px;border-radius:var(--r2);background:var(--bg-up);border:1px solid var(--border-lo);color:var(--text-hi);max-width:270px;transform:translateX(110%);transition:transform .3s ease;box-shadow:var(--sh2);line-height:1.4}
-.toast.toast-show{transform:translateX(0)}
-.toast.toast-success{border-color:rgba(13,189,139,.9);background:rgba(13,189,139,.37);}
-.toast.toast-danger{border-color:rgba(232,64,88,.9);background:rgba(232,64,88,.37);}
-.toast.toast-warning{border-color:rgba(245,166,35,.9);background:rgba(245,166,35,.37);}
-.toast.toast-info{border-color:rgba(61,168,245,.9);background:rgba(61,168,245,.37);}
-   
-/* ══ ANIMATIONS ════════════════════════════════════════════════════════════ */
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+/* ── TOASTS: bold, high-contrast, hard to miss ── */
+.toast-container{position:fixed;bottom:16px;right:16px;display:flex;flex-direction:column;gap:8px;z-index:300}
+.toast{
+  font-family:var(--mono);font-size:11px;font-weight:600;
+  padding:11px 16px;border-radius:var(--r3);
+  background:rgba(15,23,32,.98);
+  border:1.5px solid var(--border-lo);
+  color:var(--text-hi);max-width:300px;
+  transform:translateX(110%);opacity:0;
+  transition:transform .28s cubic-bezier(.32,1,.6,1), opacity .2s;
+  box-shadow:var(--sh3), 0 0 0 1px rgba(255,255,255,.04);
+  line-height:1.45;backdrop-filter:blur(12px);
+  display:flex;align-items:flex-start;gap:9px;
+}
+.toast.toast-show{transform:translateX(0);opacity:1}
+/* colored left accent bar via box-shadow */
+.toast.toast-success{border-left:3px solid var(--green);background:rgba(13,189,139,.18);color:#b8f5e8;box-shadow:var(--sh3),var(--glow-g)}
+.toast.toast-danger {border-left:3px solid var(--red);background:rgba(232,64,88,.18);color:#ffc8cf;box-shadow:var(--sh3),var(--glow-r)}
+.toast.toast-warning{border-left:3px solid var(--amber);background:rgba(245,166,35,.18);color:#ffe5a0;box-shadow:var(--sh3),var(--glow-y)}
+.toast.toast-info   {border-left:3px solid var(--blue);background:rgba(61,168,245,.18);color:#b8dbff;box-shadow:var(--sh3),var(--glow-b)}
 
-/* ══ MOBILE ════════════════════════════════════════════════════════════════ */
+
+/* ══ MOBILE — iOS app aesthetic ════════════════════════════════════════════ */
 @media(max-width:800px){
   .home-topbar,.home-cases-section{padding-left:16px;padding-right:16px}
   .home-hero{padding:34px 16px 20px}
@@ -471,15 +555,20 @@ button{cursor:pointer;font-family:inherit}
   .home-filters{padding:10px 14px}
   .cases-grid{grid-template-columns:1fr}
 
-  .game-layout{grid-template-rows:auto auto 1fr auto;grid-template-columns:1fr;grid-template-areas:"hdr" "ban" "body" "log";height:auto;min-height:100vh;overflow:auto}
+  .game-layout{
+    grid-template-rows:auto auto 1fr auto;
+    grid-template-columns:1fr;
+    grid-template-areas:"hdr" "ban" "body" "log";
+    height:auto;min-height:100vh;overflow:auto;
+  }
   .game-body{height:auto;overflow:visible}
-  .tab-content{overflow:visible; padding-bottom: 50px;}
+  .tab-content{overflow:visible;padding-bottom:60px}
   .tab-panel{height:auto}
-  .log-panel{max-height:180px;border-left:none;border-top:1px solid var(--border); margin-bottom:50px;}
+  .log-panel{max-height:180px;border-left:none;border-top:1px solid var(--border);margin-bottom:60px}
 
   .patient-info{display:none}
-  .patient-avatar{display: none;}
-  .case-title-small{max-width:150px; display:none;}
+  .patient-avatar{display:none}
+  .case-title-small{max-width:150px;display:none}
   .hud-stat{min-width:58px;padding:4px 7px}
   .hud-label{font-size:6px}
   .hud-value{font-size:10px}
@@ -497,647 +586,164 @@ button{cursor:pointer;font-family:inherit}
   .modal-score{max-height:88vh}
   .pregame-modal{border-radius:var(--r4) var(--r4) 0 0;max-width:100%;max-height:90vh}
 
-  .toast-container{left:10px;right:10px;bottom:10px}
-  .toast{max-width:100%}
-
-  .tab-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    
-    border-bottom: none;
-    border-top: 1px solid var(--border);
-    
-    z-index: 1000; /* keeps it above content */
+  /* ── iOS floating tab bar ── */
+  .tab-bar{
+    position:fixed;bottom:0;left:0;width:100%;
+    height:calc(56px + env(safe-area-inset-bottom,0px));
+    padding-bottom:env(safe-area-inset-bottom,0px);
+    background:rgba(7,11,15,.9);
+    -webkit-backdrop-filter:saturate(180%) blur(28px);
+    backdrop-filter:saturate(180%) blur(28px);
+    border-top:.5px solid rgba(255,255,255,.09);
+    border-bottom:none;overflow:visible;
+    display:flex;align-items:stretch;
+    z-index:1000;
+    box-shadow:0 -8px 32px rgba(0,0,0,.6);
   }
+  .tab-btn{
+    flex:1;flex-direction:column;
+    align-items:center;justify-content:center;
+    gap:4px;padding:8px 4px;
+    color:var(--text-lo);font-family:var(--mono);
+    font-size:8px;letter-spacing:.03em;text-transform:uppercase;
+    position:relative;height:auto;border-bottom:none!important;
+    transition:color .18s, transform .18s;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .tab-btn:active{transform:scale(.88)}
+  .tab-btn.active{color:var(--green);background:transparent}
+  /* top accent line on active */
+  .tab-btn.active::before{
+    content:'';position:absolute;top:0;left:18%;right:18%;height:2px;
+    background:var(--green);border-radius:0 0 99px 99px;
+    box-shadow:0 0 8px rgba(13,189,139,.6);
+  }
+  .tab-btn-icon{font-size:20px;line-height:1;transition:transform .3s cubic-bezier(.34,1.56,.64,1)}
+  .tab-btn.active .tab-btn-icon{transform:scale(1.15) translateY(-1px)}
+  .tab-btn-badge{
+    position:absolute;top:6px;right:calc(50% - 16px);
+    background:var(--red);color:#fff;
+    font-size:7px;font-weight:700;min-width:15px;height:15px;
+    border-radius:99px;display:flex;align-items:center;justify-content:center;
+    padding:0 3px;border:2px solid var(--bg-deep);
+  }
+  .tab-btn-badge.locked{background:var(--purple)}
 
-.tab-bar{flex-shrink:0;height:50px;padding-bottom:0px;background:var(--bg-panel);border-bottom:0px;border-top:1px solid 5px;display:flex;align-items:stretch;z-index:10}
-.tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:8px 4px;color:var(--text-lo);font-family:monospace;font-size:8px;letter-spacing:.04em;text-transform:uppercase;transition:color .15s;position:relative}
-.tab-btn.active{color:var(--green)}
-.tab-btn.active::before{content:'';position:absolute;top:0;left:20%;right:20%;height:2px;background:var(--green);border-radius:0 0 99px 99px}
-.tab-btn-icon{font-size:18px;line-height:1}
-.tab-btn-badge{position:absolute;top:6px;right:calc(50% - 14px);background:var(--green);color:var(--bg);font-size:7px;font-weight:700;min-width:14px;height:14px;border-radius:99px;display:flex;align-items:center;justify-content:center;padding:0 3px}
-.tab-btn-badge.locked{background:var(--purple);color:var(--t3)}
+  .game-header{
+    position:fixed;top:0;padding:5px;
+    left:0;width:100%;z-index:1000;
+    height:50px;
+  }
+  .patient-banner{
+    position:fixed;top:50px;left:0;width:100%;
+    height:30px;z-index:999;
+  }
+  .game-body{margin-top:90px}
+  .tab-bar{order:999}
 
-.game-header{
-  position: fixed;
-  top: 0;
-  padding: 5px;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
+  /* toast: from top on mobile */
+  .toast-container{
+    top:calc(env(safe-area-inset-top,0px) + 80px);
+    bottom:auto;right:12px;left:12px;
+  }
+  .toast{
+    transform:translateY(-110%);opacity:0;
+    max-width:100%;
+    border-radius:14px;
+    font-size:13px;
+    padding:13px 16px;
+  }
+  .toast.toast-show{transform:translateY(0);opacity:1}
+
+  .diagnosis-container,.mgmt-container{float:none;width:100%}
 }
 
-.patient-banner{
-  position: fixed;
-  top: 50px;
-  left: 0;
-  width: 100%;
-  height: 30px;
-  z-index: 999;
-}
-
-/* push content down so it doesn't hide */
-.game-body{
-  margin-top: 90px;
-}
-}
 @media(max-width:420px){
   .test-grid,.mgmt-grid{grid-template-columns:1fr}
   .hud-stat{min-width:48px;padding:4px 5px}
 }
 
-/* ══ TAB BAR RESPONSIVE FIX ══════════════════════════════════════════════
-   Drop this into your existing CSS, replacing/extending the .tab-bar and
-   .tab-btn rules. The JS snippet at the bottom handles swipe + arrow keys.
-   ═══════════════════════════════════════════════════════════════════════ */
-
-/* ── Tab bar: no overflow scroll, wrap prevented, shrink to fit ───────── */
-
-/* ── Mobile: swap to emoji-only labels ───────────────────────────────── */
-@media (max-width: 800px) {
-  .tab-btn {
-    padding: 0 6px;
-    font-size: 9px;
-    letter-spacing: 0;
-    gap: 3px;
-  }
-
-  .tab-label-full  { display: none; }
-  .tab-label-emoji { display: inline; }
-
-  .game-body {
-    flex-direction: column;
-  }
-
-.tab-bar {
-    order: 999; /* 👈 pushes it to bottom */
-  }
-  
-  .diagnosis-container,
-  .mgmt-container {
-    float: none;
-    width: 100%;
-  }
+/* ── Tab label helpers ── */
+.tab-label-full{}
+.tab-label-emoji{display:none}
+@media(max-width:800px){
+  .tab-label-full{display:none}
+  .tab-label-emoji{display:inline}
+  .game-body{flex-direction:column}
 }
 
 
+/* ── Font size patch ── */
+.btn-back{font-size:12px}
+.case-title-small{font-size:1rem}
+.vital-hud-item{font-size:13px}
+.hud-label{font-size:9px}
+.hud-value{font-size:14px}
+.btn-jump,.btn-resign,.btn-end{font-size:12px}
+.patient-name{font-size:12px}
+.patient-complaint{font-size:1.05rem}
+.patient-stage-badge{font-size:11px}
+.tab-btn{font-size:12px}
+.badge{font-size:10px}
+.log-header{font-size:11px}
+.log-entry{font-size:12px}
+.log-time{font-size:10px}
+.log-msg{font-size:12px}
+.card-label{font-size:10px}
+.card-value{font-size:1rem}
+.card-value.big{font-size:1.1rem}
+.detail-list li{font-size:.9rem}
+.vital-item span{font-size:10px}
+.vital-item strong{font-size:13px}
+.exam-label{font-size:12px}
+.symptom-tag{font-size:12px}
+.category-label{font-size:10px}
+.test-name{font-size:.95rem}
+.test-fullname{font-size:.8rem}
+.test-meta span{font-size:11px}
+.test-status{font-size:11px}
+.btn-order{font-size:12px}
+.results-section-label{font-size:10px}
+.result-name{font-size:.95rem}
+.result-time{font-size:10px}
+.result-eta{font-size:12px}
+.result-text{font-size:12px}
+.result-interp{font-size:.85rem}
+.mgmt-name{font-size:.95rem}
+.mgmt-fullname{font-size:.8rem}
+.mgmt-meta span{font-size:11px}
+.mgmt-done{font-size:11px}
+.mgmt-blocked-msg{font-size:11px}
+.badge-curative,.badge-wrong,.badge-blunder{font-size:10px}
+.btn-give{font-size:12px}
+.disease-mgmt-label{font-size:13px}
+.disease-mgmt-warning{font-size:11px}
+.lock-title{font-size:1.25rem}
+.lock-desc{font-size:.9rem}
+.diagnosis-prompt{font-size:1.1rem}
+.diagnosis-info-box{font-size:.88rem}
+.diag-label{font-size:.95rem}
+.diag-current{font-size:12px}
+.empty-state{font-size:13px}
+.score-msg{font-size:.9rem}
+.dx-label{font-size:11px}
+.dx-value{font-size:.9rem}
+.score-label{font-size:.88rem}
+.score-pts{font-size:14px}
+.stat-row{font-size:.88rem}
+.stat-row strong{font-size:13px}
+.mistakes-label{font-size:11px}
+.mistake-item{font-size:.85rem}
+.gameover-sub{font-size:.9rem}
 
-
-@media (max-width: 420px) {
-  .tab-btn { padding: 0 4px; }
+@media(max-width:800px){
+  .hud-label{font-size:7px}
+  .hud-value{font-size:12px}
+  .tab-btn{font-size:9px}
+  .test-name,.mgmt-name{font-size:.9rem}
+  .result-text,.log-msg{font-size:11px}
 }
-
-/* ── Swipe target: give the content area a touch-action hint ─────────── */
-.tab-content {
-  touch-action: pan-y;       /* allow vertical scroll, we catch horizontal */
+@media(max-width:420px){
+  .hud-label{font-size:6px}
+  .hud-value{font-size:11px}
 }
-
-
-
-.home-cta-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none; /* remove underline */
-
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-
-  padding: 10px 22px;
-  border-radius: 99px;
-
-  background: rgba(13,189,139,.08);
-  border: 1px solid rgba(13,189,139,.35);
-  color: var(--green);
-
-  transition: all .2s ease;
-}
-
-.home-cta-btn:hover {
-  background: rgba(13,189,139,.16);
-  border-color: rgba(13,189,139,.55);
-  transform: translateY(-2px);
-}
-
-.home-mid-cta {
-  display: flex;
-  justify-content: center;
-  padding: 22px 28px;
-}
-
-
-.home-cta-btn:active {
-  transform: translateY(0);
-  box-shadow: none;
-}
-
-
-/* ══════════════════════════════════════════════════════
-   GAME FONT SIZE PATCH
-   Drop this AFTER your main stylesheet.
-   Only targets in-game UI — home screen untouched.
-   ══════════════════════════════════════════════════════ */
-
-/* ── Header / HUD ─────────────────────────────────── */
-.btn-back          { font-size: 12px; }
-.case-title-small  { font-size: 1rem; }
-
-.vital-hud-item    { font-size: 13px; }
-
-.hud-label         { font-size: 9px; }
-.hud-value         { font-size: 14px; }
-
-.btn-jump,
-.btn-resign,
-.btn-end           { font-size: 12px; }
-
-/* ── Patient banner ───────────────────────────────── */
-.patient-name      { font-size: 12px; }
-.patient-complaint { font-size: 1.05rem; }
-.patient-stage-badge { font-size: 11px; }
-
-/* ── Tab bar (desktop) ────────────────────────────── */
-.tab-btn           { font-size: 12px; }
-.badge             { font-size: 10px; }
-
-/* ── Log panel ────────────────────────────────────── */
-.log-header        { font-size: 11px; }
-.log-entry         { font-size: 12px; }
-.log-time          { font-size: 10px; }
-.log-msg           { font-size: 12px; }
-
-/* ── History / info cards ─────────────────────────── */
-.card-label        { font-size: 10px; }
-.card-value        { font-size: 1rem; }
-.card-value.big    { font-size: 1.1rem; }
-.detail-list li    { font-size: .9rem; }
-
-.vital-item span   { font-size: 10px; }
-.vital-item strong { font-size: 13px; }
-
-.exam-label        { font-size: 12px; }
-.symptom-tag       { font-size: 12px; }
-
-/* ── Tests tab ────────────────────────────────────── */
-.category-label    { font-size: 10px; }
-.test-name         { font-size: .95rem; }
-.test-fullname     { font-size: .8rem; }
-.test-meta span    { font-size: 11px; }
-.test-status       { font-size: 11px; }
-.btn-order         { font-size: 12px; }
-
-/* ── Results tab ──────────────────────────────────── */
-.results-section-label { font-size: 10px; }
-.result-name       { font-size: .95rem; }
-.result-time       { font-size: 10px; }
-.result-eta        { font-size: 12px; }
-.result-text       { font-size: 12px; }
-.result-interp     { font-size: .85rem; }
-
-/* ── Management tab ───────────────────────────────── */
-.mgmt-name         { font-size: .95rem; }
-.mgmt-fullname     { font-size: .8rem; }
-.mgmt-meta span    { font-size: 11px; }
-.mgmt-done         { font-size: 11px; }
-.mgmt-blocked-msg  { font-size: 11px; }
-.badge-curative,
-.badge-wrong,
-.badge-blunder     { font-size: 10px; }
-.btn-give          { font-size: 12px; }
-.disease-mgmt-label       { font-size: 13px; }
-.disease-mgmt-warning     { font-size: 11px; }
-.lock-title        { font-size: 1.25rem; }
-.lock-desc         { font-size: .9rem; }
-
-/* ── Diagnosis tab ────────────────────────────────── */
-.diagnosis-prompt  { font-size: 1.1rem; }
-.diagnosis-info-box { font-size: .88rem; }
-.diag-label        { font-size: .95rem; }
-.diag-current      { font-size: 12px; }
-.empty-state       { font-size: 13px; }
-
-/* ── Score / modals ───────────────────────────────── */
-.score-msg         { font-size: .9rem; }
-.dx-label          { font-size: 11px; }
-.dx-value          { font-size: .9rem; }
-.score-label       { font-size: .88rem; }
-.score-pts         { font-size: 14px; }
-.stat-row          { font-size: .88rem; }
-.stat-row strong   { font-size: 13px; }
-.mistakes-label    { font-size: 11px; }
-.mistake-item      { font-size: .85rem; }
-
-/* ── Game-over modal ──────────────────────────────── */
-.gameover-sub      { font-size: .9rem; }
-
-/* ── Mobile overrides (≤ 800px) ───────────────────── */
-@media (max-width: 800px) {
-  .hud-label       { font-size: 7px; }
-  .hud-value       { font-size: 12px; }
-
-  .tab-btn         { font-size: 9px; }   /* emoji-mode already tiny */
-
-  .test-name,
-  .mgmt-name       { font-size: .9rem; }
-
-  .result-text,
-  .log-msg         { font-size: 11px; }
-}
-
-@media (max-width: 420px) {
-  .hud-label       { font-size: 6px; }
-  .hud-value       { font-size: 11px; }
-}
-
-
-/* ══════════════════════════════════════════════════════════════════════════
-   FLOATING NAV PATCH  —  drop this AFTER your main stylesheets
-   Targets: nav.bnav  .nbtn  (the main app nav in index.html)
-            .tab-bar  .tab-btn  (the in-game tab strip)
-   Two themes toggled by  <html data-theme="light"> or "dark" (default dark)
-   ══════════════════════════════════════════════════════════════════════════ */
-
-
-/* ── THEME TOKENS ──────────────────────────────────────────────────────────
-   Dark theme (default — matches your existing palette)                      */
-:root,
-[data-theme="dark"] {
-  --nav-bg:         rgba(10, 14, 20, 0.82);
-  --nav-border:     rgba(255, 255, 255, 0.07);
-  --nav-shadow:     0 -2px 24px rgba(0,0,0,.55), 0 -1px 0 rgba(255,255,255,.04);
-  --nav-item-bg:    transparent;
-  --nav-item-active-bg: rgba(13,189,139,.14);
-  --nav-item-active-border: rgba(13,189,139,.28);
-  --nav-icon-color: #364e65;
-  --nav-label-color:#364e65;
-  --nav-active-color: #0dbd8b;
-  --nav-pill-radius: 14px;
-
-  /* header / banner distinct surfaces */
-  --hdr-bg:         rgba(5, 9, 14, 0.97);
-  --hdr-border:     rgba(61,168,245,.10);
-  --ban-bg:         rgba(6, 18, 15, 0.97);
-  --ban-border:     rgba(13,189,139,.12);
-
-  /* in-game tab bar */
-  --tab-bg:         rgba(8, 12, 18, 0.95);
-  --tab-border:     rgba(255,255,255,.05);
-  --tab-active-color: #0dbd8b;
-  --tab-inactive:   #2a3e52;
-}
-
-/* Light theme */
-[data-theme="light"] {
-  --nav-bg:         rgba(255, 255, 255, 0.88);
-  --nav-border:     rgba(0, 0, 0, 0.08);
-  --nav-shadow:     0 -2px 20px rgba(0,0,0,.10), 0 -1px 0 rgba(0,0,0,.06);
-  --nav-item-bg:    transparent;
-  --nav-item-active-bg: rgba(13,189,139,.12);
-  --nav-item-active-border: rgba(13,189,139,.25);
-  --nav-icon-color: #8fafc4;
-  --nav-label-color:#8fafc4;
-  --nav-active-color: #0a9e76;
-  --nav-pill-radius: 14px;
-
-  /* light body override */
-  --bg-deep:   #f0f4f7;
-  --bg-base:   #e8edf2;
-  --bg-panel:  #ffffff;
-  --bg-card:   #f5f8fb;
-  --bg-hover:  #eaf0f6;
-  --bg-up:     #dde6ef;
-  --border:    #d0dce8;
-  --border-lo: #bfcfde;
-  --text-hi:   #0e1c2a;
-  --text-mid:  #3a6278;
-  --text-lo:   #7a9ab5;
-  --text-dim:  #b0c8da;
-
-  --hdr-bg:    rgba(245, 249, 252, 0.97);
-  --hdr-border:rgba(13,189,139,.18);
-  --ban-bg:    rgba(232, 248, 244, 0.97);
-  --ban-border:rgba(13,189,139,.22);
-
-  --tab-bg:    rgba(245,249,252,0.96);
-  --tab-border:rgba(0,0,0,.07);
-  --tab-active-color: #0a9e76;
-  --tab-inactive: #8fafc4;
-}
-
-
-/* ══════════════════════════════════════════════════════════════════════════
-   MAIN APP NAV  —  nav.bnav  (the Home / Notes / Chat / Chant / Settings)
-   Floating pill that hovers above the viewport bottom
-   ══════════════════════════════════════════════════════════════════════════ */
-
-
-
-
-   
-nav.bnav {
-  /* positioning */
-  position: fixed;
-  bottom: max(env(safe-area-inset-bottom, 0px) + 10px, 14px);
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 200;
-
-  /* size — doesn't span full width, floats as a pill */
-  width: calc(100% - 32px);
-  max-width: 480px;
-  height: 64px;
-
-  /* glass surface */
-  background: var(--nav-bg);
-  -webkit-backdrop-filter: saturate(200%) blur(28px);
-          backdrop-filter: saturate(200%) blur(28px);
-
-  /* floating card border + rounded pill */
-  border: 1px solid var(--nav-border);
-  border-radius: 22px;
-
-  /* lift shadow */
-  box-shadow: var(--nav-shadow);
-
-  /* layout */
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  padding: 0 6px;
-
-  /* reset old styles */
-  border-top: none !important;
-}
-
-/* extra safe-area breathing room for home-indicator iPhones */
-@supports (padding-bottom: env(safe-area-inset-bottom)) {
-  nav.bnav {
-    bottom: calc(env(safe-area-inset-bottom) + 12px);
-  }
-}
-
-/* push page content up so it isn't hidden behind the floating nav */
-.page {
-  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px)) !important;
-}
-
-
-/* ── Individual nav button ─────────────────────────────────────────────── */
-.nbtn {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  padding: 8px 6px;
-  border-radius: var(--nav-pill-radius);
-  cursor: pointer;
-  transition: background .2s, transform .18s cubic-bezier(.34,1.56,.64,1);
-  position: relative;
-  min-width: 0;
-
-  /* remove old active indicator */
-  background: var(--nav-item-bg);
-  border: 1px solid transparent;
-}
-
-/* icon */
-.nbtn i {
-  font-size: 22px;
-  color: var(--nav-icon-color);
-  transition: color .18s, transform .28s cubic-bezier(.34,1.56,.64,1);
-  line-height: 1;
-}
-
-/* label */
-.nbtn .nl {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: .01em;
-  color: var(--nav-label-color);
-  transition: color .18s;
-  white-space: nowrap;
-}
-
-/* ── ACTIVE state: filled pill background ── */
-.nbtn.active {
-  background: var(--nav-item-active-bg);
-  border-color: var(--nav-item-active-border);
-}
-.nbtn.active i  { color: var(--nav-active-color); transform: scale(1.18) translateY(-1px); }
-.nbtn.active .nl{ color: var(--nav-active-color); font-weight: 700; }
-
-/* remove old ::before top-line indicator */
-.nbtn.active::before { display: none !important; }
-
-/* tap feedback */
-.nbtn:active { transform: scale(.86); }
-.nbtn { -webkit-tap-highlight-color: transparent; }
-
-
-/* ══════════════════════════════════════════════════════════════════════════
-   IN-GAME TAB BAR  —  .tab-bar  .tab-btn
-   On desktop: stays as a header strip (unchanged)
-   On mobile/tablet: becomes a floating pill above the bottom nav
-   ══════════════════════════════════════════════════════════════════════════ */
-
-/* ── Desktop tab bar (≥ 801px) — subtle glass, distinct from content ── */
-@media (min-width: 801px) {
-  .tab-bar {
-    background: var(--tab-bg);
-    -webkit-backdrop-filter: blur(16px);
-            backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--tab-border);
-    box-shadow: 0 2px 12px rgba(0,0,0,.35);
-  }
-  .tab-btn.active {
-    color: var(--tab-active-color);
-    border-bottom-color: var(--tab-active-color);
-    background: rgba(13,189,139,.04);
-  }
-  .tab-btn { color: var(--tab-inactive); }
-}
-
-/* ── Mobile/tablet tab bar (≤ 800px) ── */
-@media (max-width: 800px) {
-
-  /* floating pill — sits just above the main nav */
-  .tab-bar {
-    position: fixed;
-    bottom: calc(max(env(safe-area-inset-bottom, 0px), 0px) + 5px);
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 199;
-
-    width: calc(100% - 32px);
-    max-width: 480px;
-    height: 52px;
-
-    background: var(--tab-bg);
-    -webkit-backdrop-filter: saturate(200%) blur(28px);
-            backdrop-filter: saturate(200%) blur(28px);
-
-    border: 1px solid var(--tab-border);
-    border-radius: 18px;
-
-    box-shadow: 0 4px 24px rgba(0,0,0,.5), 0 1px 0 rgba(255,255,255,.04);
-
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    padding: 0 4px;
-    overflow: visible;      /* allow active glow to bleed */
-    flex-shrink: 0;
-  }
-
-  /* push game content above both pills */
-  .game-body {
-    margin-top: 90px;
-    padding-bottom: calc(50px + env(safe-area-inset-bottom, 0px));
-  }
-
-  /* tab button — horizontal icon+label on mobile */
-  .tab-btn {
-    flex: 1;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 5px;
-    height: 38px;
-    padding: 0 8px;
-    border-radius: 12px;
-    border-bottom: none !important;
-    color: var(--tab-inactive);
-    font-family: var(--mono);
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: .03em;
-    white-space: nowrap;
-    transition: background .2s, color .18s, transform .18s cubic-bezier(.34,1.56,.64,1);
-    -webkit-tap-highlight-color: transparent;
-    position: relative;
-  }
-
-  .tab-btn:active { transform: scale(.88); }
-
-  .tab-btn.active {
-    background: rgba(13,189,139,.15);
-    border: 1px solid rgba(13,189,139,.3) !important;
-    color: var(--tab-active-color);
-    box-shadow: 0 0 12px rgba(13,189,139,.2);
-  }
-
-  /* badge repositioned for horizontal layout */
-  .badge {
-    font-size: 8px;
-    padding: 1px 5px;
-    border-radius: 99px;
-    font-weight: 700;
-    min-width: 15px;
-    text-align: center;
-    background: var(--green, #0dbd8b);
-    color: #070b0f;
-  }
-
-  /* hide emoji-only labels on tab bar — show short text instead */
-  .tab-label-full   { display: inline; font-size: 10px; }
-  .tab-label-emoji  { display: none; }
-}
-
-
-/* ══════════════════════════════════════════════════════════════════════════
-   GAME HEADER + PATIENT BANNER  —  clearly distinct surfaces
-   ══════════════════════════════════════════════════════════════════════════ */
-
-.game-header {
-  background: var(--hdr-bg) !important;
-  border-bottom: 1px solid var(--hdr-border) !important;
-  box-shadow: 0 1px 0 var(--hdr-border), 0 4px 20px rgba(0,0,0,.6) !important;
-}
-
-.patient-banner {
-  background: var(--ban-bg) !important;
-  border-bottom: 1px solid var(--ban-border) !important;
-  box-shadow: 0 1px 0 var(--ban-border), 0 3px 14px rgba(0,0,0,.45) !important;
-}
-
-
-/* ══════════════════════════════════════════════════════════════════════════
-   LIGHT THEME BODY OVERRIDES
-   Applied when <html data-theme="light"> or <body data-theme="light">
-   ══════════════════════════════════════════════════════════════════════════ */
-[data-theme="light"] body,
-[data-theme="light"] #app {
-  background: var(--bg-deep);
-  color: var(--text-hi);
-}
-
-[data-theme="light"] .game-body,
-[data-theme="light"] .tab-panel   { background: var(--bg-base); }
-[data-theme="light"] .game-header { background: var(--hdr-bg) !important; }
-[data-theme="light"] .patient-banner{ background: var(--ban-bg) !important; }
-
-[data-theme="light"] .tab-bar {
-  background: rgba(255,255,255,.88);
-  border-color: rgba(0,0,0,.08);
-  box-shadow: 0 4px 24px rgba(0,0,0,.12), 0 1px 0 rgba(0,0,0,.05);
-}
-[data-theme="light"] .tab-btn         { color: var(--tab-inactive); }
-[data-theme="light"] .tab-btn.active  {
-  background: rgba(10,158,118,.12);
-  border-color: rgba(10,158,118,.25) !important;
-  color: var(--tab-active-color);
-  box-shadow: 0 0 10px rgba(10,158,118,.15);
-}
-
-[data-theme="light"] nav.bnav {
-  background: rgba(255,255,255,.88);
-  border-color: rgba(0,0,0,.08);
-  box-shadow: 0 -2px 20px rgba(0,0,0,.10), 0 -1px 0 rgba(0,0,0,.05);
-}
-[data-theme="light"] .nbtn i,
-[data-theme="light"] .nbtn .nl       { color: var(--nav-icon-color); }
-[data-theme="light"] .nbtn.active i,
-[data-theme="light"] .nbtn.active .nl{ color: var(--nav-active-color); }
-[data-theme="light"] .nbtn.active     { background: rgba(10,158,118,.10); border-color: rgba(10,158,118,.22); }
-
-/* light: cards + panels */
-[data-theme="light"] .info-card,
-[data-theme="light"] .test-card,
-[data-theme="light"] .mgmt-card,
-[data-theme="light"] .result-card,
-[data-theme="light"] .log-panel       { background: var(--bg-card); border-color: var(--border); }
-[data-theme="light"] .log-panel       { background: var(--bg-panel); }
-[data-theme="light"] .hud-stats       { background: var(--bg-card); border-color: var(--border); }
-[data-theme="light"] .vital-hud-item  { background: var(--bg-up);   border-color: var(--border); color: var(--text-mid); }
-[data-theme="light"] .log-header      { color: var(--text-lo); border-color: var(--border); }
-[data-theme="light"] .log-msg         { color: var(--text-mid); }
-
-
-/* ══════════════════════════════════════════════════════════════════════════
-   THEME TOGGLE BUTTON  (optional — add anywhere in your HTML)
-   <button class="theme-toggle" onclick="document.documentElement.dataset.theme = document.documentElement.dataset.theme==='light'?'dark':'light'">
-     <i class="fa-solid fa-circle-half-stroke"></i>
-   </button>
-   ══════════════════════════════════════════════════════════════════════════ */
-.theme-toggle {
-  width: 34px; height: 34px;
-  border-radius: 50%;
-  background: var(--nav-item-active-bg);
-  border: 1px solid var(--nav-item-active-border);
-  color: var(--nav-active-color);
-  font-size: 15px;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer;
-  transition: all .2s;
-  -webkit-tap-highlight-color: transparent;
-}
-.theme-toggle:hover { transform: scale(1.08); }
-.theme-toggle:active{ transform: scale(.88); }
