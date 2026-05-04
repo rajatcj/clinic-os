@@ -233,7 +233,6 @@
   gap: 8px;
 }
 .btn-review-case {
-  width: 50%;
   padding: 12px;
   border-radius: var(--r2);
   background: rgba(13,189,139,.1);
